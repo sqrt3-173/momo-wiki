@@ -48,15 +48,15 @@ simultaneously → contention = slower, never a crash. Guardrail: keep the ~6-ag
 macOS user does NOT prevent parallelism — it's a permissions boundary, not a lock; macOS runs multiple
 users' processes concurrently natively.
 
-## Local sharing between instances (don't need GitHub for everything)
-- **Static shared files** (code/data both read) → shared local folder (`/Users/Shared/…` or shared-group dir).
-- **Database already shared** — both local users just connect to the same Postgres (`localhost:5432`); no dup.
-- **Wiki → git even between two LOCAL instances** (raw shared folder = Dropbox-style clobber/no-history/no-merge).
-  Git works locally (even a bare repo, no internet); GitHub remote is the bonus = MacBook access + off-machine backup.
-- Wiki master = private GitHub repo + **fine-grained PAT scoped to that one repo** (Contents r/w only): cannot
-  delete/rename repo, cannot see other repos, instantly revocable. Eli owns repo; secrets stay out (.gitignore).
-- 2nd-user always-on job needs that user's session: keep logged in (fast user switching) OR LaunchDaemon (boots
-  regardless of login) instead of a login-scoped LaunchAgent.
+## What's shared vs separate (CORRECTED 2026-06-30)
+NUNU serves Eli's **sister's job** — a different domain — so **knowledge is NOT shared**:
+- **`momo-wiki`** (private, Eli's knowledge) and **`nunu-wiki`** (private, sister's domain) are **separate repos**. No mixing — privacy boundary.
+- **`agent-skills`** (separate repo) IS **shared** — domain-agnostic how-to playbooks both instances clone; improvements propagate to both. Only the *methods* are shared, never the *knowledge*.
+- **Database** — shared natively (both local users connect to the same Postgres `localhost:5432`; no dup).
+- **Static files** both need → a shared local folder (`/Users/Shared/…`).
+- **Why git not a raw shared folder for wikis/skills:** a raw shared folder = Dropbox-style clobber / no history / no merge. Git works even locally (bare repo, no internet); GitHub remote adds MacBook access + off-machine backup.
+- **Repo security:** each repo gets its **own fine-grained PAT scoped to that one repo** (Contents r/w only): can't delete/rename, can't see other repos, instantly revocable. Eli owns repos; secrets stay out (.gitignore).
+- **2nd-user always-on job** needs that user's session: keep logged in (fast user switching) OR LaunchDaemon (boots regardless of login) instead of a login-scoped LaunchAgent.
 
 ## Existing persistence stack (reference — instance #1)
 launchd `com.momo.agent` (symlinked into `~/Library/LaunchAgents/`) runs `ops/momo-guardian.sh`

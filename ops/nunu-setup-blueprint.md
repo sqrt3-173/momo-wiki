@@ -2,9 +2,13 @@
 
 End state: a second autonomous agent **NUNU** running as macOS user `momo2` on MOMO-mini,
 fully independent (own Claude account, own Discord bot/channel, own project space), running in
-parallel with MOMO and surviving even when the `momo` user is the foreground login. Both share a
-**git-backed wiki** (the master) and a **skill library**, and can call a **multi-model council**
-for hard calls.
+parallel with MOMO and surviving even when the `momo` user is the foreground login.
+
+**Key correction (2026-06-30):** NUNU serves **Eli's sister and her job — a different domain** — so it
+gets its **OWN private wiki (`nunu-wiki`)**; MOMO's wiki (`momo-wiki`) stays private to Eli. The two
+**do NOT share knowledge** (different person, different business, privacy boundary). What they DO share:
+a **skill library** (domain-agnostic how-to playbooks, in its own repo `agent-skills`) and the ability
+to call a **multi-model council**. So: same machinery cloned, separate brains, shared methods.
 
 Legend: **[ELI]** = only Eli can/should do it (account creation, payment, logins, secrets, sudo,
 `/discord:access`). **[MOMO]** = I do it (all file scaffolding, scripts, config, git, code).
@@ -17,16 +21,18 @@ MOMO-mini (M2, 24GB)
 ├── user `momo`   → MOMO  → Claude acct A · Discord bot A (#momo)  · CLAUDE_CONFIG_DIR=~/.claude
 ├── user `momo2`  → NUNU  → Claude acct B · Discord bot B (#nunu)  · its own ~/.claude
 │       (Fast User Switching: both logged in; NUNU runs in its background session)
-├── Postgres (localhost:5432)         ← shared by both users natively
-├── Wiki = git repo                   ← master on GitHub (private); each instance has a clone
-│       MOMO clone: /Users/momo/momo/wiki   NUNU clone: /Users/momo2/.../wiki
+├── Postgres (localhost:5432)            ← shared by both users natively
+├── momo-wiki (git, private)             ← MOMO's knowledge, ELI's. clone: /Users/momo/momo/wiki
 │       Eli's MacBook: clone + Obsidian Git plugin (two-way sync)
-└── Skill library + council skill     ← shared (in the wiki repo or a shared git repo)
+├── nunu-wiki (git, private, SEPARATE)   ← NUNU's knowledge, SISTER's domain. clone under momo2
+│       NOT shared with momo-wiki — different person/job, privacy boundary
+└── agent-skills (git, SHARED)           ← domain-agnostic playbooks BOTH instances clone; + council skill
 ```
 
 ---
 
-## PHASE 0 — Shared foundation: the git wiki master  ✅ LIVE (2026-06-30)
+## PHASE 0 — MOMO's wiki (`momo-wiki`, PRIVATE to Eli)  ✅ LIVE (2026-06-30)
+> This is ELI's knowledge only. It is **not** shared with NUNU. NUNU gets its own `nunu-wiki` (Phase 1f).
 Remote: `https://github.com/sqrt3-173/momo-wiki.git` (private). Token in `/Users/momo/.momo-secrets/github-wiki-token`
 (600), read at push time by `ops/git-credential-momo-wiki.sh` (never stored in git config). MacBook/Obsidian sync = remaining sub-step.
 1. **[MOMO]** Make the wiki a local git repo (init, `.gitignore`, first commit). ✅ done 2026-06-29.
@@ -73,11 +79,19 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
    - **Alternative (true unattended, reboot-proof):** a **LaunchDaemon** (`UserName=momo2`, in `/Library/LaunchDaemons`, needs **[ELI] sudo** to install — MOMO is hard-blocked from sudo/system changes). Caveat: a daemon may not have the user's unlocked login keychain → Claude auth could fail; would need the script to unlock the keychain or store creds outside it. More fragile. Use only if reboot-survival-with-nobody-logged-in is a hard requirement.
 8. **[ELI]** Approve flipping the always-on job live (installing a 2nd persistent launchd job is a guard-ask). MOMO writes + shows everything first.
 
+### 1f. NUNU's own wiki + shared skills (the brain + the methods)
+9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `momo2`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`.
+10. **[MOMO]** Init NUNU's wiki clone under `momo2`, wire remote + credential helper (mirror of MOMO's setup), seed a Home/index for the sister's domain.
+11. **[ELI]** Add the same narrow guard-edit to **NUNU's guard** so `git push` from NUNU's wiki dir auto-approves (root-owned + `uchg` → Eli/sudo; MOMO drafts the diff). See Phase 0 step 6 for the unlock→cp→re-lock procedure.
+12. **[MOMO/ELI]** Both instances clone the **shared `agent-skills`** repo (see Phase 2a). NUNU reads the same playbooks; improvements propagate to both.
+
 ---
 
-## PHASE 2 — Memory + reasoning architecture (shared by MOMO + NUNU)
-### 2a. Skill library (procedural memory — build first, free)
-- **[MOMO]** A `skills/` library where each repeatable methodology is a pull-from skill with a clear contract. Seed from what we already run: `website-audit`, `bd-research-sweep`, `entity-enrichment`, `council-review`, `wiki-capture`. Version-controlled (in the shared git). Both instances pull from it.
+## PHASE 2 — Memory + reasoning architecture
+### 2a. Skill library (procedural memory — SHARED repo, build first, free)
+- **[MOMO]** A standalone **`agent-skills`** git repo (NOT inside either wiki) — each repeatable methodology is a pull-from skill with a clear contract. Already seeded (currently living in `momo-wiki/skills/`): `website-audit`, `bd-research-sweep`, `entity-enrichment`, `council-review`, `wiki-capture`.
+- **Shared by design:** both MOMO and NUNU clone it; the playbooks are domain-agnostic (how to research/audit/capture), so improvements help both. Only the *methods* are shared — the *knowledge* (wikis) stays separate.
+- **[ELI]** When building NUNU: create a private `agent-skills` repo + token. **[MOMO]** then extracts `skills/` out of `momo-wiki` into `agent-skills`, both instances clone it, and `momo-wiki` keeps just a pointer. (Until then, skills live in `momo-wiki/skills/` and work fine for MOMO solo.)
 
 ### 2b. Wiki-capture protocol (semantic memory — free)
 - **[MOMO]** A protocol/skill that fires at the end of every meaningful job: extract learnings → write linked, structured notes → update the index → commit/push. Plus a periodic **dedup/prune** pass.
@@ -90,13 +104,14 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 ---
 
 ## Build order (dependency-correct)
-1. **Phase 0** git wiki (foundation everything shares) — MOMO local done; needs Eli's repo+token to go remote.
-2. **Phase 2a/2b** skill library + wiki-capture — free, no dependencies, sharpens everything after. MOMO can build now.
-3. **Phase 1** NUNU instance — needs Eli's macOS user + 2nd Claude account + 2nd Discord bot.
-4. **Phase 2c** council — last; needs Eli's funded API keys.
+1. **Phase 0** `momo-wiki` — ✅ DONE 2026-06-30 (live, bidirectional mini↔MacBook, guard-enforced auto-push).
+2. **Phase 2a/2b** skill library + wiki-capture — ✅ BUILT (currently in `momo-wiki/skills/`; extract to shared `agent-skills` when NUNU is built).
+3. **Phase 1** NUNU instance — needs Eli: `momo2` user + 2nd Claude account + 2nd Discord bot + `nunu-wiki` repo + `agent-skills` repo.
+4. **Phase 2c** council — last; needs Eli's funded OpenRouter key.
 
 ## Eli's immediate to-do to unblock (in parallel with MOMO's local work)
-- [ ] Private GitHub repo `momo-wiki` + fine-grained token (Phase 0.2–0.3) → tell MOMO the token file path.
-- [ ] Decide GitHub vs Syncthing for the wiki.
-- [ ] When ready for NUNU: create `momo2` user + enable Fast User Switching; set up 2nd Claude account; create the NUNU Discord bot + #nunu channel.
+- [x] Private GitHub repo `momo-wiki` + fine-grained token → done; MacBook Obsidian sync live.
+- [x] GitHub vs Syncthing → GitHub.
+- [ ] **For NUNU:** create `momo2` user + enable Fast User Switching; set up 2nd Claude account; create the NUNU Discord bot + #nunu channel.
+- [ ] **For NUNU's brain + shared methods:** create private repos `nunu-wiki` + `agent-skills` (each its own fine-grained token, Contents r/w) → tell MOMO the token file paths.
 - [ ] Later: OpenRouter key for the council.
