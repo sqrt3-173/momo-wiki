@@ -15,8 +15,13 @@ The Discord channel (plugin:discord) lets Eli DM MOMO and lets MOMO DM proactive
   `mcp__plugin_discord_discord__reply`. The sender reads Discord, NOT the session transcript —
   transcript output only shows in the terminal (tmux), which Eli sometimes watches, hence the confusion.
 - **Rule:** EVERY message meant for Eli MUST go through the `reply` tool (chat_id `1518481520527016059`).
-  No exceptions. If it's not a `reply` tool call, he doesn't get it. (Hit this twice in one session —
-  easy to slip when composing long messages; stay disciplined.)
+  No exceptions. If it's not a `reply` tool call, he doesn't get it. (Hit this repeatedly in one session —
+  easy to slip when composing long messages.)
+- **Now ENFORCED (2026-07-01):** a `Stop` hook (`ops/stop-reply-guard.py`, wired into `settings.local.json`
+  under `hooks.Stop`) blocks me from ending a turn that produced outward prose (>120 chars) without a
+  `reply` tool call this turn. Fails OPEN on any parse error; honours `stop_hook_active` so it can't loop.
+  The soft rule is now a hard gate — same enforcement tier as the guard-blocked AskUserQuestion. Settings
+  file is root-owned + `uchg`; edit via `sudo chflags nouchg` → `cp` → `chflags uchg` (Eli only).
 
 ## Gotcha: duplicate bridges break replies (2026-06-22)
 - Symptom: inbound messages arrive, but every `reply` fails with
