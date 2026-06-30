@@ -1,6 +1,6 @@
 # NUNU setup blueprint — second MOMO instance + shared memory/reasoning architecture
 
-End state: a second autonomous agent **NUNU** running as macOS user `momo2` on MOMO-mini,
+End state: a second autonomous agent **NUNU** running as macOS user `nunu` on MOMO-mini,
 fully independent (own Claude account, own Discord bot/channel, own project space), running in
 parallel with MOMO and surviving even when the `momo` user is the foreground login.
 
@@ -19,12 +19,12 @@ Legend: **[ELI]** = only Eli can/should do it (account creation, payment, logins
 ```
 MOMO-mini (M2, 24GB)
 ├── user `momo`   → MOMO  → Claude acct A · Discord bot A (#momo)  · CLAUDE_CONFIG_DIR=~/.claude
-├── user `momo2`  → NUNU  → Claude acct B · Discord bot B (#nunu)  · its own ~/.claude
+├── user `nunu`  → NUNU  → Claude acct B · Discord bot B (#nunu)  · its own ~/.claude
 │       (Fast User Switching: both logged in; NUNU runs in its background session)
 ├── Postgres (localhost:5432)            ← shared by both users natively
 ├── momo-wiki (git, private)             ← MOMO's knowledge, ELI's. clone: /Users/momo/momo/wiki
 │       Eli's MacBook: clone + Obsidian Git plugin (two-way sync)
-├── nunu-wiki (git, private, SEPARATE)   ← NUNU's knowledge, SISTER's domain. clone under momo2
+├── nunu-wiki (git, private, SEPARATE)   ← NUNU's knowledge, SISTER's domain. clone under nunu
 │       NOT shared with momo-wiki — different person/job, privacy boundary
 └── agent-skills (git, SHARED)           ← domain-agnostic playbooks BOTH instances clone; + council skill
 ```
@@ -56,32 +56,32 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 
 ## PHASE 1 — NUNU: the second instance
 ### 1a. macOS user
-1. **[ELI]** System Settings → Users & Groups → add a new user **`momo2`** (Administrator if it must manage its own launchd; Standard is fine for a LaunchAgent under itself). Set a password.
-2. **[ELI]** Enable **Fast User Switching** (Control Center / Users & Groups) so both `momo` and `momo2` can be logged in at once. Log into `momo2` once to create its home + login keychain, then switch back to `momo`. NUNU keeps running in `momo2`'s background session while `momo` is foreground — this is what satisfies "runs even when signed into the MOMO user."
+1. **[ELI]** System Settings → Users & Groups → add a new user **`nunu`** (Administrator if it must manage its own launchd; Standard is fine for a LaunchAgent under itself). Set a password.
+2. **[ELI]** Enable **Fast User Switching** (Control Center / Users & Groups) so both `momo` and `nunu` can be logged in at once. Log into `nunu` once to create its home + login keychain, then switch back to `momo`. NUNU keeps running in `nunu`'s background session while `momo` is foreground — this is what satisfies "runs even when signed into the MOMO user."
 
 ### 1b. Claude account (separate quota)
-3. **[ELI]** In `momo2`'s session, install/authenticate **Claude Code** with a **second Claude account** (second subscription = its own usage quota). Its config lives in `momo2`'s own `~/.claude` (separate home = separate keychain = clean isolation; no `CLAUDE_CONFIG_DIR` juggling needed because it's a different user).
+3. **[ELI]** In `nunu`'s session, install/authenticate **Claude Code** with a **second Claude account** (second subscription = its own usage quota). Its config lives in `nunu`'s own `~/.claude` (separate home = separate keychain = clean isolation; no `CLAUDE_CONFIG_DIR` juggling needed because it's a different user).
 
 ### 1c. Discord bot + channel (separate, or replies break)
 > Hard constraint: two `claude --channels` on the **same bot** break replies (documented in [[discord-bridge]]). NUNU needs its OWN bot.
 4. **[ELI]** Discord Developer Portal → create a **second bot application** (e.g. "NUNU") → get its token → invite it to your server. Make a channel **#nunu**.
-5. **[ELI]** In `momo2`'s session, run **`/discord:access`** to pair the new bot/channel to NUNU's Claude. (MOMO never touches this — anti-hijack control.) Stash the bot token in a local file, not Discord.
+5. **[ELI]** In `nunu`'s session, run **`/discord:access`** to pair the new bot/channel to NUNU's Claude. (MOMO never touches this — anti-hijack control.) Stash the bot token in a local file, not Discord.
 
 ### 1d. Project space
-6. **[MOMO/ELI]** Decide NUNU's working dir (e.g. `/Users/momo2/nunu` or a shared `/Users/Shared/projects/...`). MOMO scaffolds it.
+6. **[MOMO/ELI]** Decide NUNU's working dir (e.g. `/Users/nunu/nunu` or a shared `/Users/Shared/projects/...`). MOMO scaffolds it.
 
 ### 1e. Always-on persistence (the "keeps running" part)
-7. **[MOMO]** Clone MOMO's persistence stack for `momo2`, parametrised:
+7. **[MOMO]** Clone MOMO's persistence stack for `nunu`, parametrised:
    - `nunu-guardian.sh` (SESSION=`nunu`), `nunu-loop.sh` (`cd` NUNU's dir; `claude --channels …`), `com.nunu.agent.plist`.
    - **Guardian fix (required):** MOMO's guardian uses a *global* `pgrep -f 'claude --channels'` and stands by if **any** bridge runs — so NUNU's guardian would refuse to start while MOMO's bridge is up. Scope the check to NUNU's own session/bot (e.g. match the tmux session name or config home), not "any bridge."
-   - **Recommended:** install as a **LaunchAgent under `momo2`** (mirrors MOMO; runs in momo2's Aqua session via Fast User Switching; keychain is unlocked because the user is logged in → Claude auth works cleanly).
-   - **Reboot note:** macOS auto-login supports only ONE user. After a reboot, `momo2` must be logged in once (manually, or via a helper) for NUNU to resume. Mini rarely reboots, so acceptable.
-   - **Alternative (true unattended, reboot-proof):** a **LaunchDaemon** (`UserName=momo2`, in `/Library/LaunchDaemons`, needs **[ELI] sudo** to install — MOMO is hard-blocked from sudo/system changes). Caveat: a daemon may not have the user's unlocked login keychain → Claude auth could fail; would need the script to unlock the keychain or store creds outside it. More fragile. Use only if reboot-survival-with-nobody-logged-in is a hard requirement.
+   - **Recommended:** install as a **LaunchAgent under `nunu`** (mirrors MOMO; runs in nunu's Aqua session via Fast User Switching; keychain is unlocked because the user is logged in → Claude auth works cleanly).
+   - **Reboot note:** macOS auto-login supports only ONE user. After a reboot, `nunu` must be logged in once (manually, or via a helper) for NUNU to resume. Mini rarely reboots, so acceptable.
+   - **Alternative (true unattended, reboot-proof):** a **LaunchDaemon** (`UserName=nunu`, in `/Library/LaunchDaemons`, needs **[ELI] sudo** to install — MOMO is hard-blocked from sudo/system changes). Caveat: a daemon may not have the user's unlocked login keychain → Claude auth could fail; would need the script to unlock the keychain or store creds outside it. More fragile. Use only if reboot-survival-with-nobody-logged-in is a hard requirement.
 8. **[ELI]** Approve flipping the always-on job live (installing a 2nd persistent launchd job is a guard-ask). MOMO writes + shows everything first.
 
 ### 1f. NUNU's own wiki + shared skills (the brain + the methods)
-9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `momo2`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`. **Ownership decided 2026-06-30:** `nunu-wiki` + `agent-skills` live under **Eli's** GitHub account (fine for now; revisit if the sister ever wants her data under her own account).
-10. **[MOMO]** Init NUNU's wiki clone under `momo2`, wire remote + credential helper (mirror of MOMO's setup), seed a Home/index for the sister's domain.
+9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `nunu`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`. **Ownership decided 2026-06-30:** `nunu-wiki` + `agent-skills` live under **Eli's** GitHub account (fine for now; revisit if the sister ever wants her data under her own account).
+10. **[MOMO]** Init NUNU's wiki clone under `nunu`, wire remote + credential helper (mirror of MOMO's setup), seed a Home/index for the sister's domain.
 11. **[ELI]** Add the same narrow guard-edit to **NUNU's guard** so `git push` from NUNU's wiki dir auto-approves (root-owned + `uchg` → Eli/sudo; MOMO drafts the diff). See Phase 0 step 6 for the unlock→cp→re-lock procedure.
 12. **[MOMO/ELI]** Both instances clone the **shared `agent-skills`** repo (see Phase 2a). NUNU reads the same playbooks; improvements propagate to both.
 
@@ -106,12 +106,12 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 ## Build order (dependency-correct)
 1. **Phase 0** `momo-wiki` — ✅ DONE 2026-06-30 (live, bidirectional mini↔MacBook, guard-enforced auto-push).
 2. **Phase 2a/2b** skill library + wiki-capture — ✅ BUILT (currently in `momo-wiki/skills/`; extract to shared `agent-skills` when NUNU is built).
-3. **Phase 1** NUNU instance — needs Eli: `momo2` user + 2nd Claude account + 2nd Discord bot + `nunu-wiki` repo + `agent-skills` repo.
+3. **Phase 1** NUNU instance — needs Eli: `nunu` user + 2nd Claude account + 2nd Discord bot + `nunu-wiki` repo + `agent-skills` repo.
 4. **Phase 2c** council — last; needs Eli's funded OpenRouter key.
 
 ## Eli's immediate to-do to unblock (in parallel with MOMO's local work)
 - [x] Private GitHub repo `momo-wiki` + fine-grained token → done; MacBook Obsidian sync live.
 - [x] GitHub vs Syncthing → GitHub.
-- [ ] **For NUNU:** create `momo2` user + enable Fast User Switching; set up 2nd Claude account; create the NUNU Discord bot + #nunu channel.
+- [ ] **For NUNU:** create `nunu` user + enable Fast User Switching; set up 2nd Claude account; create the NUNU Discord bot + #nunu channel.
 - [ ] **For NUNU's brain + shared methods:** create private repos `nunu-wiki` + `agent-skills` (each its own fine-grained token, Contents r/w) → tell MOMO the token file paths.
 - [ ] Later: OpenRouter key for the council.

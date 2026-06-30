@@ -21,8 +21,8 @@ var at build time) holding its own paired bot + access.json.
 3. **Own isolated config home** so it reads its own discord bot config (avoids the duplicate-bridge
    break).
 4. **Own project working dir** under `projects/`.
-5. **Own persistence stack** — clone `com.momo.agent.plist` → `com.momo2.agent`, guardian + loop with
-   `SESSION=momo2`, `cd` to the new project, `--channels` pointing at its bot.
+5. **Own persistence stack** — clone `com.momo.agent.plist` → `com.nunu.agent`, guardian + loop with
+   `SESSION=nunu`, `cd` to the new project, `--channels` pointing at its bot.
 
 ## Bug found in the current guardian (must fix before #2 works)
 `ops/momo-guardian.sh` guards against duplicate bridges with a **global** check:
@@ -34,7 +34,7 @@ own session/config home/bot), not "any bridge anywhere."
 - **Eli (can't be delegated):** create bot → new channel → `/discord:access` pair → stash token in a
   file → tell MOMO.
 - **MOMO (after token + explicit go):** isolated config home; new project dir; clone+parametrise
-  guardian/loop/plist as `com.momo2.agent`/`momo2`; fix the guardian's global-pgrep to instance-scoped;
+  guardian/loop/plist as `com.nunu.agent`/`nunu`; fix the guardian's global-pgrep to instance-scoped;
   load the launchd agent. Installing the 2nd always-on launchd job is an ASK-Eli (persistent-system
   change) — write + show files first, flip live only on explicit OK.
 
