@@ -80,7 +80,7 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 8. **[ELI]** Approve flipping the always-on job live (installing a 2nd persistent launchd job is a guard-ask). MOMO writes + shows everything first.
 
 ### 1f. NUNU's own wiki + shared skills (the brain + the methods)
-9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `momo2`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`.
+9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `momo2`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`. **Ownership decided 2026-06-30:** `nunu-wiki` + `agent-skills` live under **Eli's** GitHub account (fine for now; revisit if the sister ever wants her data under her own account).
 10. **[MOMO]** Init NUNU's wiki clone under `momo2`, wire remote + credential helper (mirror of MOMO's setup), seed a Home/index for the sister's domain.
 11. **[ELI]** Add the same narrow guard-edit to **NUNU's guard** so `git push` from NUNU's wiki dir auto-approves (root-owned + `uchg` → Eli/sudo; MOMO drafts the diff). See Phase 0 step 6 for the unlock→cp→re-lock procedure.
 12. **[MOMO/ELI]** Both instances clone the **shared `agent-skills`** repo (see Phase 2a). NUNU reads the same playbooks; improvements propagate to both.
