@@ -19,3 +19,5 @@ happens (see the [[skills/wiki-capture/SKILL|wiki-capture]] protocol).
 ## How to use
 - **MOMO/NUNU:** read relevant notes before working; capture learnings on completion; commit + push (wiki pushes are guard-auto-approved).
 - **Eli (MacBook/Obsidian):** edit freely — the Obsidian Git plugin auto-pulls my changes and pushes yours every ~10 min.
+
+(END)
