@@ -26,16 +26,19 @@ MOMO-mini (M2, 24GB)
 
 ---
 
-## PHASE 0 — Shared foundation: the git wiki master
-1. **[MOMO]** Make the wiki a local git repo (init, `.gitignore`, first commit). *No pushing.* ✅ done 2026-06-29.
-2. **[ELI]** Create a **private** GitHub repo (e.g. `momo-wiki`). Empty.
-3. **[ELI]** Create a **fine-grained Personal Access Token** scoped to *only* that repo:
+## PHASE 0 — Shared foundation: the git wiki master  ✅ LIVE (2026-06-30)
+Remote: `https://github.com/sqrt3-173/momo-wiki.git` (private). Token in `/Users/momo/.momo-secrets/github-wiki-token`
+(600), read at push time by `ops/git-credential-momo-wiki.sh` (never stored in git config). MacBook/Obsidian sync = remaining sub-step.
+1. **[MOMO]** Make the wiki a local git repo (init, `.gitignore`, first commit). ✅ done 2026-06-29.
+2. **[ELI]** Create a **private** GitHub repo (e.g. `momo-wiki`). Empty. ✅ done (`sqrt3-173/momo-wiki`).
+3. **[ELI]** Create a **fine-grained Personal Access Token** scoped to *only* that repo: ✅ done (saved to locked file).
    - Repository access → Only select repositories → `momo-wiki`.
    - Permissions → **Contents: Read and write**, **Metadata: Read** (auto). Nothing else (no Administration → can't delete/rename).
    - Set an expiry (e.g. 90 days; renew when it lapses).
    - **Save the token to a local file**, e.g. `/Users/momo/.momo-secrets/github-wiki-token` (chmod 600). **Do not paste it in Discord.** Tell MOMO the path.
-4. **[MOMO]** Add the GitHub repo as the remote on MOMO's wiki clone; configure the token; push the first commit. *(Push is guard-ask → I confirm with Eli before the first push.)*
-5. **[ELI, MacBook]** Clone the repo, open the folder as an Obsidian vault, install the **Obsidian Git** community plugin → set auto-pull on open + auto-commit/push on a timer. Now MacBook ↔ mini sync both ways.
+4. **[MOMO]** Add the GitHub repo as the remote on MOMO's wiki clone; configure the token; push the first commit. ✅ done 2026-06-30 (remote `origin`, branch `main`, credential helper wired).
+5. **[ELI, MacBook]** Clone the repo, open the folder as an Obsidian vault, install the **Obsidian Git** community plugin → set auto-pull on open + auto-commit/push on a timer. Now MacBook ↔ mini sync both ways. ⬅️ NEXT.
+6. **[ELI decision]** Grant standing auto-push approval for the `momo-wiki` repo so the [[../skills/wiki-capture/SKILL|wiki-capture]] protocol can self-sync without asking each time (otherwise every push is a guard-ask). Pending.
 
 Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-peer) instead of GitHub — lose clean history/merge, gain zero-cloud. (Git still recommended.)
 
