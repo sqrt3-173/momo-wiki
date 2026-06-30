@@ -80,7 +80,7 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 8. **[ELI]** Approve flipping the always-on job live (installing a 2nd persistent launchd job is a guard-ask). MOMO writes + shows everything first.
 
 ### 1f. NUNU's own wiki + shared skills (the brain + the methods)
-9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `nunu`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`. **Ownership decided 2026-06-30:** `nunu-wiki` + `agent-skills` live under **Eli's** GitHub account (fine for now; revisit if the sister ever wants her data under her own account).
+9. **[ELI]** Create a **second private GitHub repo `nunu-wiki`** + its own fine-grained token (scoped to ONLY `nunu-wiki`, Contents r/w), saved to a locked file under `nunu`. This is NUNU's separate knowledge store for the sister's domain — never mixed with `momo-wiki`. **Ownership (revised 2026-07-01):** `nunu-wiki` lives under a **SEPARATE GitHub account for NUNU** (not Eli's main account) — cleaner isolation for the sister's domain. `agent-skills` (shared) can be owned by either account; the other instance reaches it via a repo-scoped token (fine-grained PATs are repo-scoped, not account-bound, so cross-account sharing just works).
 10. **[MOMO]** Init NUNU's wiki clone under `nunu`, wire remote + credential helper (mirror of MOMO's setup), seed a Home/index for the sister's domain.
 11. **[ELI]** Add the same narrow guard-edit to **NUNU's guard** so `git push` from NUNU's wiki dir auto-approves (root-owned + `uchg` → Eli/sudo; MOMO drafts the diff). See Phase 0 step 6 for the unlock→cp→re-lock procedure.
 12. **[MOMO/ELI]** Both instances clone the **shared `agent-skills`** repo (see Phase 2a). NUNU reads the same playbooks; improvements propagate to both.
@@ -113,5 +113,5 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 - [x] Private GitHub repo `momo-wiki` + fine-grained token → done; MacBook Obsidian sync live.
 - [x] GitHub vs Syncthing → GitHub.
 - [ ] **For NUNU:** create `nunu` user + enable Fast User Switching; set up 2nd Claude account; create the NUNU Discord bot + #nunu channel.
-- [ ] **For NUNU's brain + shared methods:** create private repos `nunu-wiki` + `agent-skills` (each its own fine-grained token, Contents r/w) → tell MOMO the token file paths.
+- [ ] **For NUNU's brain + shared methods:** create a **separate GitHub account for NUNU**; under it create private repo `nunu-wiki` + the shared `agent-skills` (each its own fine-grained token, Contents r/w) → tell MOMO the token file paths. (`agent-skills` owner = either account; both instances get a repo-scoped token.)
 - [ ] Later: OpenRouter key for the council.
