@@ -38,7 +38,10 @@ Remote: `https://github.com/sqrt3-173/momo-wiki.git` (private). Token in `/Users
    - **Save the token to a local file**, e.g. `/Users/momo/.momo-secrets/github-wiki-token` (chmod 600). **Do not paste it in Discord.** Tell MOMO the path.
 4. **[MOMO]** Add the GitHub repo as the remote on MOMO's wiki clone; configure the token; push the first commit. ✅ done 2026-06-30 (remote `origin`, branch `main`, credential helper wired).
 5. **[ELI, MacBook]** Clone the repo, open the folder as an Obsidian vault, install the **Obsidian Git** community plugin → set auto-pull on open + auto-commit/push on a timer. Now MacBook ↔ mini sync both ways. ⬅️ NEXT.
-6. **[ELI decision]** Grant standing auto-push approval for the `momo-wiki` repo so the [[../skills/wiki-capture/SKILL|wiki-capture]] protocol can self-sync without asking each time (otherwise every push is a guard-ask). Pending.
+6. **[ELI decision]** Standing auto-push approval for `momo-wiki` — ✅ GRANTED 2026-06-30.
+   - **Interim mode (active):** MOMO appends `#MOMO_OK` to `git push` commands **from the wiki dir only** under Eli's standing say-so. Works today, no guard change. Blast radius is tiny — the fine-grained token is contents-only on this one private repo, so worst case is a bad markdown commit (revertable). This is MOMO's discretion honouring Eli's word, not guard-enforced.
+   - **Durable option (recommended, pending):** a narrow guard edit so it auto-approves `git push` when the command targets the wiki dir (`-C …/wiki`). The guard (`ops/momo-guard.py`) is root-owned + self-disarm-protected → **only Eli can change it (sudo)**; MOMO is hard-blocked from editing its own guardrails by design. MOMO drafts the exact diff; Eli applies. Then it's enforced (not discretionary) and survives sessions/restarts; NUNU's guard needs the same edit.
+   - Scope is strict: standing approval is for the `momo-wiki` repo ONLY — never extended to any other repo or push target.
 
 Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-peer) instead of GitHub — lose clean history/merge, gain zero-cloud. (Git still recommended.)
 
