@@ -107,7 +107,13 @@ NUNU is reachable on Discord end-to-end. Order that actually worked, and every t
 
 **✅ nunu-wiki SEEDED (2026-07-01):** MOMO seeded `yana-nunu/nunu-wiki` with NUNU's `soul.md`, `Home.md`, the 4 skills (edm-campaign, email-html-scaffold, brand-fidelity-check, community-engagement), and `projects/` (README + `_TEMPLATE` folder telling Yana exactly what to drop per project). Seed clone lives at `/Users/momo/momo/nunu-wiki-seed/` (MOMO's push copy; NUNU gets its own clone in its session).
 
-**Still TODO for NUNU:** clone nunu-wiki into NUNU's session (`~/nunu/wiki`) + working dir; reply-tool permission / its own guard (fresh Claude has default perms); always-on persistence deploy (templates ready in `ops/nunu-templates/`). `agent-skills` (MOMO's own, `sqrt3-173`) — reorg MOMO's skills into it later.
+**✅ NUNU FULLY BUILT + ALWAYS-ON (2026-07-01) — verified in-character on Discord.**
+- **Working dir** `/Users/nunu/nunu`; wiki cloned at `~/nunu/wiki`; `~/nunu/CLAUDE.md` (`@wiki/soul.md`) loads identity every session.
+- **Guard** deployed: `~/nunu/ops/nunu-guard.py` + `~/nunu/.claude/settings.local.json` (PreToolUse hook). Auto-approves marketing work (reads, writes in `/Users/nunu`, dev/git, web, Discord, Claude Design, own-wiki push); hard-blocks money/system/destructive/RCE/install/publish; NO interactive-ask (Yana's non-technical) — unsafe = blocked (flag Eli); Eli override = `#ELI_OK`. **Currently UNLOCKED** (self-protecting vs NUNU's own tools) — lock immutable after real-work testing: `sudo chown root:wheel` + `sudo chmod 444` + `sudo chflags uchg` on `nunu-guard.py` + `settings.local.json`.
+- **Persistence** live: launchd `com.nunu.agent` (in `~/Library/LaunchAgents/`) → `nunu-guardian.sh` (KeepAlive, `pgrep -u`-scoped so it doesn't clash with MOMO) → tmux `nunu` → `nunu-loop.sh` (bakes `~/.bun/bin` PATH) → `claude --channels` + bun bridge. Survives terminal-close/crash/reboot (reboot needs nunu logged in via fast user switching).
+- **Deploy transport:** `nunu-wiki/_deploy/` holds guard, settings, guardian, loop, plist (MOMO pushes → NUNU pulls → copies into place). MOMO's push copy: `/Users/momo/momo/nunu-wiki-seed/`.
+- **Remaining = Yana's fuel only:** load the 10+ projects' guidelines + brand voice + Claude Design archives into `projects/<project>/`, then NUNU produces EDMs (HubSpot HTML) + social/activation ideas.
+- `agent-skills` (MOMO's own, `sqrt3-173`) — reorg MOMO's skills into it later (low priority).
 
 ## PHASE 2 — Memory + reasoning architecture
 ### 2a. Skill library (procedural memory — SHARED repo, build first, free)
