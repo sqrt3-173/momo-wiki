@@ -103,7 +103,11 @@ NUNU is reachable on Discord end-to-end. Order that actually worked, and every t
 9. **Pairing / allowlist:** dmPolicy `pairing` → DM the bot → pairing code → `/discord:access pair <code>`. **`allowFrom` governs DMs only**; to talk in a server *channel*, `/discord:access group add <channelId>`.
 10. **Verify from MOMO side** (can't read nunu's 700 home): `pgrep -u nunu -fl "bun run"` should show the discord bridge; `ps -o pid,ppid,command` to spot duplicates.
 
-**Still TODO for NUNU:** reply-tool permission / its own guard (fresh Claude has default perms), always-on persistence deploy, identity/soul for the sister's job, `nunu-wiki` + `agent-skills` repos.
+**🚩 Multi-account git keychain gotcha (2026-07-01):** on the mini, the macOS `osxkeychain` git helper caches ONE github.com credential (sqrt3-173's, from momo-wiki). Pushing to `yana-nunu/nunu-wiki` failed *"denied to sqrt3-173"* — keychain served the wrong account over the repo's token helper. Fix: force the repo to bypass keychain — `git config --add credential.helper ''` (empty resets the chain) then `--add credential.helper '!/…/git-credential-nunu-wiki.sh'`. Now the token helper is the only one. Same trap will hit any cross-account repo on this machine; NUNU's own user (fresh keychain) is clean, but if it ever caches, apply the same reset.
+
+**✅ nunu-wiki SEEDED (2026-07-01):** MOMO seeded `yana-nunu/nunu-wiki` with NUNU's `soul.md`, `Home.md`, the 4 skills (edm-campaign, email-html-scaffold, brand-fidelity-check, community-engagement), and `projects/` (README + `_TEMPLATE` folder telling Yana exactly what to drop per project). Seed clone lives at `/Users/momo/momo/nunu-wiki-seed/` (MOMO's push copy; NUNU gets its own clone in its session).
+
+**Still TODO for NUNU:** clone nunu-wiki into NUNU's session (`~/nunu/wiki`) + working dir; reply-tool permission / its own guard (fresh Claude has default perms); always-on persistence deploy (templates ready in `ops/nunu-templates/`). `agent-skills` (MOMO's own, `sqrt3-173`) — reorg MOMO's skills into it later.
 
 ## PHASE 2 — Memory + reasoning architecture
 ### 2a. Skill library (procedural memory — SHARED repo, build first, free)
