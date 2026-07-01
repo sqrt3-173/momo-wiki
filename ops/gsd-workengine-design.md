@@ -25,7 +25,7 @@ GSD: `Project → Milestone (vX.Y) → Phase → Plan → Task`, with `Module` a
 So the spine becomes `project → milestone → phase → plan → task`. A Work-engine unit an agent **claims + runs = a Plan** (its tasks are the checklist inside). Rework: rename current `tasks.parent_task_id`/subtask usage to sit under plans; `claim_next_task` → `claim_next_plan` (agent claims a ready plan in a ready wave).
 
 ## 2. Document mapping (GSD docs → three layers)
-- **Knowledge → wiki** (`nunu-wiki`/`momo-wiki` or a project space): `PROJECT.md`, `REQUIREMENTS.md` (REQ-IDs), `research/*`, per-phase `CONTEXT.md`, `RESEARCH.md`, `UI-SPEC.md`, `SUMMARY.md`, `VERIFICATION.md`, `UAT.md`. Same templates, versioned by git.
+- **Knowledge → the wiki** (`momo-wiki`, under a per-project space — this is all MOMO's domain, business software builds): `PROJECT.md`, `REQUIREMENTS.md` (REQ-IDs), `research/*`, per-phase `CONTEXT.md`, `RESEARCH.md`, `UI-SPEC.md`, `SUMMARY.md`, `VERIFICATION.md`, `UAT.md`. Same templates, versioned by git.
 - **Work → DB:** `ROADMAP.md` = a *rendered view* of the milestones/phases/plans rows (not a source file); `PLAN.md` frontmatter (`wave, depends_on, files_modified, autonomous, requirements, must_haves`) = `plans` columns; `STATE.md` = **replaced** by live `project_status`/`phase_status` views.
 - **config.json → `project_config`** (gates + workflow toggles per project).
 
@@ -50,7 +50,7 @@ GSD gates (`confirm_project`, `confirm_roadmap`, `confirm_breakdown`, `confirm_p
 - **35 subagent roles** → faithful agent prompts (researcher, planner, plan-checker, executor, verifier, roadmapper, ui-*, security-auditor, debugger, …), reconstructed from GSD's `agents/*.md`. Built core-first, rest via parallel reconstruction.
 
 ## 6. Build stages (core-first → full parity)
-1. **Schema** — add `phases`, `plans`, `project_config`; rework claim to `claim_next_plan`; wave-aware readiness; migrate the existing task/subtask model under plans. *(next)*
+1. **Schema** — ✅ **DONE + PROVEN (2026-07-02).** Added `milestones`, `phases` (with methodology `stage`), `plans` (the execution unit: wave, depends_on, files_modified, autonomous, must_haves, requirements), `project_config`; tasks now carry `plan_id`/`phase_id`/`acceptance_criteria`. `claim_next_plan(host)` = atomic, wave-aware (no claim until earlier waves done), dependency-aware, phase-stage-gated (only planned/executing phases yield plans), FOR UPDATE SKIP LOCKED for 2-host safety. `phase_status` rollup view. Migration `worksystem/003-gsd-schema.sql`. Tested: wave-1 first, wave-2 gated then parallel across both hosts, deps respected.
 2. **Planning flow** — `new-project` + `plan-phase`: questioning → research → REQUIREMENTS → roadmapper → materialise phases/plans; the core agent roles (researcher/synthesizer/roadmapper/planner/plan-checker) with GSD's real prompts.
 3. **Execution loop** — `execute-phase`: wave dispatch of fresh executors (worktree-isolated) → SUMMARY → verifier (goal-backward) → UAT gates.
 4. **Ship + milestone** — ship preflight/PR, complete-milestone.
