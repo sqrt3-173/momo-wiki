@@ -31,6 +31,12 @@ advancing every project." Project-agnostic; holds ALL projects. **Built + proven
   right-cost model per [[model-cost-reference]].
 - **Rollup views** — `project_status` and `module_status` give done/doing/todo/blocked counts per
   project + module (for status + Discord reports).
+- **Human-in-the-loop** — each task carries `assignee` + `assignee_type`. Agent tasks (momo/nunu) auto-claim;
+  **human tasks (eli/yana) are excluded from auto-claim and surfaced instead** via `human_queue(person)`
+  (their pending tasks, ranked by how much each is *blocking*). Dependencies cross assignees: an agent task
+  can `depend_on` a human task → stays blocked (MOMO flags what it's holding up), and auto-unblocks the moment
+  the human marks theirs done. So a human never silently stalls a project; the machine waits correctly, then
+  flows. Marked done the natural way — the person tells MOMO in Discord. **Proven end-to-end 2026-07-01.**
 
 ## Built vs. next
 **✅ Built + proven:** the store (3 tables, indexes), `claim_next_task()`, rollup views, dependency +
