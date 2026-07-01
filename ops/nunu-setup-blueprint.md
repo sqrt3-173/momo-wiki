@@ -87,6 +87,22 @@ Alternative if Eli wants nothing on third-party servers: **Syncthing** (peer-to-
 
 ---
 
+## NUNU bridge bring-up — AS-BUILT + gotchas (✅ working 2026-07-01)
+NUNU is reachable on Discord end-to-end. Order that actually worked, and every trap hit:
+
+1. **Discord bot** (separate Discord account for NUNU): Developer Portal → New Application "NUNU" → Bot → copy token → **enable MESSAGE CONTENT intent** → OAuth2 URL Generator (scope `bot`, perms Send Messages / Read Message History / View Channels) → invite to a **server you create** (bot must share a server with whoever DMs it).
+2. **Token** → `/Users/nunu/.claude/channels/discord/.env` as `DISCORD_BOT_TOKEN=<token>` (chmod 600). (Same location/var as MOMO.)
+3. **discord plugin** in NUNU's Claude: `/plugin marketplace add anthropics/claude-plugins-official` → `/plugin install discord@claude-plugins-official`.
+4. **🚩 BIGGEST BLOCKER — org policy disables channels.** NUNU's account (Team org "Frank Developments") returned *"Channels are not enabled for your org — set channelsEnabled: true in managed settings."* MOMO's personal account has channels on by default (no managed-settings file existed). Fix (machine-wide, sudo): create `/Library/Application Support/ClaudeCode/managed-settings.json` = `{ "channelsEnabled": true }`. Harmless to MOMO. (If an org enforces it server-side, must toggle in the org admin console instead.)
+5. **🚩 bun not installed for nunu.** The native Claude installer doesn't include bun, and MOMO's bun is home-scoped (`/Users/momo/.bun` — 700, unreachable). Install per-user: `curl -fsSL https://bun.sh/install | bash`.
+6. **🚩 bun must be on PATH when Claude spawns the plugin's MCP server.** The discord plugin runs a `bun` server; a plain `claude --channels` launch didn't find bun (it's in the non-standard `~/.bun/bin`). Launch with it on PATH: `PATH="$HOME/.bun/bin:$PATH" claude --channels …`, or fallback `sudo ln -sf /Users/nunu/.bun/bin/bun /usr/local/bin/bun`. **The persistence loop (`nunu-loop.sh`) already bakes `/Users/nunu/.bun/bin` into PATH — so once deployed this can't recur.**
+7. **Diagnosing "MCP failed":** `/mcp` → select discord shows status; `bun install` in the plugin dir confirmed deps were fine (115 pkgs); running the server by hand (`~/.bun/bin/bun run start`) printed `gateway connected as NUNU#5842` — proving the server works and the "error" stack trace was just a **harmless discord.js deprecation warning**.
+8. **🚩 duplicate bridge.** A leftover manual `bun run start` (parent ≠ claude) is a second bot connection → breaks replies. Keep only the claude-spawned one (`bun run --cwd …/discord/… --silent start`, parent = the `claude --channels` pid). Kill leftovers by PID.
+9. **Pairing / allowlist:** dmPolicy `pairing` → DM the bot → pairing code → `/discord:access pair <code>`. **`allowFrom` governs DMs only**; to talk in a server *channel*, `/discord:access group add <channelId>`.
+10. **Verify from MOMO side** (can't read nunu's 700 home): `pgrep -u nunu -fl "bun run"` should show the discord bridge; `ps -o pid,ppid,command` to spot duplicates.
+
+**Still TODO for NUNU:** reply-tool permission / its own guard (fresh Claude has default perms), always-on persistence deploy, identity/soul for the sister's job, `nunu-wiki` + `agent-skills` repos.
+
 ## PHASE 2 — Memory + reasoning architecture
 ### 2a. Skill library (procedural memory — SHARED repo, build first, free)
 - **[MOMO]** A standalone **`agent-skills`** git repo (NOT inside either wiki) — each repeatable methodology is a pull-from skill with a clear contract. Already seeded (currently living in `momo-wiki/skills/`): `website-audit`, `bd-research-sweep`, `entity-enrichment`, `council-review`, `wiki-capture`.
