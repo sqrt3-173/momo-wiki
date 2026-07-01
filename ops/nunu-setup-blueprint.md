@@ -4,11 +4,13 @@ End state: a second autonomous agent **NUNU** running as macOS user `nunu` on MO
 fully independent (own Claude account, own Discord bot/channel, own project space), running in
 parallel with MOMO and surviving even when the `momo` user is the foreground login.
 
-**Key correction (2026-06-30):** NUNU serves **Eli's sister and her job — a different domain** — so it
-gets its **OWN private wiki (`nunu-wiki`)**; MOMO's wiki (`momo-wiki`) stays private to Eli. The two
-**do NOT share knowledge** (different person, different business, privacy boundary). What they DO share:
-a **skill library** (domain-agnostic how-to playbooks, in its own repo `agent-skills`) and the ability
-to call a **multi-model council**. So: same machinery cloned, separate brains, shared methods.
+**Architecture (FINALISED 2026-07-01) — full separation, nothing shared:**
+NUNU serves **Eli's sister Yana** and her marketing job at **Frank Developments** — a different person,
+different domain — and is **fully standalone**: its own wiki AND its own skills, developed independently.
+- **MOMO (master):** `momo-wiki` (knowledge) + `agent-skills` (its own skills repo) — both under **`sqrt3-173`** (Eli's account). MOMO is master admin of everything shared/infra.
+- **NUNU:** `nunu-wiki` (knowledge + its own marketing skills) under the **`yana-nunu`** GitHub account. NUNU owns only its own domain; **no access to `momo-wiki` or `agent-skills`** (privacy boundary — different person's data).
+- **Nothing is shared** between them (earlier drafts imagined a shared skill library — dropped for clean separation). Same machinery cloned, fully separate brains.
+- NUNU's marketing skills (edm-campaign, email-html-scaffold, brand-fidelity-check — drafted 2026-07-01) live in **`nunu-wiki`**, seeded by MOMO via a scoped token, then NUNU develops them further.
 
 Legend: **[ELI]** = only Eli can/should do it (account creation, payment, logins, secrets, sudo,
 `/discord:access`). **[MOMO]** = I do it (all file scaffolding, scripts, config, git, code).
