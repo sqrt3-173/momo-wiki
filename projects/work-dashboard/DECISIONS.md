@@ -100,8 +100,29 @@
 - **Prompt:** Eli's load of http://192.168.0.250:3100 didn't connect (2026-07-02 ~11:06).
 - **Context:** Server verified healthy on that address from the mini itself. Same failure shape as his Parsec 6023/6024 — pointing at the mini's application firewall (headless sessions can't click macOS's "Allow incoming" prompt for node) or network isolation between the machines.
 - **Decision:** Diagnostic sent (ping discriminates firewall vs network isolation). NOT treating phase 1 as failed — the app-layer criteria all pass; this is an environment gate I cannot clear from the terminal (guard hard-blocks firewall/system reads and writes, correctly).
-- **Implications:** Phase 1 stays `verifying` until Eli's load succeeds. Every later phase shares this dependency — resolving it once clears them all.
-- **Priority/Reversibility:** High to resolve, zero code impact.
+- **RESOLVED (same day):** Eli was simply not home — different network, so a local-only app is correctly unreachable (D-01 working as designed). Criterion 1 closes when he's next on the home network. Side discovery from the mini's Parsec host log: his Parsec failures are NAT traversal (-6023/-11010, attempts reaching signaling, "UPNP: No devlist" on the home router). **Refined after Eli pushed back ("it worked remotely before"):** the log shows a successful remote session TODAY 17:23 (direct BUD connection), failures resuming 20:07 — the mini is fully exonerated; the variable is whichever network his MacBook is on (home router has no UPnP so success depends on the client network being hole-punch-friendly). Recommended Tailscale on both machines to make it deterministic (also enables remote dashboard, no public exposure); awaiting Eli's call — if adopted, revisit D-01's remote-access posture (RMT-01).
+- **Priority/Reversibility:** Resolved; follow-up owned by Eli (router/Tailscale).
+
+## DL-13 · Engine fix: cancelled dependencies now satisfy dep-gating (checker's catch)
+
+- **Prompt:** The phase-2 plan-checker found the engine split-brained: `claim_next_plan` blocked on any dep `<> 'done'` (a cancelled dep = dependents blocked FOREVER), while wave-gating already treated cancelled as complete.
+- **Context:** A cancelled plan is deliberately descoped; updating its dependents is a planning responsibility, not a runtime block. The dashboard's waiting-on logic needed one truth to render.
+- **Decision:** Unified engine-side (`worksystem/007-cancelled-dep-semantics.sql`): cancelled satisfies dependencies in BOTH claim functions; the dashboard matches. Alternative (cancelled blocks + distinct rendering) rejected — it makes a descoped plan a permanent roadblock with no engine mechanism to clear it.
+- **Implications:** If a plan is cancelled while dependents genuinely still need its output, the planner must re-plan those dependents — that's now an explicit process obligation (worth a checker rule later).
+- **Priority/Reversibility:** High (engine semantics), easily reversible.
+
+## DL-14 · PlanRow gained `requirements` mid-plan (planner omission)
+
+- **Prompt:** Phase-2 plan 3 (REQ badges) needs each plan's REQ list, but plan 1's PlanRow query didn't select it and plan 3's file list didn't include lib/queries.ts.
+- **Context:** Small contract gap between two plans the checker didn't catch (it verified the phase-row side of coverage, not the plan-row side).
+- **Decision:** Added `requirements` to PlanRow + the SELECT during plan 3 execution — 2-line change, logged rather than re-planned. Executor-level deviations of this size get logged in the plan summary + here; anything structural would go back through the planner.
+- **Implications:** Test fixtures updated; nothing else touched the seam.
+- **Priority/Reversibility:** Low.
+
+## DL-15 · Two execution potholes worth remembering (not decisions, calibration)
+
+- Vitest + Testing Library needs `globals: true` for auto-cleanup — without it, renders leak across tests and getByTestId finds duplicates.
+- Badge-style shadcn components carry `aria-invalid:*-destructive` classes in their base string — assert class membership with `classList.contains()`, never substring matching on className.
 
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active.*

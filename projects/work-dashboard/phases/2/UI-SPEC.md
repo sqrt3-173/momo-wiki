@@ -71,6 +71,14 @@ No CTAs in v1 — the app is read-only; never render buttons that imply actions.
 - **REQ coverage display:** REQ-IDs as small mono badges on each phase; orphaned (uncovered) REQs would show destructive-outline — data comes from the phase row.
 - Project cards on `/` become links; hover = `bg-muted` transition only (no lift/shadow animation noise).
 
+## Phase 3 Interaction Contract (added 2026-07-02 — same design system)
+
+- **Route:** `/queue` — linked from the home header ("Your queue"), back link "← All projects". Depth stays ≤2.
+- **Content:** Eli's open gates + human tasks (from `human_queue('eli')`), ranked by blocking count desc then priority. Each item: title, project (mono), priority, a blocking count badge ("blocks N"), and gate name (mono badge) when it's a gate.
+- **Expansion (QUEUE-02):** native `<details>` per item listing the downstream tasks it holds up (title + project). Gate items additionally state what the gate withholds: "gate: {project} can't advance past {gate_name}". Zero-blocking items say "blocks nothing yet".
+- **Empty state:** "Queue's clear" + "Nothing is waiting on you."
+- **Color:** blocking count > 0 → primary emphasis; nothing destructive (waiting on a human is normal state, not failure). Status mapping unchanged.
+
 ## Registry Safety
 
 | Registry | Blocks Used | Safety Gate |

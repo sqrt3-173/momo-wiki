@@ -43,7 +43,12 @@ Plans:
   2. Requirements coverage is visible per phase (which REQ-IDs it delivers, mapped or orphaned)
   3. A phase's plans render as wave-lane columns in execution order, colored by status
   4. Each plan shows its blocked-by list so Eli can trace why a lane hasn't started
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 3 plans
+
+Plans:
+- [x] 02-01: Project drill-down route + hierarchy slice
+- [x] 02-02: Wave lanes with blocked-by tracing
+- [x] 02-03: Requirements coverage badges per phase
 
 ### Phase 3: Blocked-on-You Queue
 **Goal**: Eli sees exactly what is waiting on him and what each item is holding up, ranked so the most-blocking decision is first
@@ -94,8 +99,8 @@ Plans:
 
 | Phase | Plans Complete | Stage | Status |
 |-------|----------------|-------|--------|
-| 1. Projects at a Glance | 4/4 | verifying | In progress |
-| 2. Project Drill-down & Wave Lanes | 0/0 | todo | Not started |
+| 1. Projects at a Glance | 4/4 | verified | In progress |
+| 2. Project Drill-down & Wave Lanes | 3/3 | verified | In progress |
 | 3. Blocked-on-You Queue | 0/0 | todo | Not started |
 | 4. Telemetry & Live Agents | 0/0 | todo | Not started |
 | 5. History, Spend & Overnight Digest | 0/0 | todo | Not started |
