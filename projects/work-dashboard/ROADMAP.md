@@ -91,7 +91,12 @@ Plans:
   3. Eli sees spend per project over time, and totals agree with the per-run figures
   4. Eli sees a chronological timeline of engine events (plans completed, gates cleared, commits, DMs sent, spend)
   5. Eli filters the timeline to a time window ('overnight') and sees only that window's events
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 3 plans
+
+Plans:
+- [x] 05-01: /agents: live breadcrumb feed + 50-run history with per-run cost
+- [x] 05-02: /digest: windowed engine timeline (overnight/24h/7d)
+- [x] 05-03: Spend section on /digest: per-project totals + per-run costs, honest about unpriced
 
 ### Phase 6: Guard & Host Health
 **Goal**: Eli sees what the guard decided on his behalf and whether the machine itself is healthy — the ops picture that closes out mission control
@@ -112,6 +117,6 @@ Plans:
 | 2. Project Drill-down & Wave Lanes | 3/3 | verified | In progress |
 | 3. Blocked-on-You Queue | 2/2 | verified | In progress |
 | 4. Telemetry & Live Agents | 3/3 | verified | In progress |
-| 5. History, Spend & Overnight Digest | 0/0 | todo | Not started |
+| 5. History, Spend & Overnight Digest | 3/3 | verified | In progress |
 | 6. Guard & Host Health | 0/0 | todo | Not started |
 

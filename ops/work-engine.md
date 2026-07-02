@@ -59,6 +59,8 @@ dashboard's agents/usage/digest views stay true. Writer trio on `momo_work` (see
 - **Spawn/claim** → `SELECT start_run('<host>','<kind>',<project_id>,<plan_id>,<task_id>,'<tier>');` → keep the id.
 - **Progress** → `SELECT log_event(<id>,'step','<what just happened>');` — every call bumps the
   heartbeat; no heartbeat for 3 min ⇒ the dashboard honestly shows the run as **stale**.
+- **Commits & DMs** → also breadcrumb them with dedicated kinds so the digest can surface them:
+  `log_event(<id>,'commit','<repo>: <subject>')` and `log_event(<id>,'dm','<one-line summary>')`.
 - **Completion** → `SELECT finish_run(<id>,'ok'|'error'|'killed',<tokens>,<cost_usd>,'<note>');`
   - `tokens` = the harness notification's total, digit-for-digit. Not reported ⇒ NULL.
   - `cost_usd` = tokens × the model's **blended rate** from [[model-cost-reference]] (e.g. Sonnet 5

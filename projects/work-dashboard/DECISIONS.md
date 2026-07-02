@@ -140,5 +140,12 @@
 - **Migration 008 applied under the autonomous directive** (Eli 2026-07-02: "just continue forth"): additive schema, no data deletion, no install, no publish — squarely inside the approved build. Hard-gated categories remain untouched.
 - **Criterion-1 scope (checker-flagged, accepted):** "every run records telemetry" is delivered as mechanism + mandatory documented practice + both run shapes exercised live (orchestrator run 2, subagent runs 3-4) — future compliance is procedural (the wiki section the orchestrator reads), not code-enforced. Honest limit on record.
 
+## DL-18 · Phase-5 execution notes
+
+- **Digest timestamps are approximate (checker's catch, accepted + documented):** plan-done and gate-cleared entries use `updated_at`, a last-touch column — a post-completion edit re-dates the entry. Documented in the query; the exact fix (a `completed_at` or status-transition event) is an engine follow-up, not urgent at current volume.
+- **Commit/DM digest coverage (planner's honest orphan, remedy adopted):** the telemetry practice now mandates `log_event(id,'commit',…)` and `log_event(id,'dm',…)` breadcrumbs — the digest's agent_event arm picks them up with zero dashboard change. Effective immediately for the orchestrator.
+- **Spend agreement is structural:** both spend queries share byte-identical window predicates and SQL owns all sums — the UI cannot show totals that disagree with per-run figures.
+- **Live spend state:** every run is currently unpriced (Fable rate gap, DL-17) — the digest shows the honest "N runs unpriced (Fable rates pending)" note. Rates from Eli → one UPDATE per run backfills.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active.*
