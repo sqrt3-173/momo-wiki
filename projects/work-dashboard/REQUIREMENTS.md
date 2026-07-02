@@ -60,7 +60,27 @@
 
 ## Traceability
 
-(Rendered after roadmap materialisation.)
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| VIEW-01 | Phase 1 | Pending |
+| VIEW-02 | Phase 2 | Pending |
+| VIEW-03 | Phase 2 | Pending |
+| QUEUE-01 | Phase 3 | Pending |
+| QUEUE-02 | Phase 3 | Pending |
+| USE-01 | Phase 4 | Pending |
+| AGENT-01 | Phase 4 | Pending |
+| AGENT-02 | Phase 5 | Pending |
+| AGENT-03 | Phase 5 | Pending |
+| USE-02 | Phase 5 | Pending |
+| USE-03 | Phase 5 | Pending |
+| DIG-01 | Phase 5 | Pending |
+| GUARD-01 | Phase 6 | Pending |
+| HLTH-01 | Phase 6 | Pending |
+
+**Coverage:**
+- v1 requirements: 14 total
+- Mapped to phases: 14
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-07-02 (from Discord scoping with Eli)*
