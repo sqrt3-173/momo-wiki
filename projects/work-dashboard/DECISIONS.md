@@ -170,5 +170,12 @@
 - **Deferred (backlog, not silently dropped):** per-project live-state on home cards ("running: planner" / "complete"); digest per-window headline + engine-jargon translation; guard blocks pinned in their own section; stronger clickability affordances on cards. Round 2 of the council runs after these.
 - **Priority/Reversibility:** all cosmetic-to-moderate, reversible; tests 99/99.
 
+## DL-22 · Custom theme (Eli: "still basic… and it's black")
+
+- **Prompt:** Presets can't fix "black and basic" — all shadcn presets share the neutral palette by design.
+- **Decision:** Hand-built OKLCH theme in globals.css: deep **blue-slate** ground (not black), tinted card surfaces, blue primary, and a **contrast-validated status system** — done→success green, doing→blue, waiting-on-you→warning amber, blocked→destructive red — new `success`/`warning` tokens registered properly. Palette run through the dataviz skill's six-checks validator against the actual surface (CVD separation 16.9, all ≥3:1 contrast; the amber's lightness-band flag is out-of-scope for status colors per the validator's own note — statuses always carry text labels). Typography split: **Geist sans** for headings/prose (lyra's `font-mono` on <html> was the blocker — removed), **JetBrains Mono** kept for data (ids, counts, logs). Color marks edges/status words; body text stays ink (dataviz rule).
+- **Implications:** lyra remains the geometry base (zero-radius); only tokens + fonts were re-cut. Status colors are semantic tokens — one place to retune.
+- **Priority/Reversibility:** cosmetic, reversible; 99/99 tests.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active. v1 completed 2026-07-03.*
