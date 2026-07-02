@@ -154,5 +154,13 @@
 - **Guard-log parser** pinned against the real writer format (single writer in the guard, 1046-line live file); malformed lines are counted and shown, filtered-empty states are honest lines, never blank lists (checker warning 3).
 - **v1 done:** 6/6 phases verified, 14/14 requirements delivered, 98 tests, 5 routes (/, /projects/[slug], /queue, /agents, /digest, /system). Residuals on record: Eli's first home-network visit closes phase 1 criterion 1 (DL-12); Fable rates unlock spend figures (DL-17); Tailscale decision pending (remote access + Parsec fix).
 
+## DL-20 · Theme: lyra preset, dark by default (Eli: "bland" → polish pass)
+
+- **Prompt:** Eli saw the screenshots: default shadcn is deliberately neutral — "unstylised and bland." Which of the 8 official presets fits mission control?
+- **Context:** Researched all presets (they share the neutral palette; they differ in geometry/font/density). lyra = zero-radius, sharp, JetBrains Mono as the UI font, Phosphor icons — explicitly pitched for developer tools and terminals. Runner-up mira (max density, but product-y Inter).
+- **Decision:** `shadcn apply lyra` (full, components restyled — we never hand-edit ui/ files so overwrite was safe) + `.dark` hardcoded on the root html (single-user ops surface; a toggle is unearned complexity). 98/98 tests stayed green through the swap — the semantic-token discipline paid off: zero component code changed.
+- **Implications:** Locked status colors unchanged (semantic tokens survived). If Eli wants a different look, any preset code from ui.shadcn.com/create applies in one command.
+- **Priority/Reversibility:** Cosmetic, fully reversible, one command.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active. v1 completed 2026-07-03.*
