@@ -1,9 +1,11 @@
 # MOMO Wiki — Home
 
 MOMO's institutional memory — Eli's businesses, decisions, and methods. Synced via git between the
-Mac mini (MOMO) and Eli's MacBook (Obsidian). **This wiki is private to Eli; NUNU (the agent for
-Eli's sister's job) keeps its own separate `nunu-wiki` — knowledge is not shared, only the `skills/`
-are.** Read at session start; kept current as work happens (see [[skills/wiki-capture/SKILL|wiki-capture]]).
+Mac mini (MOMO) and Eli's MacBook (Obsidian). Read at session start; kept current as work happens
+(see [[skills/wiki-capture/SKILL|wiki-capture]]).
+
+> **NUNU is retired (2026-07-02).** Eli: it's irrelevant now — never mention it or propose NUNU
+> work. NUNU pages ([[ops/multi-instance]], [[ops/nunu-setup-blueprint]]) are historical record only.
 
 > If you're reading this on the MacBook and it appeared after a **Git: Pull**, the two-way sync works. 🎉
 

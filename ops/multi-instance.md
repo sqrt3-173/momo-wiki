@@ -1,5 +1,8 @@
 # Running multiple MOMO instances (Option B) — architecture + plan
 
+> **HISTORICAL (2026-07-02): NUNU is retired — Eli declared it irrelevant. Don't mention NUNU
+> or propose multi-instance/NUNU work. Kept for the architecture notes only.**
+
 Eli wants 2+ separate MOMO instances so he can have multiple project builds going at once,
 each steerable independently. Status (2026-06-28): **planned, not built** — waiting on Eli to
 create the second Discord bot. Below is the worked-out architecture + the gotchas found by
@@ -24,11 +27,13 @@ var at build time) holding its own paired bot + access.json.
 5. **Own persistence stack** — clone `com.momo.agent.plist` → `com.nunu.agent`, guardian + loop with
    `SESSION=nunu`, `cd` to the new project, `--channels` pointing at its bot.
 
-## Bug found in the current guardian (must fix before #2 works)
-`ops/momo-guardian.sh` guards against duplicate bridges with a **global** check:
-`pgrep -f 'claude --channels'` → it stands by if *any* bridge is running. With two instances, #2's
-guardian sees #1's bridge and refuses to start. Fix: make the check **instance-scoped** (match its
-own session/config home/bot), not "any bridge anywhere."
+## Bug found in the current guardian — FIXED 2026-07-02
+`ops/momo-guardian.sh` guarded against duplicate bridges with a **global** check:
+`pgrep -f 'claude --channels'` → it stood by if *any* bridge was running. This bit for real once
+nunu went live: after Eli `/exit`ed momo, the guardian saw nunu's bridge and never respawned momo
+(looked like "persistence doesn't exist"). Now **user-scoped** (`pgrep -U momo`) and matches both
+launch forms (`claude --channels` + the plugin bun bridge, since plain `claude` also spawns one).
+nunu's guardian clone needs the same `-U nunu` scoping.
 
 ## Build split
 - **Eli (can't be delegated):** create bot → new channel → `/discord:access` pair → stash token in a
