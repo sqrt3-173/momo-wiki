@@ -9,6 +9,7 @@ are.** Read at session start; kept current as work happens (see [[skills/wiki-ca
 
 ## Map
 - **[[projects/bariatric-intelligence]]** — the bariatric BD market intelligence (surgeons, clinics, allied health, fees, politics map).
+- **[[projects/skip-bin/PROJECT|skip-bin]]** — the skip-bin booking business: [[projects/skip-bin/PROJECT|PROJECT]] · [[projects/skip-bin/REQUIREMENTS|REQUIREMENTS]] · [[projects/skip-bin/ROADMAP|ROADMAP]] (rendered from `momo_work` — don't hand-edit).
 - **ops/** — how the machine + agent run:
   - [[ops/multi-instance]] — running MOMO + NUNU in parallel; hardware capacity; local sharing.
   - [[ops/nunu-setup-blueprint]] — the full second-instance + memory-architecture build plan + status.
