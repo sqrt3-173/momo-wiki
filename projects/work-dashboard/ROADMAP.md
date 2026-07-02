@@ -59,7 +59,11 @@ Plans:
   2. Queue items are ranked by how much downstream work each one blocks
   3. Expanding a queue item shows the specific downstream plans/tasks it is holding up
   4. Clearing a gate in the engine removes it from the queue on next load
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 2 plans
+
+Plans:
+- [x] 03-01: Queue data seam + pure view-builder (test-first)
+- [x] 03-02: /queue route: ranked blocked-on-you view with expansion
 
 ### Phase 4: Telemetry & Live Agents
 **Goal**: The engine records what agents do as they do it, and Eli watches agents working right now — the recording layer ships with its first live view proving it
@@ -101,7 +105,7 @@ Plans:
 |-------|----------------|-------|--------|
 | 1. Projects at a Glance | 4/4 | verified | In progress |
 | 2. Project Drill-down & Wave Lanes | 3/3 | verified | In progress |
-| 3. Blocked-on-You Queue | 0/0 | todo | Not started |
+| 3. Blocked-on-You Queue | 2/2 | verified | In progress |
 | 4. Telemetry & Live Agents | 0/0 | todo | Not started |
 | 5. History, Spend & Overnight Digest | 0/0 | todo | Not started |
 | 6. Guard & Host Health | 0/0 | todo | Not started |
