@@ -57,7 +57,13 @@
 
 ## Traceability
 
-(Rendered after roadmap materialisation.)
+| Requirement | Phase | Requirement | Phase |
+|-------------|-------|-------------|-------|
+| ING-01..04 | Phase 1 | SEED-01..03 | Phase 3 |
+| GOAL-01, TRI-01..04 | Phase 2 | LOOP-01..04 | Phase 4 |
+| VIS-01..02 | Phase 5 | | |
+
+**Coverage:** 18/18 mapped, 0 unmapped ✓
 
 ---
 *Requirements defined: 2026-07-03 (from the Discord design session)*
