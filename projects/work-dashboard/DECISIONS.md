@@ -124,5 +124,13 @@
 - Vitest + Testing Library needs `globals: true` for auto-cleanup — without it, renders leak across tests and getByTestId finds duplicates.
 - Badge-style shadcn components carry `aria-invalid:*-destructive` classes in their base string — assert class membership with `classList.contains()`, never substring matching on className.
 
+## DL-16 · Telemetry design (D-04): orchestrator-written lifecycle records, not instrumentation
+
+- **Prompt:** USE-01 needs agent runs recorded — but the agents are Claude processes with no hook to self-report token usage per tool call.
+- **Context:** The harness DOES report per-subagent token totals in completion notifications, and the orchestrator (me) sits at every lifecycle moment: spawn, notify, claim, done. The wiki's model-cost-reference has per-model rates.
+- **Decision:** Telemetry = two engine tables (`agent_runs` + `agent_events` breadcrumbs), written BY the orchestrator via psql at lifecycle moments: run row on spawn/claim (with host, kind, project/plan/task, model tier), heartbeat + breadcrumb events as work progresses, close with outcome + tokens (from the harness notification) + cost computed at write time from the rate table. A `record_run`/`log_event`/`finish_run` SQL function trio keeps writes one-line. NOT chosen: per-tool-call instrumentation (no hook exists; pretending finer granularity would be fake data) and log-file scraping (fragile).
+- **Implications:** Main-loop work (me executing plans directly) is recorded the same way — kind='orchestrator'. Token numbers exist only where the harness reports them; missing = NULL, rendered as absent, never zero. Liveness = heartbeat recency, so a crashed agent shows "stale", not "running" forever.
+- **Priority/Reversibility:** High (this is D-04's foundation and phase 5 feeds on it); schema is additive, easily extended.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active.*

@@ -79,6 +79,17 @@ No CTAs in v1 — the app is read-only; never render buttons that imply actions.
 - **Empty state:** "Queue's clear" + "Nothing is waiting on you."
 - **Color:** blocking count > 0 → primary emphasis; nothing destructive (waiting on a human is normal state, not failure). Status mapping unchanged.
 
+## Phase 4 Interaction Contract (added 2026-07-02 — same design system)
+
+- **Route:** `/agents` — "Agents" link in the home header next to "Your queue".
+- **Live section (AGENT-01):** agents running NOW: agent kind (mono), host badge, project + plan/task
+  title, started-at as relative time ("4m"), live = `ended_at IS NULL AND heartbeat within 3 min`;
+  stale runs (no heartbeat, not ended) render muted with "stale" badge — honest, not hidden.
+- **Recent runs strip:** last 10 finished runs: kind, outcome badge (ok → muted, error → destructive),
+  duration, tokens if recorded. Full history/spend is phase 5 — do NOT build filters/pagination here.
+- **Empty state:** "Nothing running" + "The engine is idle."
+- **Times:** relative in the UI, tabular-nums; never fake precision (heartbeat granularity is minutes).
+
 ## Registry Safety
 
 | Registry | Blocks Used | Safety Gate |
