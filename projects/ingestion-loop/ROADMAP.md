@@ -25,7 +25,12 @@ Always-on layer of the work engine: immutable typed inbox, atom extraction with 
   2. Each item is decomposed into atoms (smallest self-contained thoughts), each atom typed and traceable to its source item, and the item lists its atoms
   3. An image dump is viewed and described into the record; a video reference is fetched/distilled via the research agent — each type through its own extraction handler on the same atom model
   4. A past item can be re-read with its full atom trail intact (originals untouched)
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 3 plans
+
+Plans:
+- [x] 01-01: Immutable inbox substrate (010-ingestion.sql + DB proofs)
+- [x] 01-02: Extraction protocol: extractor agent prompt + capture runbook
+- [x] 01-03: End-to-end proof: real capture, per-type extraction, provenance + immutability live
 
 ### Phase 2: Goals Layer & Reasoning Triage
 **Goal**: Every atom receives a reasoned fate judged against the live goals layer — knowledge filed, tasks routed, ideas gated, goals drilled — with the reasoning logged
@@ -77,7 +82,7 @@ Always-on layer of the work engine: immutable typed inbox, atom extraction with 
 
 | Phase | Plans Complete | Stage | Status |
 |-------|----------------|-------|--------|
-| 1. Capture & Decomposition | 0/0 | todo | Not started |
+| 1. Capture & Decomposition | 3/3 | verified | In progress |
 | 2. Goals Layer & Reasoning Triage | 0/0 | todo | Not started |
 | 3. Seeds & Weekly Synthesis | 0/0 | todo | Not started |
 | 4. Heartbeat Loop | 0/0 | todo | Not started |
