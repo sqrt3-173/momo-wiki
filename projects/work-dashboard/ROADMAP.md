@@ -107,7 +107,11 @@ Plans:
   2. Eli filters guard decisions (e.g. by decision type) and the list narrows accordingly
   3. Eli sees a health panel: DB reachable, Discord bridge alive, work-loop heartbeat, disk
   4. The health panel visibly carries the D-05 caveat that the dashboard shares the mini's fate
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 2 plans
+
+Plans:
+- [x] 06-01: Guard log slice — parser, /system route, filterable decisions
+- [x] 06-02: Health panel — best-effort probes with the D-05 caveat
 
 ## Progress
 
@@ -118,5 +122,5 @@ Plans:
 | 3. Blocked-on-You Queue | 2/2 | verified | In progress |
 | 4. Telemetry & Live Agents | 3/3 | verified | In progress |
 | 5. History, Spend & Overnight Digest | 3/3 | verified | In progress |
-| 6. Guard & Host Health | 0/0 | todo | Not started |
+| 6. Guard & Host Health | 2/2 | verified | In progress |
 

@@ -147,5 +147,12 @@
 - **Spend agreement is structural:** both spend queries share byte-identical window predicates and SQL owns all sums — the UI cannot show totals that disagree with per-run figures.
 - **Live spend state:** every run is currently unpriced (Fable rate gap, DL-17) — the digest shows the honest "N runs unpriced (Fable rates pending)" note. Rates from Eli → one UPDATE per run backfills.
 
+## DL-19 · Phase-6 execution notes — v1 COMPLETE
+
+- **Bridge probe is momo-scoped** (`momo/.claude/plugins/.../discord`) — a stale bridge under another user account can never count as ours. Live-verified reading "ok" against the running bridge.
+- **Dead-DB behavior refined:** a connection *refusal* renders "degraded / query failed" (a measured failure), a *timeout* renders "unknown" — the plan said unknown for both; the shipped split is more truthful. Page returns 200 either way (proven via an ephemeral instance with a dead DATABASE_URL on :3199 — live Postgres untouched, per the checker's mechanism warning).
+- **Guard-log parser** pinned against the real writer format (single writer in the guard, 1046-line live file); malformed lines are counted and shown, filtered-empty states are honest lines, never blank lists (checker warning 3).
+- **v1 done:** 6/6 phases verified, 14/14 requirements delivered, 98 tests, 5 routes (/, /projects/[slug], /queue, /agents, /digest, /system). Residuals on record: Eli's first home-network visit closes phase 1 criterion 1 (DL-12); Fable rates unlock spend figures (DL-17); Tailscale decision pending (remote access + Parsec fix).
+
 ---
-*Started 2026-07-02. Updated continuously while autonomous mode is active.*
+*Started 2026-07-02. Updated continuously while autonomous mode is active. v1 completed 2026-07-03.*
