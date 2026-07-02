@@ -132,5 +132,13 @@
 - **Implications:** Main-loop work (me executing plans directly) is recorded the same way — kind='orchestrator'. Token numbers exist only where the harness reports them; missing = NULL, rendered as absent, never zero. Liveness = heartbeat recency, so a crashed agent shows "stale", not "running" forever.
 - **Priority/Reversibility:** High (this is D-04's foundation and phase 5 feeds on it); schema is additive, easily extended.
 
+## DL-17 · Phase-4 execution notes (incl. two DL-16 amendments)
+
+- **Naming amendment (checker's catch):** DL-16 said `record_run`; shipped as `start_run` (clearer verb pairing with `finish_run`). All code, tests, and docs use `start_run` — DL-16 is amended by this entry, no silent divergence.
+- **Cost blend rule pinned (checker's catch):** "the rate" = the cost reference's **blended ~3:1 in:out** figure (Sonnet 5 ≈ $4/M, Opus 4.8 ≈ $10/M), documented in the wiki telemetry section. Every cost_usd now has declared provenance.
+- **Fable-5 rate gap:** the session's own model (Fable 5) isn't in the cost reference yet, so this build's subagent runs carry exact tokens + NULL cost + explanatory note — invented rates would be fake data. Ask Eli for Fable rates (or add them when published) and backfill is a one-line UPDATE per run.
+- **Migration 008 applied under the autonomous directive** (Eli 2026-07-02: "just continue forth"): additive schema, no data deletion, no install, no publish — squarely inside the approved build. Hard-gated categories remain untouched.
+- **Criterion-1 scope (checker-flagged, accepted):** "every run records telemetry" is delivered as mechanism + mandatory documented practice + both run shapes exercised live (orchestrator run 2, subagent runs 3-4) — future compliance is procedural (the wiki section the orchestrator reads), not code-enforced. Honest limit on record.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active.*

@@ -74,7 +74,12 @@ Plans:
   2. Eli sees currently-running agents with host, project, plan/task, and started-at
   3. An agent that starts while the dashboard is open appears in the live view; one that finishes drops off
   4. A run's recorded tokens/cost reconcile with what the run actually consumed
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 3 plans
+
+Plans:
+- [x] 04-01: Telemetry schema: agent_runs/agent_events, writer trio, live/recent views
+- [x] 04-02: /agents route: live section + recent-runs strip
+- [x] 04-03: Proof-of-life: orchestrator records its own session; tokens/cost reconcile
 
 ### Phase 5: History, Spend & Overnight Digest
 **Goal**: Eli wakes up, opens the dashboard, and knows what happened while he slept — what ran, what it did step by step, and what it cost
@@ -106,7 +111,7 @@ Plans:
 | 1. Projects at a Glance | 4/4 | verified | In progress |
 | 2. Project Drill-down & Wave Lanes | 3/3 | verified | In progress |
 | 3. Blocked-on-You Queue | 2/2 | verified | In progress |
-| 4. Telemetry & Live Agents | 0/0 | todo | Not started |
+| 4. Telemetry & Live Agents | 3/3 | verified | In progress |
 | 5. History, Spend & Overnight Digest | 0/0 | todo | Not started |
 | 6. Guard & Host Health | 0/0 | todo | Not started |
 

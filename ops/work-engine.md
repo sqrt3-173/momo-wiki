@@ -50,6 +50,21 @@ priority + atomic-claim logic — all validated end-to-end. Seeded with NV Healt
 4. **Per-project Discord channels** — each active project reports in its own channel.
 5. **Cost tracking + agent telemetry** — per-task spend + agent-run events (feeds any future dashboard/visual).
 
+## Telemetry — MANDATORY orchestrator lifecycle practice (2026-07-02, USE-01/DL-16)
+
+Every run gets recorded — main-loop work and subagents alike. Not optional; this is how the
+dashboard's agents/usage/digest views stay true. Writer trio on `momo_work` (see
+`worksystem/008-telemetry.sql`; momo writes, `dashboard_ro` only reads the views):
+
+- **Spawn/claim** → `SELECT start_run('<host>','<kind>',<project_id>,<plan_id>,<task_id>,'<tier>');` → keep the id.
+- **Progress** → `SELECT log_event(<id>,'step','<what just happened>');` — every call bumps the
+  heartbeat; no heartbeat for 3 min ⇒ the dashboard honestly shows the run as **stale**.
+- **Completion** → `SELECT finish_run(<id>,'ok'|'error'|'killed',<tokens>,<cost_usd>,'<note>');`
+  - `tokens` = the harness notification's total, digit-for-digit. Not reported ⇒ NULL.
+  - `cost_usd` = tokens × the model's **blended rate** from [[model-cost-reference]] (e.g. Sonnet 5
+    ≈ $4/M ⇒ 50,000 tok = 0.2000), computed at write time — rates NEVER live in SQL. Model not in
+    the reference (currently: Fable 5) ⇒ cost NULL + note; **missing renders absent, never 0**.
+
 ## Guard note
 Schema/DB creation used `#MOMO_OK` on the psql commands (Eli's explicit "GO" for the build). Ongoing task
 mutations by MOMO will hit the same psql-mutation guard — decide whether to allowlist `momo_work` writes
