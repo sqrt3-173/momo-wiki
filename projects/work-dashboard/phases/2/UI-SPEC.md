@@ -109,6 +109,21 @@ No CTAs in v1 — the app is read-only; never render buttons that imply actions.
   tokens), NOT a charting library — v1 scale doesn't earn one; dataviz discipline applies.
 - **Empty digest:** "Quiet window" + "Nothing happened in this window."
 
+## Phase 6 Interaction Contract (added 2026-07-03 — same design system)
+
+- **Route `/system`** — "System" home-header link. Two sections: Guard and Health.
+- **Guard (GUARD-01):** last 100 guard decisions from `ops/logs/guard.log` (format:
+  `<ts> ALLOW|BLOCK <tool> :: <reason>`), newest first. Per row: relative time, ALLOW (muted) /
+  BLOCK (destructive-outline — a block is the guard working, but visually distinct) badge, tool
+  mono, reason truncated. Filter = plain links `?show=all|allow|block`. Unreadable/absent log →
+  "Guard log unavailable" + path shown (honest, not empty-state).
+- **Health (HLTH-01):** best-effort panel, one row per check: DB reachable (SELECT 1), Discord
+  bridge process present, work-loop heartbeat (latest agent_runs.heartbeat_at recency), disk free.
+  States: ok (muted) / degraded (destructive-outline) / unknown (muted "?" — a failed CHECK is
+  unknown, never assumed ok). **Verbatim caveat line on the panel:** "This panel shares the mini's
+  fate — if the machine is down, so is this page. Real alerting must live elsewhere (D-05)."
+- No auto-refresh exemption: same force-dynamic + 10s AutoRefresh.
+
 ## Registry Safety
 
 | Registry | Blocks Used | Safety Gate |
