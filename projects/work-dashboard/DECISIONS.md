@@ -162,5 +162,13 @@
 - **Implications:** Locked status colors unchanged (semantic tokens survived). If Eli wants a different look, any preset code from ui.shadcn.com/create applies in one command.
 - **Priority/Reversibility:** Cosmetic, fully reversible, one command.
 
+## DL-21 · Design review council (round 1): 3 adversarial lenses on real screenshots
+
+- **Prompt:** Eli asked how design outputs get critically reviewed. Mechanism: screenshot the live pages → 3 reviewer agents with distinct lenses (hierarchy/density, typography/color, usability) + the UI-SPEC → ranked findings with concrete fixes.
+- **Applied (11 fixes):** home **status strip** answering the four questions pre-click (waiting-on-you / running / health / latest); Health section moved ABOVE the guard log; guard summary line + ALLOW demoted to plain text + BLOCK badge lifted (bg tint); **idle ≠ degraded** heartbeat semantics (red reserved for a live run gone stale — engine-idle is ok); unpriced spend rows render NO bar (a bar's length must never encode "no data"); active filter links underlined; fixed column grids on run lists; h-2 progress bars (were hairlines reading as dividers); "active" badges dropped when default; milestone header demoted from second-page-title to section label; prose capped at max-w-prose; one shell width everywhere.
+- **Deliberate spec amendment:** all-JetBrains-Mono (lyra) supersedes the UI-SPEC's "Geist sans" row — accepted as the mission-control identity; prose measure capped to compensate.
+- **Deferred (backlog, not silently dropped):** per-project live-state on home cards ("running: planner" / "complete"); digest per-window headline + engine-jargon translation; guard blocks pinned in their own section; stronger clickability affordances on cards. Round 2 of the council runs after these.
+- **Priority/Reversibility:** all cosmetic-to-moderate, reversible; tests 99/99.
+
 ---
 *Started 2026-07-02. Updated continuously while autonomous mode is active. v1 completed 2026-07-03.*
