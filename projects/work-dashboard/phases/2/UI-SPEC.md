@@ -90,6 +90,25 @@ No CTAs in v1 — the app is read-only; never render buttons that imply actions.
 - **Empty state:** "Nothing running" + "The engine is idle."
 - **Times:** relative in the UI, tabular-nums; never fake precision (heartbeat granularity is minutes).
 
+## Phase 5 Interaction Contract (added 2026-07-02 — same design system)
+
+- **Extends `/agents`** (no new top-level route for history): live runs become expandable —
+  native `<details>` per run revealing its breadcrumb feed (AGENT-02): last ~20 events, ts relative,
+  kind mono, message plain. Recent strip grows into a **history section** on the same page: last 50
+  runs (AGENT-03) — still no pagination; 50 is the v1 depth, "older history exists in the DB" noted.
+- **Route `/digest`** (DIG-01): "Digest" home-header link. Chronological engine timeline, newest
+  first: run completions, gates cleared, plans done, commits… — sourced from what the DB actually
+  records (agent_events + tasks/plans updated_at); never invent event types with no source. Window
+  filter via preset LINKS (`?window=overnight|24h|7d` — links are read-only navigation, not CTAs;
+  overnight = 22:00–08:00 local of the most recent night). Each entry: relative time, project mono,
+  one-line description.
+- **Spend (USE-02/03):** a compact spend section on `/digest` (spend is a digest concern, and
+  charts stay near their narrative): per-project totals for the window + per-run costs where
+  recorded. **NULL costs excluded from sums with an explicit "N runs unpriced" note — sums of
+  partial data must say so** (DL-16/DL-17 honesty). Simple bar-style rows (CSS widths on semantic
+  tokens), NOT a charting library — v1 scale doesn't earn one; dataviz discipline applies.
+- **Empty digest:** "Quiet window" + "Nothing happened in this window."
+
 ## Registry Safety
 
 | Registry | Blocks Used | Safety Gate |
