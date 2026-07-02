@@ -26,7 +26,13 @@ Local, read-only mission-control web app for the work engine: projects/phases/pl
   2. Each project shows status and done/doing/todo progress rollups that match what's in momo_work
   3. Data on screen updates from the live DB (refresh reflects real state, no stale seed data)
   4. The app connects with read-only credentials — attempting any write path fails by construction
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 4 plans
+
+Plans:
+- [ ] 01-01: Scaffold: Next 16 + Tailwind 4 + shadcn + test harness (bun-only)
+- [x] 01-02: Checkpoint: Node 24 LTS runtime install (Eli-gated)
+- [ ] 01-03: Read-only data layer: dashboard_ro role + typed queries, test-first
+- [ ] 01-04: Projects-at-a-glance UI: dynamic SSR grid + auto-refresh, LAN-verified
 
 ### Phase 2: Project Drill-down & Wave Lanes
 **Goal**: Eli can descend from any project into its full structure and see execution order at a glance without a Gantt chart
@@ -88,7 +94,7 @@ Local, read-only mission-control web app for the work engine: projects/phases/pl
 
 | Phase | Plans Complete | Stage | Status |
 |-------|----------------|-------|--------|
-| 1. Projects at a Glance | 0/0 | todo | Not started |
+| 1. Projects at a Glance | 1/4 | planned | In progress |
 | 2. Project Drill-down & Wave Lanes | 0/0 | todo | Not started |
 | 3. Blocked-on-You Queue | 0/0 | todo | Not started |
 | 4. Telemetry & Live Agents | 0/0 | todo | Not started |
