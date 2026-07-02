@@ -25,6 +25,9 @@ for everything. The engine exists to multiply Eli, not to be admired.
   session model (Fable 5) has no recorded rate yet — all runs currently unpriced (DL-17).
 - **Engine run-rate budget: Not yet recorded — Eli to state if he wants a ceiling.**
 
+> Strategy brief: [[momo-engine-strategy-2026-07-03]] — binding constraint located
+> (session-bound engine, gated by cost visibility); 3 moves proposed at Eli's gate.
+
 ## Current priorities
 <!-- source: momo_work roadmap rows (ingestion-loop phases 1-5); work-dashboard DECISIONS DL-19 -->
 - Ingestion-loop build: phase 1 (capture) verified; phase 2 (goals + triage) executing;
