@@ -60,7 +60,12 @@ Plans:
   3. Critical-mass clusters arrive with pre-work attached: research, fit-vs-existing-systems, mini-brief
   4. Eli receives a shaped numbered report (start / merge-park / kill) including change-sets against existing projects
   5. Every retirement carries a written reason — nothing disappears silently
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01: Seeds substrate: 011-seeds.sql + backfill + single write path + visible seedbed
+- [ ] 03-02: Seed-synthesizer agent + seeds-review runbook
+- [ ] 03-03: First live seeds review: end-to-end run + numbered report + invariant proof
 
 ### Phase 4: Heartbeat Loop
 **Goal**: The engine works unattended — a near-free scheduled tick finds real work, wakes a governed fresh session to execute one unit, and lands its outcomes with receipts
@@ -90,7 +95,7 @@ Plans:
 |-------|----------------|-------|--------|
 | 1. Capture & Decomposition | 3/3 | verified | In progress |
 | 2. Goals Layer & Reasoning Triage | 4/4 | verified | In progress |
-| 3. Seeds & Weekly Synthesis | 0/0 | todo | Not started |
+| 3. Seeds & Weekly Synthesis | 0/3 | planned | In progress |
 | 4. Heartbeat Loop | 0/0 | todo | Not started |
 | 5. Visibility | 0/0 | todo | Not started |
 
