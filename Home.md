@@ -20,6 +20,7 @@ Mac mini (MOMO) and Eli's MacBook (Obsidian). Read at session start; kept curren
   - [[ops/nunu-setup-blueprint]] — the full second-instance + memory-architecture build plan + status.
   - [[ops/discord-bridge]] — the Discord channel: access, gotchas (always use the reply tool!).
   - [[ops/guardrails]] — the PreToolUse guard: what's allowed, what asks, the honest limits.
+  - [[ops/session-recovery]] — what to check after a session dies/closes (guardian restart, where durable state lives).
 - **skills/** — procedural memory (playbooks MOMO pulls from):
   - [[skills/README|skill library index]] · [[skills/bd-research-sweep/SKILL|bd-research-sweep]] · [[skills/website-audit/SKILL|website-audit]] · [[skills/entity-enrichment/SKILL|entity-enrichment]] · [[skills/council-review/SKILL|council-review]] · [[skills/wiki-capture/SKILL|wiki-capture]]
 
