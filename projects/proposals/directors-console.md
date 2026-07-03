@@ -23,3 +23,18 @@ PreToolUse gates) and found nothing off-the-shelf for this layer; files at Eli's
 the leading next-project candidate once ingestion-loop ph4 (heartbeat) and ph5
 (visibility) land — ph5's visibility goal and this console likely converge and should be
 scoped together.
+
+## The core screen: the decision queue (Eli's refinement, same day)
+<!-- item 11 · 2026-07-03 — Eli's design input while the proposal sat at his gate -->
+Eli's sharpening: decisions shouldn't arrive as chat prose at all. The console's primary
+surface is a **ranked decision queue** where each open decision is a card carrying:
+- the CONTEXT, pre-worked — what it's about, the receipts behind it, what each option
+  displaces (pulled from gates + the notifications queue, which already carry this data);
+- the OPTIONS as one-tap answers (the Claude Code question UX, but persistent — a queue
+  that waits, not a prompt that scrolls away);
+- **a "discuss" branch** — one tap spawns a fresh MOMO chat scoped to that single
+  decision's context; the discussion can end by answering the gate, and the thread is
+  archived against the decision as its reasoning record.
+Ranked by blast radius (the guard's risk categories, reused): irreversible/money/public
+first, roadmap-shaping second, routine batched. The substrate already exists — gates are
+rows, notifications are rows, both dashboard-readable; this screen makes them answerable.
