@@ -42,7 +42,13 @@ Plans:
   3. Fates land for real: a knowledge atom is filed and linked in the wiki, a task atom reaches its project in the right blast-radius lane, a project idea arrives at Eli's gate, a seed atom is parked
   4. A stated goal is drilled, not filed: decomposed into drivers, binding constraint located, gaps researched, strategy brief + proposed roadmap changes delivered to Eli
   5. A genuinely ambiguous atom produces sharp numbered questions to Eli on Discord — never a guessed fate
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 4 plans
+
+Plans:
+- [x] 02-01: Goals layer: per-business goals pages + wiki index
+- [x] 02-02: Triage agent + fate-execution runbook + reasoning-invariant test
+- [x] 02-03: Goal-drill flow: driller agent + drill runbook section
+- [x] 02-04: Live end-to-end triage proof over the full pending set at run time
 
 ### Phase 3: Seeds & Weekly Synthesis
 **Goal**: Parked ideas compound instead of rotting — a weekly synthesis pass turns seed clusters into shaped, pre-worked decisions with written reasons for every retirement
@@ -83,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Stage | Status |
 |-------|----------------|-------|--------|
 | 1. Capture & Decomposition | 3/3 | verified | In progress |
-| 2. Goals Layer & Reasoning Triage | 0/0 | todo | Not started |
+| 2. Goals Layer & Reasoning Triage | 4/4 | verified | In progress |
 | 3. Seeds & Weekly Synthesis | 0/0 | todo | Not started |
 | 4. Heartbeat Loop | 0/0 | todo | Not started |
 | 5. Visibility | 0/0 | todo | Not started |
