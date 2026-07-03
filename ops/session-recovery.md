@@ -29,6 +29,12 @@ into a "what happened?" situation.
 - Compound bash with `cd`/subshells parses as unknown leading tool `''` → blocked. Use
   `git -C <dir>` and single-tool commands.
 
+## Standing checks (things a fresh session / heartbeat should look at)
+- **Regulatory watch:** `ops/regulatory-watch-au-health.md` is appended monthly by the cloud routine
+  `au-health-privacy-watch`. If the latest entry is prefixed `MOMO-RELAY:`, relay it to Eli on Discord
+  (the cloud agent can't DM). If the entry is `NO MATERIAL CHANGE`, do nothing. (Set up 2026-07-04 for
+  the NV Health project — [[../projects/nv-health-website]].)
+
 ## Catch-up order for a fresh session
 [[../Home]] → the active project's ROADMAP/DECISIONS → `git log` + `git status` in both repos →
 `momo_work` counts → then report to Eli on Discord (the `reply` tool, never transcript prose)

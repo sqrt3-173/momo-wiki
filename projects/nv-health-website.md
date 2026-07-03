@@ -13,16 +13,22 @@ Sunday 10am** — landing page, instrumentation, working custom booking flow (hi
 - Design source of truth: `design-reference/ui_kits/website-fluid/Surgery Landing - Sydney v4.html`
   (+ BookingFormSydney.jsx). DS = `@nvhealth/design-system` workspace package (phase 1 productionised it).
 
-## COOKIE BANNER — PENDING GTM AUDIT (do NOT drop blind)
-Eli said "drop the cookie banner" (2026-07-04). Verification (ahpra skill) = **DROP WITH CAVEAT**, NOT a
-clean drop. The **OAIC Medmate + Monash IVF determinations (11 June 2026)** penalised health sites for
-ad-retargeting pixels = unconsented sensitive-info collection — same sector. **Decision hinges on what
-tags are in the shared main-domain GTM container** (this subdomain inherits it via stape; PROJECT.md lists
-"Google Ads visitor-signal capture" as roadmap). Nothing fires today (GTM id is a placeholder) so NO live
-risk yet. **When Eli sends the real GTM config (his morning item 1): audit the tag list.** If GA4-only +
-PostHog → drop the banner. If ANY ad pixel (Meta/TikTok/LinkedIn/Google Ads remarketing) → keep a minimal
-opt-in for JUST the ad tags (not a full banner). PostHog booking-form masking (.ph-no-capture +
-maskAllInputs) stays unconditional either way. See [[../skills/ahpra-marketing-compliance]] §J.
+## COOKIE BANNER — DROPPED (Eli's informed decision 2026-07-04); WATCH RUNNING
+Eli, after a thorough advisory thread (OAIC Medmate + Monash IVF determinations 11 Jun 2026; the
+health-provider carve-out means NV is NOT covered by the small-business exemption despite <$1M turnover;
+"but everyone does it" = true-but-now-enforced), decided: **keep the banner dropped, keep the ad pixel,
+accept the (currently-low, rising) risk, and monitor the landscape.** An informed risk-acceptance by the
+decision-maker — recorded here for the co-liability record.
+- **IMPLEMENTED:** banner unmounted; consent defaults to opt-out (analytics+marketing ON, `defaultConsent`
+  in `lib/consent/state.ts`); privacy policy updated to opt-out disclosure; **booking-form health-data
+  masking (`.ph-no-capture` + `maskAllInputs`) stays UNCONDITIONAL** (never depended on the banner);
+  consent plumbing retained for a future targeted ad-opt-in. 41 vitest + 5 playwright green.
+- **REGULATORY WATCH (durable):** cloud routine `au-health-privacy-watch` (id `trig_01G5qCKAW7ifLBxJTZZVMpUJ`,
+  monthly, next run 2026-08-02) researches OAIC/AHPRA/Privacy-Act developments and appends to
+  **`wiki/ops/regulatory-watch-au-health.md`**. Cloud can't DM (no Discord connector), so **MOMO must check
+  that log and relay any `MOMO-RELAY:`-prefixed entry to Eli.** ← see [[../ops/session-recovery]] standing check.
+- Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
+  [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
 ## Position (2026-07-04 ~07:30) — PHASE 3 SECTION BUILD UNDERWAY
 - **Foundation DONE:** AHPRA compliance skill built ([[../skills/ahpra-marketing-compliance]] — caught the
