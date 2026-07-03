@@ -63,9 +63,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Seeds substrate: 011-seeds.sql + backfill + single write path + visible seedbed
-- [ ] 03-02: Seed-synthesizer agent + seeds-review runbook
-- [ ] 03-03: First live seeds review: end-to-end run + numbered report + invariant proof
+- [x] 03-01: Seeds substrate: 011-seeds.sql + backfill + single write path + visible seedbed
+- [x] 03-02: Seed-synthesizer agent + seeds-review runbook
+- [x] 03-03: First live seeds review: end-to-end run + numbered report + invariant proof
 
 ### Phase 4: Heartbeat Loop
 **Goal**: The engine works unattended — a near-free scheduled tick finds real work, wakes a governed fresh session to execute one unit, and lands its outcomes with receipts
@@ -95,7 +95,7 @@ Plans:
 |-------|----------------|-------|--------|
 | 1. Capture & Decomposition | 3/3 | verified | In progress |
 | 2. Goals Layer & Reasoning Triage | 4/4 | verified | In progress |
-| 3. Seeds & Weekly Synthesis | 0/3 | planned | In progress |
+| 3. Seeds & Weekly Synthesis | 3/3 | verified | In progress |
 | 4. Heartbeat Loop | 0/0 | todo | Not started |
 | 5. Visibility | 0/0 | todo | Not started |
 
