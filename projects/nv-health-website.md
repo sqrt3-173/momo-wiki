@@ -21,10 +21,20 @@ Sunday 10am** — landing page, instrumentation, working custom booking flow (hi
 - **UI-SPEC signed off** (03-UI-SPEC.md). Eli's decisions: pricing $18,150/−12,000/−300 confirmed; real photos
   (in design-reference/uploads); **synced single booking form** (one shared state, rendered in both mid-page +
   bottom — his idea, better than my one-form+button); reword approved.
-- **Sections built + wired + gate-green (tsc/adherence/css/build/fluid-sweep):** Hero (with AvCircle, BookCta,
+- **Sections built + wired + gate-green (tsc/adherence/css/build/fluid-sweep):** Hero (AvCircle, BookCta,
   OutcomeClaim-wrapped headline, real surgeon/coach/patient photos, initials fallback for dietitian/nurse
-  pending Eli's photo mapping) → booking `#book` anchor (form shell TODO) → Affordability. **Screenshot of the
-  hero sent to Eli — looks professional.**
+  pending Eli's photo mapping) → booking `#book` anchor (form shell TODO) → Affordability → Surgeon
+  (real headshot, credentials, procedures w/ AvCircle-initials icons, hospitals as text — logos TODO).
+  **Hero screenshot sent to Eli — looks professional.** (Page order note: Arc goes between Affordability
+  and Surgeon — insert when built.)
+- **LAYOUT PATTERN (key, use for all remaining sections):** the adherence ESLint rule bans ALL px in TSX
+  (flex-basis, grid minmax, hairlines — everything). Fighting it line-by-line is slow. SOLUTION: put layout
+  scaffolding in `globals.css` classes (lint:adherence is `eslint .` = TSX only, does NOT scan CSS; the footer
+  already does this with .fl-foot-link). Added reusable classes: `.nvh-card-grid` (auto-fit minmax-240 grid),
+  `.nvh-split`/`.nvh-split-media`/`.nvh-split-body` (two-col wrap), `.nvh-headshot` (fluid clamp), `.nvh-hairline-top`.
+  Keep COLOUR/SPACING as tokens inline; layout structure in CSS classes. Also: react-hooks/immutability bans
+  mutable counters in render (use index-based numbering); the DS `Button` renders `<button>` so CTAs use the
+  `BookCta` client leaf (scroll to #book) not `<a><button>`.
 - **The proven section pattern** (all remaining sections follow it): Server Component `Section({content})`;
   copy from `page.<section>` props; DS tokens only (no raw hex/px/rgba — documented `eslint-disable
   no-restricted-syntax` for genuine sub-grid/hairline px, like the DS Button); `<a>`-free CTAs via the
