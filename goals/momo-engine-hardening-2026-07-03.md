@@ -5,6 +5,22 @@ Standing assessment from Eli's deficiency question + the agent-orchestration lan
 Eli's stated intent (2026-07-03) is the engine live this week, then "slowly bring in business
 data for it to act on." Ordering below is gated on that.
 
+## INCIDENT 2026-07-03 ~19:20 — model-limit blackout (deficiency #2 bit live)
+Everything all day ran on **Fable 5**, subagents included (subagents inherit the session model).
+Two parallel phase-2/3 website planners ran ~75 min each and hit the **Fable 5 account usage limit**,
+dying without producing plans. Worse: the **main loop was also Fable 5**, so once the limit hit MOMO
+could not send Discord either — the bridge looked dead for ~45 min while Eli sent "hello???". Eli
+switched the session to **Opus 4.8** to unblock (separate limit pool). No data lost; the heartbeat
+survived (idle all evening, never spawned a session, never hit the limit).
+**Two fixes this exposed:**
+- **Model tiering (deficiency #2), now mandatory, not optional:** heavy judgment (planning, checking,
+  hard triage) on a frontier model; mechanical bulk (code execution, extraction, doc edits) on
+  **Sonnet**; never run a whole fan-out on one limited model. Set per-agent via the Agent `model` param.
+- **Bridge-mute-on-limit (new, deficiency #6):** an account-wide model limit takes down MOMO's ability
+  to even report it's stuck. Harden: a fallback model for the main loop / a limit-detecting watchdog
+  that DMs Eli "hit the X limit, switch me" rather than going silent. Unverified whether
+  `--fallback-model` covers usage-limit (vs overload) — test before relying on it.
+
 ## The five deficiencies, with implementation shape
 
 1. **Fresh-context output verification** *(adopt first — the MAST evidence says verification is
