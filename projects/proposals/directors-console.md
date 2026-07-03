@@ -1,6 +1,6 @@
 # Proposal — Director's Console
 
-<!-- atom 40 · item 10 · 2026-07-03 · triage run 13. Status: AT ELI'S GATE (D-05) —
+<!-- atom 40 · item 10 · 2026-07-03 · triage run 13. Status: APPROVED by Eli 2026-07-03 (1a/2a) — project row live behind a confirm_roadmap gate; was: AT ELI'S GATE (D-05) —
      proposed, not created. Source report: inbox-files/2026-07-03-eli-agent-orchestration-landscape.md.
      Evidence base: [[../../reference/agent-orchestration-landscape]]. -->
 
