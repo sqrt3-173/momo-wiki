@@ -63,9 +63,22 @@ survived (idle all evening, never spawned a session, never hit the limit).
    queue depth consistently outrunning what serial clears overnight — AND only after #3 exists,
    or parallelism just floods the review queue.
 
-## The week, in order
-Heartbeat proof (tonight) → #1 verification + #3 ranked queue → #4.1 scoped roles + #4.2 egress
-wall → business data enters, gated on those → #4.3 containers / #5 parallelism when data demands.
+## The order (updated post-incident + NV deadline)
+0. **NV Health website — HARD DEADLINE Sun 2026-07-06 10:00** — the immediate priority; everything
+   below is sequenced around it. See [[../projects/nv-health-website]].
+1. **Model tiering (#2)** — status: **TACTICALLY LIVE** (deadline execution agents forced to Sonnet
+   via the Agent `model` param; frontier reserved for planning/checking). **Permanent wiring TODO
+   right after the deadline:** default tiers baked into the tick launch (`momo-tick.sh --model`) and
+   the standard spawn helpers, per unit kind — not hand-set each call. Needs the cheap-vs-frontier
+   triage A/B to set which units are safely Sonnet.
+2. **Bridge fallback (#6)** — status: **DOCUMENTED, NOT BUILT.** A model-limit watchdog: on a
+   usage-limit error, the main loop DMs Eli "hit the <model> limit — switch me" instead of going
+   mute, and/or auto-falls-back to another model for the bridge. Verify `--fallback-model` behaviour
+   under usage-limit (vs overload) first. **Do right after the deadline** — it's the difference
+   between a 45-min blackout and a one-line heads-up.
+3. Then: **#1 fresh-context verification + #3 ranked queue** → **#4.1 scoped DB roles + #4.2 egress
+   wall** → business data enters, gated on those → **#4.3 containers / #5 parallelism** when data
+   demands.
 
-*Linked from [[momo-engine]]. Source: Eli's questions 2026-07-03 + inbox item 10 (landscape
-report, adversarially verified claims).*
+*Linked from [[momo-engine]]. Source: Eli's questions 2026-07-03 + inbox item 10 (landscape report,
+adversarially verified) + the 2026-07-03 model-limit incident above.*
