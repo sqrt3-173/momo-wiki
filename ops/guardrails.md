@@ -30,6 +30,18 @@ and `ops/guard_test.py` (29-case regression). **Loads mid-session — no restart
   UPDATE/INSERT/ALTER (or `psql -f` whose SQL can't be seen) asks; ANY command whose leading
   tool isn't on the allowlist; writes outside the work dir.
 
+## Standing exemptions (Eli-granted, in the guard itself)
+- **Wiki pushes** (Eli 2026-06-30): `git push` whose args name `/Users/momo/momo/wiki` — the
+  Obsidian sync channel.
+- **Additive momo_work writes** (Eli 2026-07-03, "decision 4-2", installed by Eli via sudo):
+  psql INSERT/UPDATE auto-approved ONLY when ALL hold — the target db is provably `momo_work`
+  (`-d`/positional parse, fail-closed if undeterminable), SQL is inline `-c` (verifiable),
+  and NO destructive/DDL verb appears anywhere in the command — including inside string
+  literals ("drop this idea" trips it; rephrase, per heartbeat.md defensive rule). DELETE/
+  DROP/TRUNCATE/ALTER/CREATE/GRANT and `psql -f` still ask; every other database still asks
+  for ANY mutation. This is what makes unattended engine writes (and the heartbeat) viable.
+  Paired control: nightly `pg_dump` of momo_work (guardian, 14-day retention, ops/backups/).
+
 ## Non-Bash coverage (money/publish aren't bash)
 MCP tools are classified by name: money/charge/billing → HARD-BLOCK; publish/share/send/
 deploy → ASK-ELI; Discord comms + reads → allow. Web fetch/search → allow (reads).

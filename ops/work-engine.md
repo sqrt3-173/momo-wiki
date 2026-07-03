@@ -42,13 +42,23 @@ advancing every project." Project-agnostic; holds ALL projects. **Built + proven
 **✅ Built + proven:** the store (3 tables, indexes), `claim_next_task()`, rollup views, dependency +
 priority + atomic-claim logic — all validated end-to-end. Seeded with NV Health as a structural example.
 
-**⬜ Next (the loop + surrounds):**
-1. **The work loop** — MOMO (each host, always-on): `claim_next_task` → execute (fanning out sub-agents,
-   using the right model tier) → mark done + write `result` → report to the project's Discord channel → repeat.
-2. **A thin CLI/helper** so MOMO adds projects/modules/tasks + reports cleanly (vs raw SQL).
-3. **Inbox + triage** — capture point (Discord `#inbox` / wiki inbox) → MOMO triages into Knowledge (wiki) or Work (tasks).
-4. **Per-project Discord channels** — each active project reports in its own channel.
-5. **Cost tracking + agent telemetry** — per-task spend + agent-run events (feeds any future dashboard/visual).
+**✅ Built since (2026-07-03):**
+1. **Inbox + triage** — the ingestion loop, phases 1–3 verified: immutable inbox → typed atoms →
+   goals-driven reasoning triage → seeds with weekly synthesis. See [[../projects/ingestion-loop/PROJECT|ingestion-loop]].
+2. **The work loop — the HEARTBEAT (phase 4, live)**: cron → guardian (30-min stamp throttle) →
+   `ops/momo-tick.sh` (mkdir lock → ONE `loop_precheck()` round trip → wrapper-owned telemetry →
+   watchdog) → non-bare `claude -p` under its own guard → runbook → receipts. One unit per tick
+   (triage → gate-aware plan claim → seeds due), notifications queue instead of Discord (the
+   interactive session is the only bridge holder and drains it), pause/resume via `engine_state`
+   (fail-closed), per-run `--max-budget-usd`. Runbook: `worksystem/heartbeat.md`; probe + receipts:
+   ingestion-loop phases/4. **claim_next_plan is gate-aware since 012** — re-applying 003 would
+   clobber it (vitest tripwire guards this).
+3. **Cost tracking**: headless runs report real `total_cost_usd` (probe finding) — recorded in run
+   notes; `cost_usd` column stays NULL while Fable 5 has no blended rate (missing ≠ 0).
+
+**⬜ Still next:** a thin CLI/helper (vs raw SQL); per-project Discord channels; parallel read
+fan-out (LOOP-05, gated on Eli + cost data); see [[../goals/momo-engine-hardening-2026-07-03]]
+for the adoption-ordered hardening plan (verification layer first).
 
 ## Telemetry — MANDATORY orchestrator lifecycle practice (2026-07-02, USE-01/DL-16)
 
