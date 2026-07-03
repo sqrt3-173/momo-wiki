@@ -35,6 +35,7 @@ Body sections (keep tight, operating-playbook style — not an essay):
 - [`bd-research-sweep`](bd-research-sweep/SKILL.md) — research targets → enrich CRM → score → report.
 - [`entity-enrichment`](entity-enrichment/SKILL.md) — agent-wave deep enrichment of graph entities.
 - [`council-review`](council-review/SKILL.md) — multi-agent (and later multi-model) adversarial review.
+- [`ahpra-marketing-compliance`](ahpra-marketing-compliance/SKILL.md) — audit + reword medical/health marketing copy against AHPRA s133, the cosmetic-surgery guidelines, and the super-release warning; produces compliant copy + a human sign-off doc. Use on any health-client page/ad, and in BD audits of medical prospects.
 
 ## Adding/updating a skill
 Build only from **proven** methodology, never speculation. When a run surfaces a new failure mode,
