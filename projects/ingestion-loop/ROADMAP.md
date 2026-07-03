@@ -77,7 +77,13 @@ Plans:
   3. Eli types "pause" on Discord and ticks stop doing work; "resume" restarts them — the engine-state flag is respected by the pre-check
   4. Every tick session shows up in telemetry (start_run/log_event/finish_run) and its outcomes land in the digest
   5. Overnight proof: a dump sent before bed is triaged and filed by morning with no one in a conversation
-**Plans**: TBD (planned during plan-phase)
+**Plans**: 4 plans
+
+Plans:
+- [ ] 04-01: Empirical probe: one cron-parented claude -p under the guard — pin flags, fields, bridge, auth
+- [ ] 04-02: Migration 012 (engine_state + notifications + loop_precheck + gate-aware claim + reap) + heartbeat runbook
+- [ ] 04-03: ops/momo-tick.sh + guardian hosting block + manual full-tick E2E with wrapper telemetry and notification drain
+- [ ] 04-04: Scheduling live: pause/resume from Eli, the overnight proof, and the first digest with tick economics
 
 ### Phase 5: Visibility
 **Goal**: Eli sees the whole loop at a glance — items to atoms to fates with reasoning on the dashboard, and loop health on the home strip
@@ -96,6 +102,6 @@ Plans:
 | 1. Capture & Decomposition | 3/3 | verified | In progress |
 | 2. Goals Layer & Reasoning Triage | 4/4 | verified | In progress |
 | 3. Seeds & Weekly Synthesis | 3/3 | verified | In progress |
-| 4. Heartbeat Loop | 0/0 | todo | Not started |
+| 4. Heartbeat Loop | 0/4 | planned | In progress |
 | 5. Visibility | 0/0 | todo | Not started |
 
