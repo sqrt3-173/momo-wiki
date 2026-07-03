@@ -13,6 +13,17 @@ Sunday 10am** — landing page, instrumentation, working custom booking flow (hi
 - Design source of truth: `design-reference/ui_kits/website-fluid/Surgery Landing - Sydney v4.html`
   (+ BookingFormSydney.jsx). DS = `@nvhealth/design-system` workspace package (phase 1 productionised it).
 
+## COOKIE BANNER — PENDING GTM AUDIT (do NOT drop blind)
+Eli said "drop the cookie banner" (2026-07-04). Verification (ahpra skill) = **DROP WITH CAVEAT**, NOT a
+clean drop. The **OAIC Medmate + Monash IVF determinations (11 June 2026)** penalised health sites for
+ad-retargeting pixels = unconsented sensitive-info collection — same sector. **Decision hinges on what
+tags are in the shared main-domain GTM container** (this subdomain inherits it via stape; PROJECT.md lists
+"Google Ads visitor-signal capture" as roadmap). Nothing fires today (GTM id is a placeholder) so NO live
+risk yet. **When Eli sends the real GTM config (his morning item 1): audit the tag list.** If GA4-only +
+PostHog → drop the banner. If ANY ad pixel (Meta/TikTok/LinkedIn/Google Ads remarketing) → keep a minimal
+opt-in for JUST the ad tags (not a full banner). PostHog booking-form masking (.ph-no-capture +
+maskAllInputs) stays unconditional either way. See [[../skills/ahpra-marketing-compliance]] §J.
+
 ## Position (2026-07-04 ~07:30) — PHASE 3 SECTION BUILD UNDERWAY
 - **Foundation DONE:** AHPRA compliance skill built ([[../skills/ahpra-marketing-compliance]] — caught the
   super-funding claim as a named AHPRA+ATO enforcement target); 6 flagged claims reworded (03-COPY-REWRITES.md,

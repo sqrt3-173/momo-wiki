@@ -120,6 +120,28 @@ as a given is both a s133 unreasonable-expectation issue and edges toward
 unlicensed financial advice under the Corporations Act (ASIC territory).
 **Grep hint:** `grep -riE "\b(your super|superannuation).{0,40}(cover|pay|fund|access)"`
 
+### J. Third-party tracking pixels / ad-retargeting on health sites (Privacy Act, APP 3.3/5.1/7.1)
+**Rule:** On a health-service website, firing a third-party ad-network pixel (Meta/Facebook,
+TikTok, LinkedIn Insight, Google Ads remarketing or Signals) that sends visitor data to an ad
+platform for retargeting is a **collection of SENSITIVE information that requires express consent**
+— because the mere fact someone visited a health site (weight-loss surgery, fertility, mental
+health, etc.) reveals health information. This is separate from AHPRA; it's the Privacy Act.
+**Why:** The OAIC's **Medmate** (telehealth) and **Monash IVF** (fertility) determinations, handed
+down **11 June 2026**, found exactly this pattern breaches APP 3.3 (sensitive info needs consent),
+APP 5.1 (notification), and APP 7.1 (direct-marketing use of sensitive data). It builds on the
+OAIC's **Nov 2024 tracking-pixel guidance**. It's a live, sector-specific enforcement pattern.
+**The load-bearing question is always "what tags are in the GTM container?"** — not "do we have a
+banner?" General GA4 (no Ads linkage/Signals) and a masked product-analytics tool can run on a
+notice/opt-out basis; ANY ad-retargeting pixel needs an opt-in gate (reject-by-default) BEFORE it
+fires. A cosmetic "we use cookies" banner does not fix this — pixel-specific disclosure + a real
+consent gate for the ad tags does.
+**Check:** audit the actual GTM/GTAG tag list (or the server-side container). Grep the page for
+`connect.facebook.net`, `fbq(`, `analytics.tiktok.com`, `ttq.`, `snap.licdn.com`, `googleads`,
+`google_conversion`, `AW-`, `gtag('config', 'AW-`. Confirm whether Google Ads has remarketing/Signals on.
+**Note:** Google Consent Mode / EU-user-consent is EEA/UK-scoped — it does NOT force a banner for
+Australian traffic. And Australia has NO GDPR-style cookie-banner mandate. The obligation is about
+sensitive-info consent for ad pixels, not banners per se.
+
 ## 2. Required-elements checklist
 
 Run this against every page/asset before sign-off:
