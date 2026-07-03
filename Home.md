@@ -11,6 +11,7 @@ Mac mini (MOMO) and Eli's MacBook (Obsidian). Read at session start; kept curren
 
 ## Map
 - **goals/** — the living goals layer MOMO's triage reasons from: [[goals/nv-health]] · [[goals/skip-bin]] · [[goals/momo-engine]]. **Eli: edit these directly** — they're the machine's sense of what matters; saying "goal: ..." once on Discord also updates them.
+- **[[seeds/SEEDBED]]** — every parked idea with its review date and provenance back to your original dump; weekly review reports land under seeds/reviews/.
 - **[[projects/bariatric-intelligence]]** — the bariatric BD market intelligence (surgeons, clinics, allied health, fees, politics map).
 - **[[projects/skip-bin/PROJECT|skip-bin]]** — the skip-bin booking business: [[projects/skip-bin/PROJECT|PROJECT]] · [[projects/skip-bin/REQUIREMENTS|REQUIREMENTS]] · [[projects/skip-bin/ROADMAP|ROADMAP]] (rendered from `momo_work` — don't hand-edit). **Parked** — `confirm_roadmap` gate open, nothing runs.
 - **[[projects/work-dashboard/PROJECT|work-dashboard]]** — mission control for the work engine (local, read-only v1): [[projects/work-dashboard/PROJECT|PROJECT]] · [[projects/work-dashboard/REQUIREMENTS|REQUIREMENTS]] · [[projects/work-dashboard/ROADMAP|ROADMAP]] (rendered — don't hand-edit). **v1 complete 2026-07-03** + [[projects/work-dashboard/DECISIONS|DECISIONS]] log.
