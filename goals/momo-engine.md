@@ -37,6 +37,9 @@ NOT fundamental — parked long, same message.)
 
 > Strategy brief: [[momo-engine-strategy-2026-07-03]] — binding constraint located
 > (session-bound engine, gated by cost visibility); 3 moves proposed at Eli's gate.
+> Hardening plan: [[momo-engine-hardening-2026-07-03]] — the five deficiencies + adoption
+> order, gated on business data entering (verification → ranked queue → scoped roles →
+> egress → containers/parallelism).
 
 ## Current priorities
 <!-- source: momo_work roadmap rows (ingestion-loop phases 1-5); work-dashboard DECISIONS DL-19 -->
