@@ -13,6 +13,23 @@ Sunday 10am** — landing page, instrumentation, working custom booking flow (hi
 - Design source of truth: `design-reference/ui_kits/website-fluid/Surgery Landing - Sydney v4.html`
   (+ BookingFormSydney.jsx). DS = `@nvhealth/design-system` workspace package (phase 1 productionised it).
 
+## Position (2026-07-04 ~05:30) — PHASE 2 DONE
+- **Phase 2 (analytics + compliance): COMPLETE + verified** (momo_work phase 2 = verified). 4 plans built
+  in the MAIN LOOP (subagents are guard-locked to read/web, so they can't execute code — execution is
+  main-loop or, later, a governed path). Committed locally to the repo (NOT pushed — push needs Eli). Gates:
+  31 vitest + 6 Playwright + adherence/css/build/full-lint all green. `pnpm`/pnpm@10.18.3 had to be installed
+  on the mini (it wasn't present) + posthog-js + @next/third-parties (Eli-approved).
+- **Playwright false-green LESSON:** `reuseExistingServer:true` on the default :3000 latched onto the
+  long-running **bd-crm dev server** → tests ran against the WRONG app and passed falsely. Fixed: NV Playwright
+  now runs on a dedicated **port 3100** with `reuseExistingServer:false`. Any project sharing a host must use
+  a dedicated test port. (There is a stale bd-crm `next dev` on :3000 since 2026-06-23 — left running, not ours to kill.)
+- **Phase 3 (landing page): in its UI PHASE.** Eli's instruction (2026-07-04): any phase with significant
+  visuals goes through a UI-SPEC + his sign-off BEFORE building. A Sonnet subagent is drafting
+  `.planning/phases/03-sydney-landing-page/03-UI-SPEC.md` from the v4 design; it goes to Eli for sign-off,
+  THEN the visual sections (03-02/03-03) build. 03-01 (atom ports + OutcomeClaim primitive + content config)
+  is toolkit/plumbing, buildable pre-sign-off.
+- Dashboard: I update momo_work phase `stage` as phases progress (executing → verified) for Eli's live view.
+
 ## Position (2026-07-03 ~22:55)
 - Phase 1/6 done + verified (FND-01..06).
 - **Phases 2 + 3 PLANNED (checker-quality, Opus) and committed to the repo** (`.planning/phases/02-*/02-01..04-PLAN.md`
