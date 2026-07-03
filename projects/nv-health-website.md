@@ -13,6 +13,33 @@ Sunday 10am** — landing page, instrumentation, working custom booking flow (hi
 - Design source of truth: `design-reference/ui_kits/website-fluid/Surgery Landing - Sydney v4.html`
   (+ BookingFormSydney.jsx). DS = `@nvhealth/design-system` workspace package (phase 1 productionised it).
 
+## Position (2026-07-04 ~07:30) — PHASE 3 SECTION BUILD UNDERWAY
+- **Foundation DONE:** AHPRA compliance skill built ([[../skills/ahpra-marketing-compliance]] — caught the
+  super-funding claim as a named AHPRA+ATO enforcement target); 6 flagged claims reworded (03-COPY-REWRITES.md,
+  Eli-approved); DS atoms (Badge/Eyebrow) + enforced OutcomeClaim primitive ported; `getLandingContent()`
+  extended with all 9 sections' compliant copy (03-01 content, 11 tests incl. a prohibited-phrase gate).
+- **UI-SPEC signed off** (03-UI-SPEC.md). Eli's decisions: pricing $18,150/−12,000/−300 confirmed; real photos
+  (in design-reference/uploads); **synced single booking form** (one shared state, rendered in both mid-page +
+  bottom — his idea, better than my one-form+button); reword approved.
+- **Sections built + wired + gate-green (tsc/adherence/css/build/fluid-sweep):** Hero (with AvCircle, BookCta,
+  OutcomeClaim-wrapped headline, real surgeon/coach/patient photos, initials fallback for dietitian/nurse
+  pending Eli's photo mapping) → booking `#book` anchor (form shell TODO) → Affordability. **Screenshot of the
+  hero sent to Eli — looks professional.**
+- **The proven section pattern** (all remaining sections follow it): Server Component `Section({content})`;
+  copy from `page.<section>` props; DS tokens only (no raw hex/px/rgba — documented `eslint-disable
+  no-restricted-syntax` for genuine sub-grid/hairline px, like the DS Button); `<a>`-free CTAs via the
+  `BookCta` client leaf (scrolls to #book — `<button>` can't nest in `<a>`); OutcomeClaim wraps outcome claims;
+  index-based list numbering (NOT a mutable counter — react-hooks/immutability lint bans it);
+  `--text-on-dark` for muted white on the dark hero (no --border-on-dark token exists).
+- **REMAINING (this is the ordered TODO):** sections Arc (§3.4 orbit diagram) · Surgeon (§3.5, real
+  OliverFisherHeadShot.avif) · Pricing (§3.6 — INTERACTIVE toggles = client component + live-computed figures
+  from base 18150/−12000/−300 ÷156wks) · Duration+Journey (§3.7 timeline) · Closing (§3.8, deep card) →
+  assemble full page.tsx in v4 order → the booking form SHELL (BookingForm.tsx, 4 stages, `.ph-no-capture`
+  wrapper, synced-form seam for phase 5) → check-compliance.sh gate + claim↔disclaimer parity + full fluid
+  sweep → COPY-REVIEW.md for Eli's AHPRA sign-off (phase-3 exit gate). Then phases 4 (booking backend: Supabase
+  + Twilio — needs Eli's creds), 5 (booking UI), 6 (deploy: Vercel+DNS session with Eli, Sat).
+- **Playwright runs on port 3100** (`reuseExistingServer:false`) — a foreign bd-crm dev server owns :3000.
+
 ## Position (2026-07-04 ~05:30) — PHASE 2 DONE
 - **Phase 2 (analytics + compliance): COMPLETE + verified** (momo_work phase 2 = verified). 4 plans built
   in the MAIN LOOP (subagents are guard-locked to read/web, so they can't execute code — execution is
