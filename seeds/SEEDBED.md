@@ -18,7 +18,7 @@
 
 > To match the creator's full workflow, the only missing piece in MOMO's setup is the Obsidian 'second brain' layer — auto-watching videos (e.g. competitors') and writing structured notes into the vault. The creator teases this as a separate video; not yet built here.
 
-- **Review:** 2026-07-10 · **Times reviewed:** 1
+- **Review:** 2026-08-02 · **Times reviewed:** 1
 - **Provenance:** atom 26 → item 7 (2026-07-03) — `/Users/momo/momo/inbox-files/2026-07-03-eli-video-watching-skill.txt`
 
 ## Retired

@@ -11,6 +11,16 @@ what to do next: Eli dumps freely and sleeps; the machine decomposes, reasons ag
 businesses' goals, files knowledge, advances projects, parks and resurfaces seeds — receipts
 for everything. The engine exists to multiply Eli, not to be admired.
 
+**In Eli's own words (the sentence that governs priority calls):** "a smart orchestration of
+agents to work through projects, keep me in the loop, but most importantly be quite
+autonomous, and always working on something, and having critical thinking for giving
+suggestions that expand beyond current idea set for me to approve and breakdown even more."
+The weighting is his: autonomy + always-working ranks first; expansive critical suggestions
+route to his gate for approval and further breakdown. (Auto-watch/second-brain explicitly
+NOT fundamental — parked long, same message.)
+<!-- atom 27 · item 9 · 2026-07-03 -->
+
+
 ## Constraints
 <!-- source: ingestion-loop PROJECT.md "Constraints" + D-05; soul.md autonomy rules -->
 - Substrate: momo_work Postgres + wiki + Discord + guard + telemetry + dashboard.
