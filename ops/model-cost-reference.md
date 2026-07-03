@@ -48,3 +48,12 @@
 - **Bulk (gpt-oss-20b / DeepSeek V3 / local self-host)** → extraction, classification, tagging, first-pass — where local ≈ frontier quality at ~$0. **This is the killer tier for the BD/CRM enrichment pipeline.**
 
 The rule: **cheapest model that clears the quality bar for that task.** Benchmark a cheap/open model on the real task before trusting it — measure, don't assume.
+
+## Multi-agent economics (external anchors)
+<!-- atom 47 · item 10 · 2026-07-03 -->
+From the agent-orchestration landscape report (2026-07-03, adversarially verified):
+multi-agent workflows run ~15x the token usage of a chat session; ~$10/session anchor from
+Anthropic's C-compiler run. Key doctrine: autonomy does NOT self-regulate cost — budgets
+must be engineered in (per-run ceilings, cheap-check-first gating). Use these anchors when
+pricing the engine (DL-17) and when proposing a monthly run-rate ceiling to Eli (question
+outstanding, [[../goals/momo-engine]]).

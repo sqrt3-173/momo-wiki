@@ -58,3 +58,15 @@ channel for the ingestion loop.
 "Instant" is marketing gloss: expect a couple of minutes of local download + frame
 extraction + transcription before frames can be read. Fast and genuinely cheap, but not
 immediate — set expectations accordingly when a watch is requested live.
+
+## /watch v2 (2026-07-03)
+<!-- atom 38 · item 8 · 2026-07-03 · consolidated delta; carries atoms 29-36 -->
+/watch v2 is installed (arrived via auto-update) and was verified live 2026-07-03 on the
+announcement video itself (Brad, youtube 9psY4d-JjLY) — scene-aware selection and dedup
+confirmed working. Delta over v1: (1) 4-mode detail dial — transcript-only / efficient /
+balanced / token-burner; (2) 'efficient' keyframe mode pulls baked-in keyframes instead of
+decoding every frame, ~40x faster than v1; (3) smart scene selection replaces v1's
+evenly-spaced frame sampling; (4) deictic detection — transcript cues like 'as you can see'
+trigger a frame grab at that exact second; (5) near-duplicate frame cleanup so identical
+talking-head frames aren't paid for twice. Creator-recommended default: efficient or
+balanced mode; a Groq key is needed only as a fallback for captionless videos.
