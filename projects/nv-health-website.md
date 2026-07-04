@@ -30,6 +30,24 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~12:50) — COPY DOC + BACKEND FOUNDATION; WAITING ON ELI
+- **Copy sign-off delivered** as an interactive Artifact (tap-to-tick, localStorage, on-brand teal):
+  https://claude.ai/code/artifact/1d3f8eb6-7608-4736-97d7-1d9b7c66da53 — source `.planning/phases/03-*/COPY-REVIEW.md`.
+  Separates "TRUE?" (Eli confirms prices + surgeon credentials) from "WORDING OK?" (I made it compliant).
+  **AWAITING Eli's sign-off** (phase-3 exit gate). He'll reply "all good" or changes → I edit + re-verify.
+- **Booking backend FOUNDATION built (no SDKs/creds needed), committed:**
+  - `lib/booking/schema.ts` — Zod per-step validation (details/verify/slot/extras), AU phone regex.
+  - `supabase/schema.sql` — bookings table + RLS **service-role-only** (client never touches Supabase; PHI off-browser).
+  - `env.ts` — SUPABASE_URL/SERVICE_ROLE_KEY + TWILIO_ACCOUNT_SID/AUTH_TOKEN/VERIFY_SERVICE_SID (server, empty defaults).
+  - `.env.example` — labelled blanks + where-to-find for Eli (copy → `.env.local`, or Vercel at deploy).
+- **BLOCKED on Eli (2 asks sent):** (1) **approve installing 3 SDKs** — @supabase/supabase-js@2.108.2,
+  twilio@6.0.2, libphonenumber-js@1.13.7 — so I can write the server actions (sendOtp/verifyOtp/saveBooking)
+  + Supabase/Twilio clients; (2) **the actual Supabase + Twilio credentials** (via .env.local, NOT Discord —
+  told him not to paste secrets in chat). Once both land: wire the 3 TODO seams in BookingForm.tsx → testable end-to-end.
+- **SECRETS RULE (told Eli):** never paste API keys/passwords in Discord (stored on their servers). They go
+  into `.env.local` (gitignored) locally + Vercel env vars in prod — never through MOMO or chat.
+- Dashboard: phases 19(landing)+21(booking UI)+20(booking backend) all → executing.
+
 ## Position (2026-07-04 ~12:30) — BOOKING FORM BUILT → SITE VISUALLY COMPLETE ✅
 - **`components/booking/BookingForm.tsx`** — the 4-stage booking island, faithful v4 port, WORKING (flow
   interaction-tested): details → verify (4-digit OTP, auto-advances) → pick (functional month calendar,
