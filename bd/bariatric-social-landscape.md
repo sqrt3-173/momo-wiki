@@ -1,5 +1,10 @@
 # Bariatric social-media landscape (BD research, started 2026-07-04)
 
+> **PARKED 2026-07-04 — revisit 15 Aug 2026** (Eli's call). Auto-resurfaces via momo_work **seed id 4**
+> (review_on 2026-08-15) → the heartbeat seeds-review surfaces it, MOMO flags Eli. Landscape below is done;
+> next step when resumed = Eli sets up **Apify** (+ API token) → deep per-post teardown of the top ~10
+> (~$25-40 AUD focused). Do NOT re-do the discovery; build on this.
+
 Eli's task: find the top ~50 bariatric **dietitians / clinics / surgeons** by Instagram + TikTok
 following + engagement, analyse their content (post types, engagement inflection points), organise
 into a database, distil the content ideas NV Health should adopt. See [[../projects/nv-health-website]].
