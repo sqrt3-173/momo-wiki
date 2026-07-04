@@ -30,6 +30,23 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~13:15) — SITE CODE-COMPLETE ✅ (front + back); COPY SIGNED OFF
+- **Copy: SIGNED OFF by Eli** (2026-07-04, "all good") → phase 19 (landing) = **verified**. Phase-3 exit gate cleared.
+- **Booking backend WIRED + tested (dev mode):** Eli approved installing @supabase/supabase-js@2.108.2,
+  twilio@6.0.2, libphonenumber-js@1.13.7. Built:
+  - `lib/booking/clients.ts` — guarded service-role Supabase + Twilio Verify (server-only; null when creds absent).
+  - `lib/booking/actions.ts` — `submitDetails` (Zod re-validate → phone normalise (libphonenumber) → Supabase upsert
+    stage=verify → Twilio Verify send), `verifyCode` (Twilio check → stage=pick), `confirmSlot` (upsert booked),
+    `saveExtras`. **Degrade to dev mode when creds absent** (accept any code, skip network) → preview works pre-creds.
+  - `BookingForm.tsx` calls the actions; bookingId via `makeId()` (crypto.randomUUID needs secure context — the LAN
+    preview http://192.168.x isn't one, so Math.random uuid-v4 fallback); postcode bound; error + busy states + inline
+    error display. Flow reaches booked in dev mode (interaction-tested). tsc/adherence/build green.
+- **THE WHOLE SITE IS CODE-COMPLETE.** Remaining to LAUNCH is only activation + deploy, both for Saturday w/ Eli:
+  1. Eli creates a **Supabase** project + runs `apps/web/supabase/schema.sql`; a **Twilio** account + Verify service.
+  2. Keys → `.env.local` (per `.env.example`) locally + Vercel env vars in prod — NOT via Discord.
+  3. Deploy: Vercel (root apps/web) + the syd.nvhealth.com.au CNAME. ACMA sender-ID note for branded SMS (post-launch ok).
+- Deadline Sun 10am AEST is very achievable — build done, only Eli's 2 accounts + the Sat deploy session remain.
+
 ## Position (2026-07-04 ~12:50) — COPY DOC + BACKEND FOUNDATION; WAITING ON ELI
 - **Copy sign-off delivered** as an interactive Artifact (tap-to-tick, localStorage, on-brand teal):
   https://claude.ai/code/artifact/1d3f8eb6-7608-4736-97d7-1d9b7c66da53 — source `.planning/phases/03-*/COPY-REVIEW.md`.
