@@ -49,6 +49,20 @@ Eli reviewed hard against the actual v4 + sent screenshots; big fidelity gap clo
   revert wording to the v4 original (the super/durability claims are the legal fixes). Accents applied to compliant copy.
 - Two independent BookingForm instances now (mid #book + bottom Closing) — NOT state-synced (v4 has 2 independent too).
 
+## Position (2026-07-04 ~19:35) — SMS VERIFY DEFERRED → LAUNCH NEEDS ONLY SUPABASE
+- **Eli deferred SMS verification** (not needed at current scale; avoids Twilio cost/dependency). Implemented via
+  `VERIFY_ENABLED = false` in BookingForm.tsx → flow is now **details → pick → booked** (verify stage + `verifyCode`
+  action retained; flip the flag + add Twilio creds to re-enable). Interaction-tested. **Twilio is OFF the launch
+  critical path — only SUPABASE is needed to go live.**
+- **Long telephony advisory thread** (Eli exploring platform comms): the website booking-code cost is trivial (~A$30/mo
+  @200 bookings) and separate from the platform. For the PLATFORM vision (VOIP + automated SMS + call recording = CPaaS,
+  NOT the SMS-only providers), Twilio is well-suited but not cheapest — **Telnyx / Plivo** are cheaper CPaaS equivalents;
+  turnkey = Aircall/JustCall/RingCentral. iMessage can't be used (no business send API, inbound-only, Android gap).
+  Consumer-SIM automation = carrier-banned "SIM farm", don't. **OFFERED: a proper CPaaS cost/capability research task**
+  for the platform (Eli hasn't said go yet) — separate from the website.
+- **Remaining for website launch (now minimal):** Eli finishes Supabase (Project URL + service_role key + run
+  `apps/web/supabase/schema.sql`) → into `.env.local` (or Vercel) → bookings save for real. Then deploy Sat.
+
 ## SATURDAY DEPLOY SESSION — agenda (Eli-defined 2026-07-04, screen-share w/ Eli driving logins)
 One session does it all — queue these so it's fast:
 1. **Activate booking creds** — Eli: create Supabase project + run `apps/web/supabase/schema.sql` (SQL editor);
