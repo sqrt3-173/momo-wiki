@@ -30,6 +30,25 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~10:20) — ALL 7 LANDING SECTIONS BUILT ✅
+- **The full landing page is visually COMPLETE** (bar the booking form). All 7 content sections built, wired
+  in v4 order, gate-green (tsc/adherence/css/vitest/fluid-sweep 320-1920/build): Hero → booking#book anchor →
+  Affordability → **Arc** (team, You-centred) → Surgeon → **Pricing** (interactive PHI/CDM toggles,
+  live-computed gap/weekly — $18150−12000−300÷156; interaction test proves hydration) → DurationJourney
+  (bars + 5-stage timeline) → Closing (deep card) → Footer. Two full-page screenshots sent to Eli.
+- **Real bug caught + fixed:** the sticky hero's z-index:0 was letting its OutcomeClaim span intercept clicks
+  on EVERY lower section (all CTAs + toggles dead). Fixed with the v4 "v3-over" `position:relative;z-index:1`
+  wrapper around all post-hero sections. Also fixed a 320px overflow (long CTA labels — BookCta now wraps;
+  DS Button is single-line/fixed-height — + `min(100%,N)` column min-widths).
+- **Layout-in-CSS classes** now cover: card-grid, split, headshot, hairline, dur, bar, jrow/jstage/jmark,
+  switch (all in globals.css — keeps px out of TSX for the adherence gate). Switch state via `data-on` attr.
+- **REMAINING for phase 3 exit:** the booking form SHELL (BookingForm.tsx — 4 stages details→verify→pick→booked,
+  `.ph-no-capture` wrapper, synced single-form rendered mid-page #book + bottom Closing per Eli) → drop it into
+  the #book slot + Closing → check-compliance.sh + claim↔disclaimer parity gate → COPY-REVIEW.md for Eli's
+  AHPRA sign-off. Placeholder/polish TODOs: dietitian/nurse real photos (Eli to map), procedure diagram SVGs
+  (initials fallback now), hospital logos (text now), hero disclaimer spacing (slightly cramped).
+- Then phases 4 (booking backend: Supabase+Twilio — needs Eli's creds) · 5 (booking UI) · 6 (deploy: Vercel+DNS w/ Eli, Sat).
+
 ## Position (2026-07-04 ~07:30) — PHASE 3 SECTION BUILD UNDERWAY
 - **Foundation DONE:** AHPRA compliance skill built ([[../skills/ahpra-marketing-compliance]] — caught the
   super-funding claim as a named AHPRA+ATO enforcement target); 6 flagged claims reworded (03-COPY-REWRITES.md,
