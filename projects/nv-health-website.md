@@ -30,6 +30,20 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~11:40) — MORE FIDELITY FIXES + LIVE PREVIEWS
+- **Arc "always around you" rebuilt as the REAL v4 orbit** (I'd wrongly simplified to a row): You centre-bottom
+  (`nvh-orbit-node` at 50%/86%), care team on the dashed elliptical arc (`.nvh-orbit-ring`), %-positioned in an
+  `aspect-ratio:720/460` box with `overflow:hidden` (so it never overflows the page), drift+ripple pulse. Verified.
+- **Surgeon headshot** → correct `oliver-fisher-headshot.avif` crop (I'd swapped it to the tighter team-avatar crop).
+- **PORT MAP (important — machines on the LAN, mini IP 192.168.0.250):** `:3000` = foreign bd-crm dev server;
+  **`:3100` = momo work-OS dashboard** (`/Users/momo/momo/dashboard`, `next dev -H 0.0.0.0 -p 3100`, reads momo_work
+  via .env.local — this is Eli's live view); **`:3200` = NV site hot-reload preview** (`next dev -H 0.0.0.0 -p 3200`);
+  **`:3400` = NV playwright test port** (moved off 3100 to stop clashing with the dashboard). Both dev servers started
+  this session are network-bound so Eli can view from his MacBook Pro.
+- **TODO (promised Eli): make the dashboard auto-persist.** It's currently running inside MY session's Bash bg →
+  dies if the session restarts. Wire it into the launchd guardian (`ops/momo-guardian.sh`) so it self-restarts like
+  the momo tmux session. NV preview on :3200 is also session-bound (fine — it's just a dev convenience).
+
 ## Position (2026-07-04 ~11:05) — DESIGN-FIDELITY REWORK (Eli feedback) ✅
 Eli reviewed and caught corners I'd cut — all fixed, and a real lesson (see [[../feedback/design-fidelity-no-shortcuts]]):
 - **ALL real assets are in `design-reference/ui_kits/website-fluid/assets/`** (NOT `uploads/` — I'd looked in the
