@@ -30,6 +30,25 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~16:20) — DEEP FIDELITY LOOP (Eli reviewing on :3200 over LAN)
+Eli reviewed hard against the actual v4 + sent screenshots; big fidelity gap closed. Two infra gotchas fixed:
+- **DEAD-BUTTONS ROOT CAUSE (critical, recurring-risk):** Next 15.2+ blocks cross-origin dev requests. Eli
+  previews on `http://192.168.0.250:3200` (LAN, non-localhost) → HMR + hydration DEAD (all buttons/hover/toggles
+  frozen) while `localhost` works fine (hence I kept missing it). FIX: `allowedDevOrigins: ["192.168.0.250"]` in
+  next.config.ts. **Any LAN dev preview needs this.** Also: a `pnpm add` while the dev server runs corrupts its
+  state (needs restart); and the two bg dev servers (:3200 + :3100) share a shell → killing one's PID chain can
+  drop both, so restart both after any kill.
+- **Fidelity fixes shipped (all gates green):** the v4 **serif-italic teal heading accents** (`withAccent` helper —
+  THE missing signature; was rendering all headings plain Poppins) across every section; hero radial **glow** +
+  subtle white divider; Pricing includes→**pills** (`nvh-inc-chip`) + **ONE-card ticket** w/ "or" dividers
+  (`nvh-twrap/ticket/tsec/tdiv/tline/tor`) not 3 cards; **2nd booking form** in the Closing deep-card + **NV emblem
+  watermark** (`nvh-emblem`, /assets/logos/nvh-icon-white.svg); navbar **dark→light** on scroll (ScrollController
+  toggles `data-nav-dark` on [data-hero] via [data-over].top vs --nav-h); calendar top-anchor; orbit avatars drift
+  **out of sync** (per-avatar negative animation-delay); affordability divider padding; surgeon creds → v4 gap.
+- **DECISION (Eli 2026-07-04):** match the v4 DESIGN exactly BUT keep the AHPRA-compliant copy (option a) — do NOT
+  revert wording to the v4 original (the super/durability claims are the legal fixes). Accents applied to compliant copy.
+- Two independent BookingForm instances now (mid #book + bottom Closing) — NOT state-synced (v4 has 2 independent too).
+
 ## SATURDAY DEPLOY SESSION — agenda (Eli-defined 2026-07-04, screen-share w/ Eli driving logins)
 One session does it all — queue these so it's fast:
 1. **Activate booking creds** — Eli: create Supabase project + run `apps/web/supabase/schema.sql` (SQL editor);
