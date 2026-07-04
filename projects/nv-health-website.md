@@ -30,6 +30,23 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~11:05) — DESIGN-FIDELITY REWORK (Eli feedback) ✅
+Eli reviewed and caught corners I'd cut — all fixed, and a real lesson (see [[../feedback/design-fidelity-no-shortcuts]]):
+- **ALL real assets are in `design-reference/ui_kits/website-fluid/assets/`** (NOT `uploads/` — I'd looked in the
+  wrong place and used initials/text fallbacks). Now wired + copied to `apps/web/public/assets/`: dietitian.png,
+  nurse.png, proc-gastric-{sleeve,bypass,mini}.svg, hospitals/{st-george,east-sydney}-duotone.png, nvh-icon-white.svg.
+- **Procedures** now render the real diagram SVGs (in `.nvh-ripplebox` glow circles), not letter placeholders.
+- **Pulse animations ported faithfully** from the v4 `<style>`: `nvh-drift` (avatar bob) + `nvh-ripple`
+  (rings behind "You" 150px + procedures 98px), with the `prefers-reduced-motion` fallback. In globals.css.
+- **5-stage timeline rebuilt to EXACT v4**: `.nvh-jrow` = flex row of equal `.nvh-stage` columns w/ hairline
+  dividers (NOT flex-wrap — that was the "containers wrap/direction off" bug); zero-width `.nvh-jmark` marker
+  between stages 2&3 (dashed rule + floating pill); the care-team count pills (`.nvh-ccount` + colored dot,
+  kind→colour) I'd dropped — added `counts` to the journey content schema. Stacks via `@container (max-width:720px)`
+  referencing the DS page container (do NOT put container-type on .nvh-jrow — breaks the query).
+- **Credentials 2×2** via `.nvh-cred-grid` (repeat(2,minmax(0,1fr))), not the auto-fit 3+1.
+- Tooltip overflow fix: `.nvh-tip-bubble` uses `display:none`→`block` (opacity:0 absolutes still widen the doc at 320px).
+- All gates + fluid sweep 320-1920 + pricing interaction green. Screenshots (full page + timeline close-up) sent to Eli.
+
 ## Position (2026-07-04 ~10:20) — ALL 7 LANDING SECTIONS BUILT ✅
 - **The full landing page is visually COMPLETE** (bar the booking form). All 7 content sections built, wired
   in v4 order, gate-green (tsc/adherence/css/vitest/fluid-sweep 320-1920/build): Hero → booking#book anchor →
