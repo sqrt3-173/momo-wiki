@@ -26,6 +26,29 @@ I initially over-framed write-access as "full rein" — that was wrong. Correcte
    become write-capable sub-MOMOs. So the tree is mixed: sub-MOMOs (trusted-plan builders) + read-only
    helpers (untrusted-data readers) under each.
 
+## Approval model — the Director's Console tolerance dial (Eli, 2026-07-04)
+Eli's refinement: he doesn't mind BEING asked IF it's a tunable Console queue, not Discord spam. So:
+- **Tolerance dial** in the Director's Console: start at 0 (show me everything), raise as trust grows,
+  lower if nervous. Eli controls the volume, not a fixed rule.
+- **Main-MOMO filter UNDERNEATH the dial** — batches the purely mechanical stuff so even "show everything"
+  isn't literally every file save; the dial controls what gets past the filter to the Console.
+- **Don't-stall fallback** — if Eli's away and an agent waits on a yes: auto-handle below a stakes line he
+  sets, else the parent MOMO decides. Agents never freeze on a human. (This is the [[../goals/director-console]]
+  approval surface — the console is where the filtered stream lands.)
+
+## Capacity — can 10 sub-MOMOs run 10 projects from the Mac mini? (Eli, 2026-07-04)
+Yes, with one thing understood + two real ceilings:
+- **The inference is NOT on the mini.** Each MOMO's model runs on Anthropic's servers; the mini only does
+  orchestration + hands-on work (edits, builds, tests). So 10 "brains" doesn't tax the mini itself.
+- **Ceiling 1 — local build load.** 10 concurrent builds/test-suites/dev-servers IS heavy for a Mac mini.
+  This is where Eli's M3 Max/128GB genuinely helps, OR offload heavy builds to cloud agents (known path —
+  cloud routines already run).
+- **Ceiling 2 — API rate limits + cost.** 10 MOMOs = 10× tokens → hits usage caps (this literally caused
+  the 2026-07-03 model-limit blackout, see [[../goals/momo-engine-hardening-2026-07-03]]) + real $. Needs
+  budgeting + staggering, not "launch 10 and go."
+- Both solvable: cloud offload for builds, budget/rate management for API. 10 projects is realistic once
+  those two are handled.
+
 ## Why this matters
 This is the concrete shape of the "smart orchestration of agents" governing goal + the answer to Eli's
 "if I had my M3 Max, would it be faster?" (real parallel building needs this layer). Sequenced AFTER the
