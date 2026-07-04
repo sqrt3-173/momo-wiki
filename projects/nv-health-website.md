@@ -30,6 +30,19 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## SATURDAY DEPLOY SESSION — agenda (Eli-defined 2026-07-04, screen-share w/ Eli driving logins)
+One session does it all — queue these so it's fast:
+1. **Activate booking creds** — Eli: create Supabase project + run `apps/web/supabase/schema.sql` (SQL editor);
+   Twilio account + Verify service. Values → Vercel env vars (prod) + optionally `.env.local` on the mini for a
+   local test first (`cd apps/web && cp .env.example .env.local && open -e .env.local`; then MOMO restarts :3200).
+2. **Deploy** — Vercel (root = apps/web) + the syd.nvhealth.com.au CNAME.
+3. **Wire GTM + stape** — Eli gives the real GTM web-container ID + stape server tagging URL + cookie-domain →
+   into env. The booking dataLayer events (booking_start/otp_verified/booking_created) are already firing.
+4. **Validate conversion tracking** — GTM Preview mode watching a live test booking flow → stape server container →
+   Google Ads conversion. Only possible on the real URL with the real container.
+5. **Finalise the cookie decision** — seeing the real GTM container = seeing which ad/pixel tags fire = the
+   OAIC-pixel call (drop banner cleanly if GA4-only, else a slim ad-consent toggle). See [[../skills/ahpra-marketing-compliance]] §J.
+
 ## Position (2026-07-04 ~13:15) — SITE CODE-COMPLETE ✅ (front + back); COPY SIGNED OFF
 - **Copy: SIGNED OFF by Eli** (2026-07-04, "all good") → phase 19 (landing) = **verified**. Phase-3 exit gate cleared.
 - **Booking backend WIRED + tested (dev mode):** Eli approved installing @supabase/supabase-js@2.108.2,
