@@ -30,6 +30,27 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~12:30) — BOOKING FORM BUILT → SITE VISUALLY COMPLETE ✅
+- **`components/booking/BookingForm.tsx`** — the 4-stage booking island, faithful v4 port, WORKING (flow
+  interaction-tested): details → verify (4-digit OTP, auto-advances) → pick (functional month calendar,
+  past-dates + weekends disabled, Mon-first) → booked (summary + height/weight + contact windows). Floating-label
+  fields (`.ld-*`), funding chips, all `.bk-*` CSS ported to globals.css. Wired into the `#book` slot in page.tsx.
+- **PHI masking:** whole island wrapped in `.ph-no-capture` (+ `data-ph-no-capture`) → PostHog never records the
+  typed name/phone/email/height/weight. Unconditional. APP-5 collection-notice + privacy links at the details step.
+- **BACKEND SEAM STUBBED (phase 4, needs Eli's Supabase + Twilio creds):** `sendOtp`/`verifyOtp`/`saveBooking`
+  are TODO markers in the component; currently just advance the local stage machine. UI+validation complete →
+  backend is a drop-in. **This is the main remaining build, gated on creds.**
+- **Synced-form note:** currently ONE form instance in #book + the Closing "Continue to booking" scrolls to it.
+  Eli's preferred synced-two-instance (shared state, rendered mid + bottom) is a later refinement (needs shared
+  context/state lift) — one-form-plus-scroll works fine for now.
+- **Dashboard sync:** momo_work phases were stale (landing showed "planning"). Updated: phase 19 (landing)→executing,
+  phase 21 (booking UI)→executing. **GAP: my main-loop work doesn't auto-log to momo_work** — I must update phase
+  stages (and optionally finer activity) manually so the :3100 dashboard reflects reality. Asked Eli phase-level vs finer.
+- All gates + fluid sweep 320-1920 + booking-flow interaction test green. Screenshots (details + calendar) sent to Eli.
+- **REMAINING TO LAUNCH:** (a) booking backend wiring — Supabase + Twilio (needs creds); (b) Eli's AHPRA copy
+  sign-off (COPY-REVIEW.md still TODO); (c) deploy (Vercel + DNS, Sat). Polish: orbit drift-sync if re-flagged,
+  add-to-calendar ICS, the synced 2nd form instance.
+
 ## Position (2026-07-04 ~11:55) — HERO SCROLL SCENE + 7-item review round
 Eli reviewed on :3200 and gave 7 fidelity notes — all done + committed + live:
 1. Hero team/procedure circles must be STATIC (removed `drift`); only the Arc orbit moves. (Orbit drift is
