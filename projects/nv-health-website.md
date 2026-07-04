@@ -49,6 +49,20 @@ Eli reviewed hard against the actual v4 + sent screenshots; big fidelity gap clo
   revert wording to the v4 original (the super/durability claims are the legal fixes). Accents applied to compliant copy.
 - Two independent BookingForm instances now (mid #book + bottom Closing) — NOT state-synced (v4 has 2 independent too).
 
+## Position (2026-07-04 ~20:20) — BOOKING BACKEND VERIFIED LIVE ✅ (only deploy left)
+- **Bookings save to Eli's real Supabase — confirmed by querying the DB** (test row: stage=booked, slot persisted).
+  Full flow works end-to-end for real. momo_work phases 17-21 all **verified**; only phase 22 (deploy) = todo.
+- **Two live-activation gotchas fixed (relevant for the Sat deploy / any Supabase setup):**
+  1. **SUPABASE_URL must NOT include `/rest/v1/`** — Eli grabbed it from the Data API page with the REST path on the
+     end → PGRST125 "invalid path". Correct = just `https://<ref>.supabase.co`. (.env.example now warns this.)
+  2. **service_role needs an explicit table GRANT** because "auto-expose new tables" is OFF (the safe choice we made).
+     `schema.sql` now includes `grant usage on schema public to service_role; grant all on table public.bookings to
+     service_role;`. anon/authenticated still get nothing (PHI server-only). Eli ran it → saves work.
+- Eli's Supabase project: ref `bvlqmesxrqybvjamteij`, region Sydney, org "NV Health". Creds in `apps/web/.env.local`
+  (SUPABASE_URL + SERVICE_ROLE_KEY; Twilio blank — SMS deferred). For prod: same values → Vercel env vars.
+- **ONLY REMAINING = DEPLOY** (Sat screen-share): Vercel (root apps/web) + syd.nvhealth.com.au CNAME + Supabase creds
+  into Vercel env + wire GTM/stape + validate conversion + finalise cookie call. Site is functionally complete.
+
 ## Position (2026-07-04 ~19:35) — SMS VERIFY DEFERRED → LAUNCH NEEDS ONLY SUPABASE
 - **Eli deferred SMS verification** (not needed at current scale; avoids Twilio cost/dependency). Implemented via
   `VERIFY_ENABLED = false` in BookingForm.tsx → flow is now **details → pick → booked** (verify stage + `verifyCode`
