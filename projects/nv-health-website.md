@@ -49,6 +49,20 @@ Eli reviewed hard against the actual v4 + sent screenshots; big fidelity gap clo
   revert wording to the v4 original (the super/durability claims are the legal fixes). Accents applied to compliant copy.
 - Two independent BookingForm instances now (mid #book + bottom Closing) — NOT state-synced (v4 has 2 independent too).
 
+## Position (2026-07-04 ~22:00) — PHONE-REVIEW FIXES (Eli on mobile)
+- **HERO SCROLL SCENE REMOVED** (Eli wanted plain scroll) — reverses the earlier pin/fade/scale work.
+  ScrollController.tsx DELETED; hero is no longer `position:sticky` (now relative); page.tsx z-index:1 "v3-over"
+  layer + data-over/data-hero all removed. Navbar dark→light now works NATIVELY via the DS Header's own
+  [data-nav-dark] detection (hero still has data-nav-dark). Simpler + more robust.
+- **Other phone fixes:** strikethrough on "$150-$400" (Affordability); **pricing ticket torn-stub semi-circle
+  notches** (v4 mask-composite port — client useEffect in Pricing.tsx computes radial-gradient masks at each
+  .nvh-tdiv); **iOS zoom-on-tap fix** (.ld-field + .bk-time font-size `max(16px, ...)`, touch-action:manipulation
+  on .bk-day/.bk-time, explicit `viewport` export in layout.tsx); tap-delay addressed same way.
+- **MOBILE-ONLY items (#4 zoom, #5 date-picker lag) await Eli's phone re-test** — can't fully reproduce from
+  headless. If date lag persists it's a deeper render-perf thing (the 2 BookingForm instances re-rendering).
+- All gates + fluid sweep + pricing interaction green. Pricing test selector fixed (2 booking forms now → "Private
+  health insurance" ambiguity; use the pricing toggle's fuller "(eligible top cover)" label).
+
 ## Position (2026-07-04 ~20:20) — BOOKING BACKEND VERIFIED LIVE ✅ (only deploy left)
 - **Bookings save to Eli's real Supabase — confirmed by querying the DB** (test row: stage=booked, slot persisted).
   Full flow works end-to-end for real. momo_work phases 17-21 all **verified**; only phase 22 (deploy) = todo.
