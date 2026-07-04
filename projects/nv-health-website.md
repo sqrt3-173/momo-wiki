@@ -30,6 +30,26 @@ decision-maker — recorded here for the co-liability record.
 - Still relevant: when Eli's real GTM config lands, sanity-check what ad pixels it actually fires (per
   [[../skills/ahpra-marketing-compliance]] §J) so the disclosure/posture matches reality.
 
+## Position (2026-07-04 ~11:55) — HERO SCROLL SCENE + 7-item review round
+Eli reviewed on :3200 and gave 7 fidelity notes — all done + committed + live:
+1. Hero team/procedure circles must be STATIC (removed `drift`); only the Arc orbit moves. (Orbit drift is
+   CSS-synced via SSR class — if Eli re-flags "out of sync", wrap the orbit nodes in one animated container.)
+2. Procedure pulse was VERTICAL (ripplebox had shrunk to the icon width) → set `.nvh-ripplebox{width:100%}` = horizontal.
+3+4+5. **Hero scroll scene rebuilt as ONE system** (Eli: the sticky+z-index pin was fragile): new
+   `components/landing/ScrollController.tsx` (client, rAF-throttled) publishes `--hero-progress` (0→1) on <html>;
+   the Hero inner reads it (`transform:scale(calc(1 - var(--hero-progress)*0.08)); opacity:calc(1 - …)`,
+   transform-origin 50% 35%) to fade+scale as it recedes. ALL post-hero content INCLUDING the footer now sits in
+   ONE `position:relative;z-index:1` opaque layer over the `position:sticky;top:0;z-index:0` hero — footer no
+   longer bleeds through (was the bug: footer was outside the layer). Restored `data-hero` + `data-nav-dark` on the
+   hero section so the DS Header's own scroll→glass + dark-logo listener works.
+6. Minimal v4 footer (`components/sections/MiniFooter.tsx` — legal line + Privacy/Terms links) REPLACES the full
+   DS `<Footer>`. Legal line is a const in page.tsx (move to content later).
+7. "Individual results vary." was squished — ROOT CAUSE: it rendered INSIDE the `<h1>` and inherited the
+   heading's negative letter-spacing + tight line-height. Fix: `<OutcomeClaim as="block"><h1>…</h1></OutcomeClaim>`
+   (h1 is the child → disclaimer is a sibling line below) + `.hero-claim [data-outcome-disclaimer]` CSS
+   (margin-top space-3, letter-spacing normal, colour --text-on-dark).
+All gates + fluid sweep 320-1920 green. Verified via scrolled/footer screenshots.
+
 ## Position (2026-07-04 ~11:40) — MORE FIDELITY FIXES + LIVE PREVIEWS
 - **Arc "always around you" rebuilt as the REAL v4 orbit** (I'd wrongly simplified to a row): You centre-bottom
   (`nvh-orbit-node` at 50%/86%), care team on the dashed elliptical arc (`.nvh-orbit-ring`), %-positioned in an
