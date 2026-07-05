@@ -49,6 +49,20 @@ Eli reviewed hard against the actual v4 + sent screenshots; big fidelity gap clo
   revert wording to the v4 original (the super/durability claims are the legal fixes). Accents applied to compliant copy.
 - Two independent BookingForm instances now (mid #book + bottom Closing) — NOT state-synced (v4 has 2 independent too).
 
+## 🚀 LIVE (2026-07-05 ~11:35 AEST) — syd.nvhealth.com.au DEPLOYED + VERIFIED (deadline met 2 days early)
+- **Site is LIVE at https://syd.nvhealth.com.au** — HTTP 200, valid SSL, serving the real page. ALL 6 momo_work
+  phases verified. Deadline was Sun 2026-07-06 10:00 AEST → hit Sat morning.
+- **Deploy = Vercel (team "Catapult", Hobby) from GitHub** `sqrt3-173/nv-health-website`, root auto-detected `apps/web`,
+  pnpm+Turborepo monorepo built clean first try. Vercel project name `nv-health-website-web`.
+- **Env vars in Vercel** (Production+Preview): SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (Twilio blank — SMS deferred).
+- **DNS: Cloudflare** (nvhealth.com.au). CNAME `syd` → `65292e76152cb648.vercel-dns-017.com`, **DNS-only (proxy OFF
+  — critical; proxied breaks Vercel SSL)**. Verified resolving to Vercel IPs (216.198.79.65 / 64.29.17.65).
+- **PROD BOOKING VERIFIED** — ran a real booking on the live domain → saved to prod Supabase (ProdSmoke row, booked).
+- **noindex** added (paid-ads page, keep out of organic search) — committed, PENDING push/redeploy (Eli approving).
+- **Follow-ups offered:** clear test rows from bookings table (ProdSmoke/MomoTest/Eli-test); push noindex.
+- **POST-LAUNCH (not blockers):** GTM/stape analytics wiring + conversion-tracking validation; SMS verify re-enable if
+  wanted (VERIFY_ENABLED flag); Twilio sender-ID registration if SMS turned on.
+
 ## Position (2026-07-04 ~22:00) — PHONE-REVIEW FIXES (Eli on mobile)
 - **HERO SCROLL SCENE REMOVED** (Eli wanted plain scroll) — reverses the earlier pin/fade/scale work.
   ScrollController.tsx DELETED; hero is no longer `position:sticky` (now relative); page.tsx z-index:1 "v3-over"
