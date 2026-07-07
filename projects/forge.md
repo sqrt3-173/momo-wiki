@@ -114,5 +114,17 @@ differentiator is the **visual layer**:
   machine ground truth = the novel product. Ergs are camera-favourable (side-on, cyclic, no occlusion).
   ⚠️ Echo bike likely closed console (verify). Details in projects/forge/ARCHITECTURE.md §v1.5.
 
+## M1 FIRST LIGHT (2026-07-07 ~11:20) — app builds + runs
+- **Toolchain**: Xcode 26.6 (macOS 26.5). Eli did the sudo steps (guard allowlist +6 xcode tools — guard file
+  is root-owned + uchg-immutable, needs `sudo chflags nouchg` to edit; xcode-select→Xcode.app; licence;
+  runFirstLaunch). I pulled the iOS 26.5 platform (8.5GB, `xcodebuild -downloadPlatform iOS`).
+- **First build SUCCEEDED first try** — hand-authored pbxproj (objectVersion 77, PBXFileSystemSynchronizedRootGroup,
+  shared scheme, bundle id `agency.catapult.forge`, SWIFT_VERSION 5.0, iOS 17 min) works headlessly.
+- **Running on iPhone 17 Pro simulator** (device UDID 665D0D31-…; build → `xcrun simctl boot/install/launch`,
+  screenshot via `simctl io screenshot`). Screenshot sent to Eli.
+- M1 contents: SwiftData logging core (Workout/ExerciseEntry/SetRecord), catalog w/ AnalysisProfile camera
+  badges (5 lifts), quick-add sets, rest timer, plate math, history + e1RM PRs. Phase M1 = executing;
+  remaining: end-to-end flow test in sim → then device install (needs Eli's Apple ID in Xcode, 2 min).
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
