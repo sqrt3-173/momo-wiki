@@ -160,6 +160,12 @@ differentiator is the **visual layer**:
     orbitable skeleton on a floor), `ReplayView` (scrub + stat sheet + LiDAR badge), record button in capture.
   - LiDAR honest answer given: helps HERE (scale/real-units + Apple already uses it), one-viewpoint limit.
   - ⚠️ Still needs Eli's ▶ + on-device visual verification (SceneKit skeleton orientation/scale, live 3D fps).
+- **PERF regression + fix (2026-07-07)**: camera slow to open (~20s) + iOS killed the app after 30s
+  (thermal). Cause: running Vision too hard — allocating fresh VN request objects EVERY frame + person-
+  detection at full 30fps on top of pose. Fix: reuse request objects (pose/people/3D), run person-detection
+  every 8th frame (subject box stable between), throttle pose to ~20fps + recording-3D to ~12fps (~4x load
+  cut). LESSON: never allocate Vision requests per-frame; throttle inference; a 30fps×N-model pipeline cooks
+  the device → watchdog/thermal kill. Awaiting Eli's retest + a diagnostic (video-black vs skeleton-slow).
 - **Sub-momo pilot**: Eli wants 2-3 parallel instances, same Claude account, own Discord channels. NUNU
   templates = the kit. Proposed pilot: FORGE-momo owning FORGE in #forge, MOMO as director. Awaiting go.
 
