@@ -332,9 +332,14 @@ the scene. "I want it to be perfect."
 - ✅ **PoseRetargeter** built + 25 tests green: Apple 17 joint POSITIONS → bone ROTATIONS (quaternions) to
   drive a rigged mesh; handles parallel/antiparallel edge cases (naive cross-product NaNs there). Foundational,
   not throwaway; calibrates to MHR bind pose when the mesh lands. Fully headless-verified.
-- **Discipline note**: did NOT build the body-render blind (SceneKit isn't headless-verifiable without a
-  sim-screenshot harness). Next: build the mannequin render + a sim harness to screenshot-verify it, THEN the
-  scan-capture flow (needs device camera+LiDAR). Verify-what-I-build holds even at the frontier.
+- ✅ **BodyMannequinView** built + VERIFIED via sim screenshot (recognizable grey humanoid — head/torso/arms/
+  legs, orbitable). Placeholder for the real scanned MHR mesh (same SceneKit shell). Wired as ReplayView
+  "3D body" mode (Video / 3D body / Skeleton). `-preview-body` launch arg renders a synthetic pose for
+  headless render-verification (the pattern for verifying SceneKit without a device).
+- **Discipline win**: didn't ship the render blind — built a sim-screenshot harness, launched it, LOOKED at
+  the body, confirmed it renders right. Verify-what-I-build held at the frontier.
+- **M6 progress**: (1) retargeting math ✅ (2) 3D body renders+moves ✅ (3) onboarding scan-capture [next,
+  device] (4) cloud SAM pipeline [needs Eli's GPU-spend greenlight]. Screenshot sent to Eli.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
