@@ -146,9 +146,20 @@ differentiator is the **visual layer**:
   - **ForgeTests unit-test target** hand-wired into pbxproj (TEST_HOST/BUNDLE_LOADER). 24 tests green.
   - Test target pattern for the hand-authored pbxproj now proven twice (UI + unit).
 - **Honest 3D framing (told Eli)**: a 3D SKELETON (VNDetectHumanBodyPose3DRequest) = buildable, real
-  accuracy jump, next IF smoothing didn't suffice. A photoreal 3D body MESH real-time from one camera =
-  NOT viable today (= body-scan phase, SMPL licensing + accuracy caveats). Didn't overpromise on "Fable 5
-  can build anything." Awaiting Eli's read on whether smoothing fixed accuracy before the 3D rewrite.
+  accuracy jump. A photoreal 3D body MESH real-time from one camera = NOT viable today (= body-scan phase,
+  SMPL licensing). Didn't overpromise on "Fable 5 can build anything."
+- **Eli's clarified vision (2026-07-07)**: NOT photoreal — a tracked 3D skeleton you RECORD, then watch
+  REPLAY in an orbitable 3D environment, with a full pro-athlete stat suite (TUT, ecc/con, ROM, asymmetry,
+  fatigue). "Most comprehensive app ever." + asked re LiDAR.
+- **DELIVERED (M3, all verified, 19 tests green)**: record→3D-replay→stats.
+  - `Pose3DEngine` (VNDetectHumanBodyPose3DRequest — 3D joints + 2D proj + depthAssisted flag + bodyHeight;
+    3D API compile-verified against SDK: `.position` simd_float4x4, `pointInImage`→VNPoint.location,
+    `heightEstimation == .measured` = LiDAR-assisted). LiDAR is opportunistic-automatic on the 17 Pro.
+  - `Kinematics3D` (camera-angle-invariant 3D angles), `StatsComputer` (per-rep TUT/ecc/con/ROM/asymmetry +
+    set fatigue%), `SessionRecorder` (NSLock frame bank on videoQueue), `SkeletonSceneView` (SceneKit
+    orbitable skeleton on a floor), `ReplayView` (scrub + stat sheet + LiDAR badge), record button in capture.
+  - LiDAR honest answer given: helps HERE (scale/real-units + Apple already uses it), one-viewpoint limit.
+  - ⚠️ Still needs Eli's ▶ + on-device visual verification (SceneKit skeleton orientation/scale, live 3D fps).
 - **Sub-momo pilot**: Eli wants 2-3 parallel instances, same Claude account, own Discord channels. NUNU
   templates = the kit. Proposed pilot: FORGE-momo owning FORGE in #forge, MOMO as director. Awaiting go.
 
