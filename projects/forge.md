@@ -398,8 +398,19 @@ green, each screenshot-verified (sim harness `-preview-{logging,rpe,minbar,picke
   ITERATIVE, run by ELI (bills him): fixed volume-double-mount, a structural bug, missing `wheel`, missing
   `clang` (Modal Python links ext with clang++). Each: MOMO fixes+commits → Eli re-runs `modal deploy` →
   pastes result. Detectron2 CUDA compile now succeeds; grinding through the image build layer by layer.
-- Open research (2026-07-07): what open/licensed lib Hevy uses for the **animated exercise-demo videos**
-  (reused across apps) — researching.
+- Research done (2026-07-07): **exercise-demo videos** are NOT open — licensed (GymVisual is the shared
+  source). Cheapest real option = MoveKit ~$99 one-time (~200 lifts) or ExerciseAnimatic ~$329 (2,300).
+  Free = static illustrations only (wger CC-BY-SA); avoid GitHub "free GIF" packs (ripped from GymVisual).
+  Eli's call, no spend yet.
+- **Eli's v2 vision (2026-07-07)**: once his SAM-3D body is reconstructed, **map the muscle groups onto HIS
+  mesh** (not the generic MuscleMap figure) — his own body lighting up with what he trained. Path: MHR/SMPL
+  has a known vertex→body-region segmentation → identify chest/quads/etc. regions on his mesh → colour by
+  `Workout.muscleDistribution` → render in the existing orbitable SceneKit BodyMeshView. Caveat: a skin mesh
+  is region-level ("upper-torso-front"), coarser than MuscleMap's muscle paths — so keep BOTH: MuscleMap for
+  the precise breakdown, his 3D body as the "this is me" view. Rides on the body pipeline (deploy → body →
+  this layer). Logged as the target.
+- **Guard**: `modal` being added to DEV_ALLOW (Eli, 2026-07-07) so MOMO runs `modal deploy` itself (ends the
+  deploy back-and-forth). MOMO's commitment: deploys only; leaves billable `modal run` GPU inference to Eli.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
