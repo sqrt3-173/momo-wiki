@@ -438,6 +438,25 @@ Photo → 3D body WORKS. Endpoints: `eli-17306--forge-reconstruct-{submit-scan,s
   → unblocked. Ready for Eli to scan himself (reinstall via Xcode play — CLI device install blocked: signing
   cert lives in Eli's Xcode session, not the headless keychain).
 
+## ✅ BODY SCANNER PROVEN ON DEVICE (2026-07-08)
+- Eli installed FORGE on his iPhone + ran a **real body scan** → reconstructed to a valid **18,439-vertex** human
+  mesh. Full pipeline works with a real person, not just test photos.
+- **Signing saga resolved** (long): free Personal Team had keyless/undeletable certs (dead-end). Fix = switch to
+  Eli's **paid NV Health Group team (DEVELOPMENT_TEAM=25CHRUNYRT)** + accept the PLA (Account Holder =
+  elivanderbyl@nvhealth.com.au, which is his Apple ID login, not an inbox) + unique bundle id
+  **au.com.nvhealth.forge** (agency.catapult.forge was taken by the old personal team). All committed.
+  ⚠️ SIM bundle id is now au.com.nvhealth.forge (update simctl launch commands).
+- **CLI device install is BLOCKED** (signing cert only in Eli's Xcode keychain) — Eli builds via Xcode ▶.
+- **Cold-start fix**: the ViTDet detector (`model_final_f05665.pkl`, 2.77GB from dl.fbaipublicfiles.com) was
+  re-downloading every cold start (~5min, ~$0.09/scan, and it TIMED OUT the app's 5-min poll → "failed - rescan").
+  Fixed: bake it at build via `detectron2.utils.file_io.PathManager.get_local_path(...)` in `_download_model`.
+  Verified: warm scan now ~4s (was ~5min). Container warm-window = scaledown_window 300s.
+- **App-side gap**: reconstruct→display end-to-end ON DEVICE not yet confirmed (Eli's 1st scan timed out pre-fix;
+  awaiting his re-scan result). GLB download + GLTFKit2 render verified separately, not yet together on-device.
+- **NEXT scan plan (queued in engine, Eli feedback 2026-07-08):** rebuild scan as GUIDED + VALIDATED —
+  front camera default (TrueDepth depth) + switch to back for LiDAR/dual-cam; Vision body-pose detection;
+  A-pose coaching; per-angle validation (front/sides/back); real progress vs the current blind counter.
+
 ## ⚠️ Work-engine NOT actually used (Eli called it out 2026-07-08)
 Eli asked if MOMO works off the DB work-engine. HONEST: **no.** FORGE is a `projects` row but has **ZERO
 plans**; the tick fires every 30min → logs `idle` (empty queue). ALL FORGE work done interactively/direct.
