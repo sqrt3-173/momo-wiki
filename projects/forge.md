@@ -352,9 +352,20 @@ the scene. "I want it to be perfect."
     inference calls flagged ⚠️VERIFY for deploy-time wiring (needs live GPU). Deployment plan in BODY_MODEL.md.
   - **GATED ON ELI**: (1) HF gated-weights access request (sam-3d-body-vith — START NOW, approval takes time)
     (2) Modal account+billing. Then MOMO wires `_run_pipeline` + deploys + measures VRAM/latency.
-  - **Remaining app-side (next)**: iOS USDZ loader — load the static personalized mesh into the body slot
-    (compile-verify now; full visual verify when a real mesh lands). v1 = static body; animate = v2 via
-    PoseRetargeter (built).
+  - ✅ **4c iOS USDZ loader**: BodyMeshView (loads personalized USDZ → orbitable SceneKit, auto-framed;
+    native USDZ no glTF dep) VERIFIED via sim screenshot (generated test USDZ loads+renders). "View your 3D
+    body" link in Body tab (shows when a real mesh file exists; dormant with stub). `-preview-mesh` harness.
+  - **✅ ENTIRE APP-SIDE PIPELINE COMPLETE + verified**: scan → upload → reconstruct → download USDZ → load →
+    render (orbitable). All works against the stub; real cloud endpoint swaps in unchanged.
+- **STATE (2026-07-07, session pause)**: Eli SUBMITTED the HF gated-access request (sam-3d-body-vith; said
+  "AI developer" = fine). Waiting ~1hr for approval; if none, he'll have MOMO research approval times.
+  Modal account = when ready. THEN: MOMO wires `_run_pipeline` in server/forge_reconstruct.py → deploy →
+  measure VRAM/latency → real body flows through the (already-built+verified) app pipeline. v1 = static
+  personalized body; v2 = animate via PoseRetargeter (built). Eli paused the session here.
+- **FORGE session summary (2026-07-07)**: voice-note brief → working tested on-device app (log, live pose,
+  record→3D-replay→stats, skeleton-on-video) + M6 body engine (retargeting✅ render✅ scan✅ app-pipeline✅
+  cloud-artifact✅) all committed. 25 unit tests green. Sim-screenshot harness = the pattern for verifying
+  SceneKit headless. Repo: projects/forge. Continuity: this file + BODY_MODEL.md.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
