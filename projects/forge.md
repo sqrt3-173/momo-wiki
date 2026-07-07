@@ -268,6 +268,18 @@ the scene. "I want it to be perfect."
   not → path B ships something real at lower fidelity. Rendering (SceneKit SCNSkinner, ~7-10k verts) = trivial,
   NOT the bottleneck; the bottleneck is upstream per-frame pose.
 
+### ⚠️ CORRECTION (Eli caught, 2026-07-07): Meshcapade is DEAD (Path A gone)
+- Eli went to the Meshcapade site → **"Meshcapade is now part of Epic Games. As of April 18 the Meshcapade
+  online platforms have been shut down."** The mesh-agent's research was STALE on this.
+- **Path A (license Meshcapade Me / their API) = DEAD.** SMPL commercial licensing now sits with Epic
+  (murky during acquisition). Epic has MetaHuman (Unreal-Engine digital humans — wrong tool for a native
+  iOS fitness app, too heavy).
+- **Consequence: Path B (Apple-native, free, own-it, no external dependency) is now the clear route** — no
+  licensing limbo, no reliance on a vanished vendor. Build our own body pipeline on ARKit's free real-time
+  skeleton. (Verification agent launched: confirm Epic/SMPL status + any alternative body-mesh SDK provider.)
+- LESSON: research can go stale fast on fast-moving vendors; Eli poking the actual site caught it. Verify
+  vendor status before recommending a license path.
+
 ## SYNTHESIS → the honest FORGE visual-layer plan (all 3 research streams)
 1. **3D body mesh of you** = the centerpiece, buildable. Decision gate = Meshcapade quote (path A) vs
    Apple-native free/coarser (path B). Ceiling = proportion-correct, not clinical.
