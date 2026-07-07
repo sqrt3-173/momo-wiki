@@ -443,9 +443,13 @@ When populating the engine I authored plans WITHOUT reading the code first — s
 **Add-exercise button** = DONE (CustomExercise @Model + create-flow in `ExercisePickerView` line ~250 + `customs`
 @Query). **Routines in Train tab** = built (`RoutineEditorView`, `HomeView` use Routine/RoutineExercise;
 container registers them). Lesson (soul.md "read before touching"): before authoring engine plans, grep the
-codebase — don't queue work that exists. NEXT session: reconcile FORGE plans vs reality; the genuinely-open ones
-are **stats drill-in**, **History→Profile tab**, **guided-scan pt2** (front camera + LiDAR switch), and
-**verify** Add-exercise + routines actually work end-to-end (they compile + are wired; not screenshot-verified).
+codebase — don't queue work that exists. NEXT session (grepped 2026-07-08, accurate map): **Add-exercise** = built (picker create-flow); **routines in
+Train** = built (`HomeView` New/Edit/Delete Routine + `RoutineEditorView`); **stats drill-in** = `ExerciseStatsView`
+EXISTS (verify it's wired + good); tabs are **Train/Body/History** (`ForgeApp` L103-109). GENUINELY OPEN:
+(1) **History→Profile tab** — Hevy-style Profile replacing the History tab (only real missing tab);
+(2) **guided-scan pt2** — front camera default (TrueDepth) + switch to back for LiDAR/dual-cam; (3) screenshot-
+**verify** the built features (Add-exercise create-flow, routines, ExerciseStatsView) actually work end-to-end.
+ALWAYS grep before authoring a plan — the first pass queued 2 already-built features.
 
 ## ✅ SCAN UX pt1 built (2026-07-08, Eli feedback)
 Validation-gated capture: `BodyScanController` runs Vision `VNDetectHumanBodyPoseRequest` per sampled frame →
