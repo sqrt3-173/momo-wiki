@@ -427,10 +427,25 @@ Photo → 3D body WORKS. Endpoints: `eli-17306--forge-reconstruct-{submit-scan,s
 - **Robust run pattern**: reconstruct saves GLB(+USDZ) to the Volume /output + volume.commit() → `modal run
   --detach` (survives client reap) → poll the Volume + `modal volume get`. (Client-blocking runs get reaped
   mid-inference → cancelled; detach + volume-save is the fix.)
-- **⚠️ ONE leftover**: Blender GLB→USDZ export fails (apt blender too old for .usdz packaging) — made USDZ
-  optional (GLB is source of truth). TODO: fix USDZ (newer Blender, or usd/pxr, or convert on the Mac) so
-  the app's BodyMeshView can render it + iOS gets the native format. Also: render a mesh preview (mini has no
-  trimesh/PIL — install or convert). Eli's own STANDING scan will be the real showcase (diving pose = weird demo).
+- **✅ APP INTEGRATION COMPLETE + e2e VERIFIED (2026-07-08)**: dropped USDZ/Blender entirely — app loads GLB
+  via **GLTFKit2** (SwiftPM, master, pbxproj hand-wired). Server reworked to async: submit_scan (POST frames,
+  slim web_image so it doesn't cold-start the 15GB model image; `Request` typed via `from __future__ import
+  annotations` + `web_image.imports()` since local deploy env lacks fastapi) → scan_status (polls Volume for
+  /output/{job_id}.glb, returns get_mesh URL) → get_mesh (FileResponse GLB). App: RemoteReconstructionService
+  = submit→poll→download; BodyScanView flipped Stub→Remote; BodyMeshView renders GLB (VERIFIED — real 3D body
+  renders in-app). **Full HTTP e2e PROVEN**: curl submit→poll→download real 664KB GLB through the live
+  endpoints the app uses. Was blocked on Modal $1 credit; **Eli added payment + a workspace budget 2026-07-08**
+  → unblocked. Ready for Eli to scan himself (reinstall via Xcode play — CLI device install blocked: signing
+  cert lives in Eli's Xcode session, not the headless keychain).
+
+## ⚠️ Work-engine NOT actually used (Eli called it out 2026-07-08)
+Eli asked if MOMO works off the DB work-engine. HONEST: **no.** FORGE is a `projects` row but has **ZERO
+plans**; the tick fires every 30min → logs `idle` (empty queue). ALL FORGE work done interactively/direct.
+So the engine + a watchdog are theatre until the queue is real. THE FIX (Eli's ask, MOMO owns): (1) populate
+the engine with real plans for FORGE + live projects; (2) wire a **10-min idle watchdog** (launchd → detects
+interactive session idle → injects "claim next plan / validate highest-value" into the tmux session); (3)
+make it **visible on the :3100 dashboard** (render live queue + what MOMO's working — not a black box).
+Awaiting Eli's sequencing: build engine/watchdog now vs finish FORGE feature batch first.
 
 ## Logging UX — feature batch 2 (2026-07-07, IN PROGRESS, Eli said "keep going" overnight)
 Eli's app is on his phone, driving Hevy-parity. Refs in Discord msg 1524037776591290368 (set-type +
