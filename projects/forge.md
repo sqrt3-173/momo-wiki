@@ -223,8 +223,60 @@ the scene. "I want it to be perfect."
 - ⚠️ Volograms "Volu" = closest shipped (1 phone, moving person → neural hologram) but NOT gaussian splat,
   scene-stripped, lower fidelity. Honest state of the art for single-phone moving-person-in-3D.
 
-### Video→body mesh (agent) — pending
-### Depth fusion (agent) — pending
+### Depth fusion (agent returned 2026-07-07) — ACCURACY STACK VERDICT
+- **Recommended stack**: LiDAR `sceneDepth` (metric SCALE anchor) + **multi-frame ROTATION capture** (the
+  biggest real accuracy win) + SMPL/SMPL-X shape-prior fit (solves occlusion) + monocular Core ML refiner
+  (Depth Anything V2-small, ~31-34ms on-device, scale-locked to LiDAR). 
+- **⚠️ PUSHBACK on Eli's multi-camera/binocular idea: SKIP dual-cam stereo (wide+ultrawide).** iPhone camera
+  baseline is tiny (~1.4cm) → useless disparity at 2-3m body distance; wide+ultrawide isn't even a supported
+  stereo pair (FOV mismatch); Apple's calibrated stereo is wide+TELE only. No product/study does usable
+  dual-phone-cam body measurement. Costs thermal+engineering for ~zero gain. The "binocular cues" instinct
+  doesn't survive the physics of the small baseline.
+- **Per-signal ranking**: LiDAR=HIGH (scale, ~1-3cm gross <3m, weak on circumference/occlusion as predicted);
+  multi-frame rotation=HIGH (Prism Labs: waist ±3.4cm R²=0.97, hip ±1.7cm — DXA-validated, beats LiDAR+ML
+  fusion's 8% err); SMPL fit=MED-HIGH (occlusion); monocular=MED (refiner only, must scale-lock); dual-cam
+  stereo=SKIP.
+- **Ceiling**: ~1cm skeletal/height, ~1.5-3.5cm circumference (with the stack; 4-8% if LiDAR-single-shot
+  only). Composition (BF%/volume) = trend-tracking, NOT DXA-diagnostic. Market accordingly.
+- API: stay in ARKit (`sceneDepth`, timestamp-aligned, no manual synchronizer needed); raw `sceneDepth` not
+  `smoothedSceneDepth` for per-instant geometry; `isFilteringEnabled=false` for measurement.
+- Recurring theme (both this + mesh): the win is the **shape-prior fit + multi-view geometry**, NOT more
+  sensor hardware. SMPL keeps coming up → licensing gate is the pivotal question (mesh agent).
+
+### Video→body mesh (agent returned 2026-07-07) — THE CENTERPIECE VERDICT
+- **A 3D body MESH of yourself, moving, IS buildable.** Two real paths:
+  - **A — License Meshcapade**: they SHIP exactly this ("Meshcapade Me": phone photo/video → personalized
+    SMPL avatar w/ real measurements, marketed at FITNESS). Real, legal, personalized-to-you. Cost = custom
+    enterprise quote (sales@meshcapade.com, no public pricing — must ask). Fastest to a genuine product.
+  - **B — Apple-native**: ARKit gives a FREE real-time on-device skeleton (no mesh); drive a custom-authored
+    (non-SMPL) rigged mesh scaled per-user via height/proportion sliders. Zero licensing risk, cheaper, but
+    coarse (generic body scaled, not true shape reconstruction).
+  - **C — port open HMR model to Core ML yourself**: NOT recommended — still needs Meshcapade asset license
+    (licensing attaches to the MESH ASSET, not the code — even ARKit-driving-SMPL needs it) + months of
+    unproven porting. 
+- **⚠️ THE licensing gate**: SMPL/SMPL-X/STAR/SUPR all Max Planck NON-COMMERCIAL. Commercial = pay Meshcapade
+  (exclusive sub-licensor). NO permissive full-body parametric mesh exists. GHUM Apache-2.0 only covers 33
+  landmarks NOT the mesh (not an escape). This is a real money decision.
+- **⚠️ Apple gives skeleton, NEVER a mesh** (Vision + ARKit both confirmed joints-only). Real-time mesh
+  recovery (HMR2/GVHMR/Multi-HMR) is GPU-only; NO Core ML port exists publicly → ~15-30fps on A18/A19 is a
+  plausible ESTIMATE after months of R&D, not proven.
+- **⚠️ Honest ceiling on "anatomically accurate"**: = plausible + proportion-correct, NOT clinical. 5-9cm
+  error even in labs, worse in a gym (clothing/occlusion/extreme poses). SMPL shape space underrepresents
+  shredded/very-large builds → "best fit within average-body space," not true muscle reconstruction. MUST
+  calibrate Eli's "perfect" expectation.
+- **Recommendation: get the Meshcapade quote FIRST** (resolves the cost unknown). If affordable → path A. If
+  not → path B ships something real at lower fidelity. Rendering (SceneKit SCNSkinner, ~7-10k verts) = trivial,
+  NOT the bottleneck; the bottleneck is upstream per-frame pose.
+
+## SYNTHESIS → the honest FORGE visual-layer plan (all 3 research streams)
+1. **3D body mesh of you** = the centerpiece, buildable. Decision gate = Meshcapade quote (path A) vs
+   Apple-native free/coarser (path B). Ceiling = proportion-correct, not clinical.
+2. **Accuracy** = LiDAR (scale) + multi-FRAME rotation capture + SMPL fit + monocular refiner. **SKIP
+   multi-camera stereo** (Eli's binocular idea — physics of the tiny baseline kills it). ~1-3.5cm ceiling.
+3. **Gaussian splat** = "3D PR pose" static trophy (buildable) NOW; dynamic fly-around = gym-camera era (parked).
+4. Cross-cutting theme: the win is the **shape-prior fit + multi-view geometry**, NOT more sensor hardware.
+5. Shipped already: skeleton-on-video ✅. Next buildable-now: the Apple-native body mesh (path B) as a
+   no-licensing-risk start while the Meshcapade quote is pursued.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
