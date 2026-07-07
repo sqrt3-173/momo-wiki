@@ -432,15 +432,19 @@ Photo → 3D body WORKS. Endpoints: `eli-17306--forge-reconstruct-{submit-scan,s
   the app's BodyMeshView can render it + iOS gets the native format. Also: render a mesh preview (mini has no
   trimesh/PIL — install or convert). Eli's own STANDING scan will be the real showcase (diving pose = weird demo).
 
-## Logging UX — feature batch 2 (2026-07-07, IN PROGRESS)
-Eli's app is on his phone + he's driving Hevy-parity. **Done (committed)**: finish-flow keyboard glitch
-(dismiss kbd + settle before confetti), picker alphabetical "All" section. **QUEUED** (Eli's list + refs in
-Discord msg 1524037776591290368 = set-type + superset menus): create-exercise button; set-types via tapping
-the set number (warmup/drop, Hevy — think critically); swipe-left-to-note grouped visually under the set;
-exercise ⋮ menu = replace / reorder / add-to-superset (Hevy refs); stats drill-in button (right of picker
-toggle); **routines** in Train tab (replace recent-workouts); **History → Profile** tab (Hevy-style);
-photo-upload on finish; minimised pill needs more bottom clearance; swipe workout page closed → minimise INTO
-the pill (native zoom/Liquid Glass).
+## Logging UX — feature batch 2 (2026-07-07, IN PROGRESS, Eli said "keep going" overnight)
+Eli's app is on his phone, driving Hevy-parity. Refs in Discord msg 1524037776591290368 (set-type +
+exercise-⋮ menus). **DONE + committed**: finish-flow keyboard glitch (dismiss kbd + 0.25s settle before
+confetti); picker alphabetical "All" section; pill clearance (52→64); **set types** (tap SET column →
+Warm Up W/orange · Normal · Failure F/red · Drop D/blue · Remove Set — SetType enum + SetRecord.setType;
+notes moved to swipe-left; delete now in the type sheet); **exercise ⋮ menu** (Reorder = drag sheet /
+Replace = picker swap keeps sets / Remove; Add-to-Superset = menu item only); **photo-on-finish**
+(PhotosPicker → Workout.photoData). **STILL QUEUED**: superset GROUPING (needs a supersetID model + linked
+render — the big one, onSuperset is currently a no-op stub); create-exercise button (needs custom-exercise
+model); swipe-left-to-note should appear GROUPED visually UNDER the set (currently just a sheet); stats
+drill-in button (right of picker toggle); **routines** in Train tab (replace recent-workouts — big);
+**History → Profile** tab (Hevy-style — big); swipe workout page closed → minimise INTO the pill (native
+zoom). Plus from body pipeline: **USDZ conversion fix** (Blender too old) for in-app 3D render.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
