@@ -204,5 +204,27 @@ the scene. "I want it to be perfect."
 - ⚠️ Front-camera mapping bug (orientation/mirroring) — acknowledged secondary; back-camera propped is the
   real workflow.
 
+## Moonshot research findings
+
+### Gaussian splatting (agent returned 2026-07-07) — HONEST VERDICT
+- **"Fly around your dynamic lift as a gaussian splat from one phone" = NOT achievable, not close.** Physics,
+  not effort: one camera = one viewpoint/instant; free-viewpoint of FAST DYNAMIC content needs synchronized
+  MULTI-camera rigs (DyNeRF=21 cams; commercial volumetric studios 10-100+). Every shipped GS product
+  (Luma/Polycam/Scaniverse/KIRI) is STATIC-scene only + says motion blur/moving people = artifacts.
+- Dynamic/human GS (GaussianAvatar/HUGS/Dynamic Gaussian Marbles) = research-grade, per-subject mins-hours,
+  strips the scene (avatar only), collapses on fast/occluded motion. Not product-ready.
+- On-device: STATIC splat training ships (Scaniverse, ~1-2min on-phone); rendering static splats on iOS is
+  SOLVED (MetalSplatter, MIT). NO on-device dynamic/4D training exists anywhere.
+- **Shippable reframe (the real feature hiding in the idea)**: a **"3D PR pose" trophy** — hold lockout /
+  top-of-squat, slow phone orbit (static), run the proven static pipeline (Luma/KIRI API or on-device
+  Scaniverse-style) → render with MetalSplatter. Delivers "explore yourself in 3D" of a HELD pose. Buildable.
+- Full moving-lift = a gym multi-camera install + DyNeRF pipeline (the parked "gym era" phase), NOT a phone
+  feature. Recommendation: don't roadmap dynamic-splat for v1/v2; don't license (no vendor sells it).
+- ⚠️ Volograms "Volu" = closest shipped (1 phone, moving person → neural hologram) but NOT gaussian splat,
+  scene-stripped, lower fidelity. Honest state of the art for single-phone moving-person-in-3D.
+
+### Video→body mesh (agent) — pending
+### Depth fusion (agent) — pending
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
