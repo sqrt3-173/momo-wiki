@@ -367,5 +367,39 @@ the scene. "I want it to be perfect."
   cloud-artifact✅) all committed. 25 unit tests green. Sim-screenshot harness = the pattern for verifying
   SceneKit headless. Repo: projects/forge. Continuity: this file + BODY_MODEL.md.
 
+## Logging UX rebuild — Hevy-parity (2026-07-07, session 2)
+Eli did a long rapid-iteration pass making the logging experience match Hevy exactly. All shipped, 25 tests
+green, each screenshot-verified (sim harness `-preview-{logging,rpe,minbar,picker,muscles,finish}`):
+- **Structure**: ExerciseSection → Hevy grid (SET/PREVIOUS/KG/REPS/RPE/📹/✓), tap-to-complete checkbox
+  (green tint), full-width Add Set, exercise notes, per-set notes (tap set# menu), rest-timer row.
+- **RPE**: bottom-sheet picker on a continuous pill track (numbers + blue selected circle), tap/drag/
+  tap-to-deselect + selection haptics, "0" when unset. Set-row chip is uniform width.
+- **Set entry**: kg/reps show the seeded value as a GREY PLACEHOLDER (fields start empty); ticking complete
+  commits it. Keyboard has a minimiser button + scroll/tap-outside dismiss. Rest defaults to 1:00.
+- **Minimise**: workout presentation lifted to RootView (`WorkoutUI` @Observable + @Query active workout).
+  Down-chevron → liquid-glass pill (iOS26 `.glassEffect`, material fallback) above the tab bar: pulsing green
+  dot, "Workout · Xmin Ys", current exercise, NO delete, tap-anywhere. Zoom transition (`matchedTransition
+  Source`/`.navigationTransition(.zoom)`, iOS18-wrapped) anchors expand to the pill. `.bouncy` spring.
+- **Header**: custom fleshed-out section (not nav bar) — chevron, orange Finish pill, ⋮ (no circle) beneath
+  Finish, big title, stats bar (Duration/Volume/Sets). Discard = confirm-gated, in the ⋮ (never the body).
+- **Add-exercise**: search-first (keyboard up), Recent↔Muscles toggle, equipment/muscle filter chips. Added
+  `Equipment` enum + tags.
+- **Camera**: on EVERY exercise; ForgeVision lifts get a rainbow-road angular-gradient glow (rich analysis).
+- **Muscle distribution**: `Muscle` enum (14) + per-exercise primary/secondary map; `Workout.muscleDistribution`
+  (1.0 primary + 0.5 secondary /completed set). MuscleDistributionView = **real anatomical front/back bodies
+  via MuscleMap SDK** (github.com/melihcolpan/MuscleMap, **MIT, iOS17+, added as SwiftPM dep** — hand-edited
+  pbxproj: XCRemote/XCSwiftPackageProductDependency + PBXBuildFile; our `Muscle`→their 36-case map) lit FORGE
+  orange by intensity, over a bar chart. (Eli's hunch that Hevy's body is a shared open asset was right.)
+- **Finish flow** (matched to his video): Finish → SaveWorkoutView (title/stats/when/description/Save) →
+  WorkoutCompleteView ("Good job!" + Nth-workout count + summary card + falling confetti + Done). finishedAt
+  committed only on Done. v1 omits save-photo + share-sheet.
+- **Modal deploy** (body pipeline): Eli did HF token + Modal account + `modal secret create huggingface`.
+  MOMO installed modal via pipx (isolated), wired `_run_pipeline` (exact SAM 3D Body API). Deploy is
+  ITERATIVE, run by ELI (bills him): fixed volume-double-mount, a structural bug, missing `wheel`, missing
+  `clang` (Modal Python links ext with clang++). Each: MOMO fixes+commits → Eli re-runs `modal deploy` →
+  pastes result. Detectron2 CUDA compile now succeeds; grinding through the image build layer by layer.
+- Open research (2026-07-07): what open/licensed lib Hevy uses for the **animated exercise-demo videos**
+  (reused across apps) — researching.
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
