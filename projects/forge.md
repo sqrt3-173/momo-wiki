@@ -126,5 +126,31 @@ differentiator is the **visual layer**:
   badges (5 lifts), quick-add sets, rest timer, plate math, history + e1RM PRs. Phase M1 = **VERIFIED** (UI-test target hand-wired into pbxproj; e2e flow test PASSING — clean-slate via -uitest-reset in-memory store; 4 iterations: sheet-animation race, my-wrong-Epley-check (app right), launch-timing, state pollution);
   remaining: end-to-end flow test in sim → then device install (needs Eli's Apple ID in Xcode, 2 min).
 
+## M2 + M3 progress (2026-07-07, device era)
+- **M2 shipped to Eli's iPhone 17 Pro**: live camera + skeleton overlay. His feedback drove:
+  - Camera flip (front/back) + lens picker (0.5× ultra-wide / 1× wide). ⚠️ Front cam mirrored → fixed.
+  - **Camera freeze+black bug (MY regression)**: was configuring AVCaptureSession on the MAIN thread →
+    UI hang. Fixed: all session config + start/stop on a dedicated sessionQueue, frame delegate on a
+    separate videoQueue, nonisolated session/engine/queues. LESSON: never touch AVCaptureSession on main.
+- **Device signing wall**: headless `xcodebuild` for the DEVICE fails ("keychain write permissions" —
+  the cert Xcode created is GUI-locked). So device deploys need Eli's ▶ press for now. Simulator builds +
+  ALL tests run fully headless. TODO: dedicated build keychain / set-key-partition-list for headless deploy.
+  Team ID: **4PR8AVQYY7** (Eli's non-personal dev-program account). Bundle: agency.catapult.forge.
+- **M3 analysis (executing)** — all verified HEADLESS (no camera/human needed = the autonomy unlock):
+  - **Kinematics**: joint angles (knee/elbow/hip) + L/R asymmetry (the "uneven elbow" read).
+  - **RepEngine**: streaming rep segmentation, per-rep ROM/tempo/bottom-angle, hysteresis + false-dip
+    rejection. Unit tests CAUGHT 2 real bugs (ROM missed the top band; timing) → fixed.
+  - **1€ filter smoothing** (PoseSmoother): kills joint wobble = much of Eli's "points inaccurate".
+  - **SubjectTracker**: locks largest/closest person, IoU continuity, grace re-lock, gates pose to subject
+    box → bystanders can't steal the skeleton (Eli's "someone gets in frame").
+  - **ForgeTests unit-test target** hand-wired into pbxproj (TEST_HOST/BUNDLE_LOADER). 24 tests green.
+  - Test target pattern for the hand-authored pbxproj now proven twice (UI + unit).
+- **Honest 3D framing (told Eli)**: a 3D SKELETON (VNDetectHumanBodyPose3DRequest) = buildable, real
+  accuracy jump, next IF smoothing didn't suffice. A photoreal 3D body MESH real-time from one camera =
+  NOT viable today (= body-scan phase, SMPL licensing + accuracy caveats). Didn't overpromise on "Fable 5
+  can build anything." Awaiting Eli's read on whether smoothing fixed accuracy before the 3D rewrite.
+- **Sub-momo pilot**: Eli wants 2-3 parallel instances, same Claude account, own Discord channels. NUNU
+  templates = the kit. Proposed pilot: FORGE-momo owning FORGE in #forge, MOMO as director. Awaiting go.
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
