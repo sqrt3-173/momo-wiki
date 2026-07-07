@@ -123,7 +123,7 @@ differentiator is the **visual layer**:
 - **Running on iPhone 17 Pro simulator** (device UDID 665D0D31-…; build → `xcrun simctl boot/install/launch`,
   screenshot via `simctl io screenshot`). Screenshot sent to Eli.
 - M1 contents: SwiftData logging core (Workout/ExerciseEntry/SetRecord), catalog w/ AnalysisProfile camera
-  badges (5 lifts), quick-add sets, rest timer, plate math, history + e1RM PRs. Phase M1 = executing;
+  badges (5 lifts), quick-add sets, rest timer, plate math, history + e1RM PRs. Phase M1 = **VERIFIED** (UI-test target hand-wired into pbxproj; e2e flow test PASSING — clean-slate via -uitest-reset in-memory store; 4 iterations: sheet-animation race, my-wrong-Epley-check (app right), launch-timing, state pollution);
   remaining: end-to-end flow test in sim → then device install (needs Eli's Apple ID in Xcode, 2 min).
 
 ## Notes
