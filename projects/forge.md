@@ -160,12 +160,25 @@ differentiator is the **visual layer**:
     orbitable skeleton on a floor), `ReplayView` (scrub + stat sheet + LiDAR badge), record button in capture.
   - LiDAR honest answer given: helps HERE (scale/real-units + Apple already uses it), one-viewpoint limit.
   - ⚠️ Still needs Eli's ▶ + on-device visual verification (SceneKit skeleton orientation/scale, live 3D fps).
-- **PERF regression + fix (2026-07-07)**: camera slow to open (~20s) + iOS killed the app after 30s
-  (thermal). Cause: running Vision too hard — allocating fresh VN request objects EVERY frame + person-
-  detection at full 30fps on top of pose. Fix: reuse request objects (pose/people/3D), run person-detection
-  every 8th frame (subject box stable between), throttle pose to ~20fps + recording-3D to ~12fps (~4x load
-  cut). LESSON: never allocate Vision requests per-frame; throttle inference; a 30fps×N-model pipeline cooks
-  the device → watchdog/thermal kill. Awaiting Eli's retest + a diagnostic (video-black vs skeleton-slow).
+- **PERF pass (2026-07-07)**: reuse VN request objects (never per-frame), person-detection every 8th frame,
+  throttle pose ~20fps + 3D ~12fps. Good hygiene — but was NOT the crash cause (I guessed; Eli pushed back).
+- **THE camera crash — real root cause (from DEVICE CONSOLE, not guessing) 2026-07-07**:
+  - Symptom: camera ~20s to open then iOS killed the app ~30s.
+  - Diagnosis method: `xcrun devicectl device process launch --console` gave nothing (app has no logging);
+    the winner = Eli ran via **Xcode ▶ (debugger attached)** + screenshotted the debug console. Log showed
+    `Attempt to present <PresentationHostingController> ... which is already presenting` REPEATED + then
+    `FigCaptureSourceRemote Fig assert err=-17281` repeated (camera source failing over and over).
+  - CAUSE: `.fullScreenCover` was attached INSIDE each List row (`ExerciseSection`). SwiftUI recycles rows →
+    present/dismiss loop → a NEW AVCaptureSession spun up + torn down repeatedly → camera never stabilises →
+    slow/black → watchdog/camera-failure kill.
+  - FIX: ONE top-level `.fullScreenCover(item: $cameraTarget)` on ActiveWorkoutView; row's camera button
+    just sets `cameraTarget` (Identifiable wrapper) via a closure. One session, opened once. M1 test green.
+  - LESSONS: (1) NEVER attach `.fullScreenCover`/`.sheet` inside a recycling List/ForEach row — present at a
+    stable top level. (2) When blind on a device bug, STOP guessing → read the actual console (Xcode ▶ +
+    debugger screenshot is the fast path when headless deploy is keychain-locked).
+  - ⚠️ Headless device deploy still blocked (login-keychain private key inaccessible to background xcodebuild;
+    even without -allowProvisioningUpdates: "no signing cert with a private key"). Eli's ▶ needed per deploy
+    until a keychain-unlock is set up.
 - **Sub-momo pilot**: Eli wants 2-3 parallel instances, same Claude account, own Discord channels. NUNU
   templates = the kit. Proposed pilot: FORGE-momo owning FORGE in #forge, MOMO as director. Awaiting go.
 
