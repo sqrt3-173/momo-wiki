@@ -280,6 +280,24 @@ the scene. "I want it to be perfect."
 - LESSON: research can go stale fast on fast-moving vendors; Eli poking the actual site caught it. Verify
   vendor status before recommending a license path.
 
+### ✅✅ VERIFICATION RESULT (2026-07-07) — a BETTER path emerged
+- **Meta released MHR (Momentum Human Rig) + SAM 3D Body on 2025-11-19, Apache-style PERMISSIVE COMMERCIAL
+  license, open on GitHub** (facebookresearch/MHR; SAM 3D Body code+weights on GitHub/HF).
+  - **SAM 3D Body = single photo → personalized 3D body MESH** — literally what Meshcapade Me did — OPEN,
+    self-hostable, NO licensing negotiation, NO fee, commercial-OK.
+  - MHR = the parametric skeleton+mesh+blendshapes rig (multi-LOD) it targets.
+- **This is the new Path A, and it's STRONGER than licensing SMPL ever was**: own the pipeline, zero vendor
+  dependency, zero fee. Appeared months before Meshcapade shut down — covers the gap perfectly.
+- Confirmed: SMPL commercial licensing moved to **Max Planck Innovation** (smpl@max-planck-innovation.de) —
+  slow/bespoke/no pricing; NOT Epic. Avoid. Ready Player Me shut down (Netflix, Jan 2026). Presize→Meta 2022.
+  Alt SDKs still live: in3D (real mesh, opaque pricing), Avatar SDK/MetaPerson (pricing tiers) — fallbacks.
+  Also: Anny (Naver, Apache-2.0) open body SHAPE model (not a photo-fitter).
+- **THE PLAN (updated)**: build FORGE's "Meshcapade Me" on **Meta MHR + SAM 3D Body** — onboarding photo →
+  SAM 3D Body → user's personalized MHR body mesh; Apple's free real-time skeleton drives it moving during
+  workouts; SceneKit renders. Photo→mesh likely a cloud/on-device inference step (R&D); NO licensing wall.
+  ⚠️ Still a real engineering build (integrate Meta models, probably a cloud inference step), but the BLOCKER
+  (licensing) is gone. Recommend this as the path.
+
 ## SYNTHESIS → the honest FORGE visual-layer plan (all 3 research streams)
 1. **3D body mesh of you** = the centerpiece, buildable. Decision gate = Meshcapade quote (path A) vs
    Apple-native free/coarser (path B). Ceiling = proportion-correct, not clinical.
