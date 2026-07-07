@@ -412,5 +412,35 @@ green, each screenshot-verified (sim harness `-preview-{logging,rpe,minbar,picke
 - **Guard**: `modal` being added to DEV_ALLOW (Eli, 2026-07-07) so MOMO runs `modal deploy` itself (ends the
   deploy back-and-forth). MOMO's commitment: deploys only; leaves billable `modal run` GPU inference to Eli.
 
+## Body pipeline — DEPLOYED + PROVEN (2026-07-07, session 2)
+The SAM 3D Body reconstruction is **live on Modal and verified end-to-end**: fed Meta's demo photo
+(sample1, a diving football catch) → real body mesh (**18,439 verts / 36,874 faces**, in the actual pose).
+Photo → 3D body WORKS. Endpoints: `eli-17306--forge-reconstruct-{submit-scan,scan-status}.modal.run`.
+- **Deploy debugging (all fixed, the learnings)**: volume-double-mount → single /cache mount; missing `wheel`
+  (detectron2 --no-build-isolation); missing `clang` (Modal Python links ext w/ clang++); missing fastapi
+  (Modal needs it explicit for @fastapi_endpoint); wrong deps guess → use the repo's INSTALL.md list
+  verbatim (~30 pkgs, NO chumpy/MoGe/SAM3 — detector-only); **the real killer: pyrender (imported
+  transitively by notebook.utils→visualization.renderer) needs EGL → apt libegl1/libgles2/libglvnd0/libgl1/
+  libopengl0 + PYOPENGL_PLATFORM=egl**. Model weights BAKED into image (.run_function _download_model w/ HF
+  secret) so no runtime re-download. `modal` is allowlisted (Eli) so MOMO runs deploys; commitment: deploys
+  only, billable `modal run` inference asked-first (Eli said run the one verification).
+- **Robust run pattern**: reconstruct saves GLB(+USDZ) to the Volume /output + volume.commit() → `modal run
+  --detach` (survives client reap) → poll the Volume + `modal volume get`. (Client-blocking runs get reaped
+  mid-inference → cancelled; detach + volume-save is the fix.)
+- **⚠️ ONE leftover**: Blender GLB→USDZ export fails (apt blender too old for .usdz packaging) — made USDZ
+  optional (GLB is source of truth). TODO: fix USDZ (newer Blender, or usd/pxr, or convert on the Mac) so
+  the app's BodyMeshView can render it + iOS gets the native format. Also: render a mesh preview (mini has no
+  trimesh/PIL — install or convert). Eli's own STANDING scan will be the real showcase (diving pose = weird demo).
+
+## Logging UX — feature batch 2 (2026-07-07, IN PROGRESS)
+Eli's app is on his phone + he's driving Hevy-parity. **Done (committed)**: finish-flow keyboard glitch
+(dismiss kbd + settle before confetti), picker alphabetical "All" section. **QUEUED** (Eli's list + refs in
+Discord msg 1524037776591290368 = set-type + superset menus): create-exercise button; set-types via tapping
+the set number (warmup/drop, Hevy — think critically); swipe-left-to-note grouped visually under the set;
+exercise ⋮ menu = replace / reorder / add-to-superset (Hevy refs); stats drill-in button (right of picker
+toggle); **routines** in Train tab (replace recent-workouts); **History → Profile** tab (Hevy-style);
+photo-upload on finish; minimised pill needs more bottom clearance; swipe workout page closed → minimise INTO
+the pill (native zoom/Liquid Glass).
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
