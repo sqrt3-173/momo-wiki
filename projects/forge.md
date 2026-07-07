@@ -11,6 +11,23 @@ differentiator is the **visual layer**:
    phone-side splats (ultrawide+main+LiDAR corroboration). Research-grade — NOT the focus.
 - **Success criteria: a deliverable iOS app.** iOS-first for simplicity; later a single-camera Android version.
 
+## BUSINESS STRATEGY / POSITIONING (Eli, 2026-07-07)
+FORGE is fundamentally **a tool to facilitate COACHING**. Two go-to-market angles:
+1. **B2C** — consumers/gym-goers use it themselves for **autonomous improvement** (solo self-coaching).
+2. **B2B2C** — **coaches + gyms** use it as a professional tool. Vision: become **the industry standard for
+   what's expected in programming**, and a **selling point for gyms** (a gym offers FORGE → competitive edge).
+- **Strategic implications for the build** (why this matters, not just a label):
+  - The **deep biomechanics insight layer is now strategically CENTRAL, not a nice-to-have** — coaches need
+    pro-grade analysis (joint loads, velocity/power, technique, asymmetry) to justify it as a professional tool
+    + "industry standard for programming."
+  - **Multi-user / roster features** become real: coach ↔ athletes, shareable 3D replays + stat reports (a
+    coach reviews an athlete's lift remotely + prescribes), a coach dashboard, programming tools atop the log.
+  - The **parked gym-camera era fits the gym B2B angle** directly (install cams → members get auto-capture →
+    gym selling point). The dynamic-gaussian-splat "gym install" isn't just a cool future — it's the B2B hook.
+  - **Programming** (already in the core: templates + progressive overload) is load-bearing for the coach angle.
+- Sharpens priority: build the insight depth + the eventual coach/roster + sharing layer as first-class, since
+  the B2B2C "industry standard for coaching/programming" is a core wedge, not an afterthought.
+
 ## MOMO's assessment (sent 2026-07-07)
 - Core v1 is genuinely buildable: **Apple Vision framework 3D body pose** (`VNDetectHumanBodyPose3DRequest`,
   iOS 17+, 17 joints, on-device, ordinary camera) covers exactly the joint-angle/asymmetry/rep-counting/
