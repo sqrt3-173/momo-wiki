@@ -182,5 +182,27 @@ differentiator is the **visual layer**:
 - **Sub-momo pilot**: Eli wants 2-3 parallel instances, same Claude account, own Discord channels. NUNU
   templates = the kit. Proposed pilot: FORGE-momo owning FORGE in #forge, MOMO as director. Awaiting go.
 
+## MOONSHOT vision (Eli, 2026-07-07) + honest staging
+Eli wants far more than a skeleton: an **anatomically accurate 3D BODY MESH of himself** reconstructed from
+video (not a stick figure); his own body shape captured + motion-driven; **LiDAR + multi-cam stereo +
+monocular depth fusion** for accuracy; **skeleton on the video itself**; and a **gaussian splat** to explore
+the scene. "I want it to be perfect."
+- **MOMO's honest tiers (told Eli, refused to yes-man "perfect")**:
+  - NOW: skeleton-on-video ✅ DELIVERED; anatomical body MESH (SMPL-family, has commercial-licence gate).
+  - HARD-but-real: depth fusion (LiDAR+stereo+monocular); personalized body shape scan + motion drive.
+  - FRONTIER: gaussian-splat scene exploration — real tech, nobody's shipped it for fitness, live-on-phone
+    isn't there; offline-from-video heavy. Genuine R&D bet, not a sure thing.
+  - Won't promise "perfect" — promised best-achievable-on-iPhone + honest ceiling at each step.
+- **3 deep-research agents launched (2026-07-07)**: (1) video→3D human mesh (HMR2/4D-Humans/SMPLer-X,
+  on-device CoreML, SMPL licensing, personalization, Apple-native mesh?); (2) iPhone depth fusion
+  (LiDAR sceneDepth + AVCaptureMultiCam stereo + Depth Pro/Depth Anything monocular, synchronizer gotchas,
+  honest per-signal contribution); (3) gaussian splatting on iOS (3DGS/4D-dynamic/human-GS, on-device vs
+  cloud, Luma/Polycam/Scaniverse, maturity verdict). → synthesize into a technical plan + honest verdicts.
+- **DELIVERED now**: `VideoRecorder` (AVAssetWriter full-rate video during recording) + `VideoSkeletonView`
+  (AVPlayer + Canvas skeleton overlay on real footage, time-synced) + ReplayView On-video/3D toggle.
+  stopRecording now async. 19 tests green.
+- ⚠️ Front-camera mapping bug (orientation/mirroring) — acknowledged secondary; back-camera propped is the
+  real workflow.
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
