@@ -344,9 +344,17 @@ the scene. "I want it to be perfect."
   3-tab bar (Train/Body/History) verified via sim screenshot. ⚠️ ARKit capture = DEVICE-verify (no sim ARKit).
   Frame persistence + upload = step 4.
 - **M6 progress**: (1) retargeting math ✅ (2) 3D body renders+moves ✅ (3) scan-capture ✅ (device-verify
-  pending) (4) **cloud SAM pipeline = NEXT + THE GPU-SPEND GATE** — scan → SAM 3D Body inference (cloud CUDA
-  GPU) → user's real MHR mesh. Needs Eli's go on standing up the inference box (small $ spend). Told Eli.
-  Screenshots (mannequin + tab bar) sent.
+  pending) (4) cloud pipeline:
+  - ✅ **4a app-side**: ReconstructionService (protocol + Stub for GPU-free e2e + Remote multipart→USDZ) +
+    BodyModel status lifecycle + scan→reconstruct→ready flow. Real endpoint swaps in, zero UI change. 25 green.
+  - ✅ **4b cloud artifact**: `server/forge_reconstruct.py` (Modal — 4-stage SAM 3D Body → trimesh GLB →
+    Blender USDZ, async submit/poll, A10G scale-to-zero) + `server/README.md` deploy steps. Syntax-valid;
+    inference calls flagged ⚠️VERIFY for deploy-time wiring (needs live GPU). Deployment plan in BODY_MODEL.md.
+  - **GATED ON ELI**: (1) HF gated-weights access request (sam-3d-body-vith — START NOW, approval takes time)
+    (2) Modal account+billing. Then MOMO wires `_run_pipeline` + deploys + measures VRAM/latency.
+  - **Remaining app-side (next)**: iOS USDZ loader — load the static personalized mesh into the body slot
+    (compile-verify now; full visual verify when a real mesh lands). v1 = static body; animate = v2 via
+    PoseRetargeter (built).
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
