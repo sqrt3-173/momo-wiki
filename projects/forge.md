@@ -438,6 +438,23 @@ Photo → 3D body WORKS. Endpoints: `eli-17306--forge-reconstruct-{submit-scan,s
   → unblocked. Ready for Eli to scan himself (reinstall via Xcode play — CLI device install blocked: signing
   cert lives in Eli's Xcode session, not the headless keychain).
 
+## ⚠️ ENGINE PLANS WERE STALE — check existing code before planning (2026-07-08)
+When populating the engine I authored plans WITHOUT reading the code first — several were already built:
+**Add-exercise button** = DONE (CustomExercise @Model + create-flow in `ExercisePickerView` line ~250 + `customs`
+@Query). **Routines in Train tab** = built (`RoutineEditorView`, `HomeView` use Routine/RoutineExercise;
+container registers them). Lesson (soul.md "read before touching"): before authoring engine plans, grep the
+codebase — don't queue work that exists. NEXT session: reconcile FORGE plans vs reality; the genuinely-open ones
+are **stats drill-in**, **History→Profile tab**, **guided-scan pt2** (front camera + LiDAR switch), and
+**verify** Add-exercise + routines actually work end-to-end (they compile + are wired; not screenshot-verified).
+
+## ✅ SCAN UX pt1 built (2026-07-08, Eli feedback)
+Validation-gated capture: `BodyScanController` runs Vision `VNDetectHumanBodyPoseRequest` per sampled frame →
+only counts a frame when a full body is detected (coverage≥0.55); `Guidance` enum (searching/getCloser/capturing).
+HUD rebuilt: live banner + A-pose coaching + 8-angle ring + real progress (verified via `-preview-scanui` mock,
+camera behaviour device-tested). Follow-ups (pt2): front camera default (TrueDepth) + switch to back for
+LiDAR/dual-cam; true A-pose joint validation; real body-orientation sector detection (current sectors are
+count-derived, an approximation).
+
 ## ✅ BODY SCANNER PROVEN ON DEVICE (2026-07-08)
 - Eli installed FORGE on his iPhone + ran a **real body scan** → reconstructed to a valid **18,439-vertex** human
   mesh. Full pipeline works with a real person, not just test photos.
