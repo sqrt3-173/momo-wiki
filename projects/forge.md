@@ -338,8 +338,15 @@ the scene. "I want it to be perfect."
   headless render-verification (the pattern for verifying SceneKit without a device).
 - **Discipline win**: didn't ship the render blind — built a sim-screenshot harness, launched it, LOOKED at
   the body, confirmed it renders right. Verify-what-I-build held at the frontier.
-- **M6 progress**: (1) retargeting math ✅ (2) 3D body renders+moves ✅ (3) onboarding scan-capture [next,
-  device] (4) cloud SAM pipeline [needs Eli's GPU-spend greenlight]. Screenshot sent to Eli.
+- ✅ **BodyScanController + BodyScanView + BodyProfileView (Body tab)** built: ARKit ARWorldTracking +
+  sceneDepth (LiDAR), timed 360° capture (~3fps color+depth + intrinsics + camera transform, Sendable
+  extraction off delegate thread → main publish), guided UI, creates BodyModel on capture. Builds clean;
+  3-tab bar (Train/Body/History) verified via sim screenshot. ⚠️ ARKit capture = DEVICE-verify (no sim ARKit).
+  Frame persistence + upload = step 4.
+- **M6 progress**: (1) retargeting math ✅ (2) 3D body renders+moves ✅ (3) scan-capture ✅ (device-verify
+  pending) (4) **cloud SAM pipeline = NEXT + THE GPU-SPEND GATE** — scan → SAM 3D Body inference (cloud CUDA
+  GPU) → user's real MHR mesh. Needs Eli's go on standing up the inference box (small $ spend). Told Eli.
+  Screenshots (mannequin + tab bar) sent.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
