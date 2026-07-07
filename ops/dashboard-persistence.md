@@ -19,4 +19,13 @@ Eli runs (with sudo/his approval) something like a `~/Library/LaunchAgents/com.m
 
 ## Interim
 MOMO restarts it on demand when Eli's using it. Don't auto-restart every turn — it just dies again.
-Eli hasn't flagged the dashboard as needing 24/7 uptime; it's a convenience view, not load-bearing.
+
+## ⚠️ 2026-07-07: launchd agent installed but NOT ticking (unresolved)
+Eli requested always-on. MOMO built `ops/dashboard-guardian.sh` (v1 nohup → FAILED: launchd reaps
+timer-job children on exit; v2 tmux-detach) + `ops/com.momo.dashboard.plist` (RunAtLoad + StartInterval 60,
+mirrors com.momo.agent). Eli ran `launchctl load` — `launchctl list` showed it loaded (exit 0), BUT the
+guardian's stdout/err logs NEVER appear + the dashboard stays down → **the agent isn't executing the script
+on the timer**. Likely cause: macOS 26 `launchctl load` is deprecated + may load-without-scheduling;
+**`launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.momo.dashboard.plist` is the modern path**.
+TODO (needs Eli, low priority — convenience view): unload + `bootstrap` the agent, then verify a tick runs
+the tmux guardian. Until then MOMO restarts on demand. DON'T over-invest — FORGE is the priority.
