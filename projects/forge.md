@@ -308,5 +308,16 @@ the scene. "I want it to be perfect."
 5. Shipped already: skeleton-on-video ✅. Next buildable-now: the Apple-native body mesh (path B) as a
    no-licensing-risk start while the Meshcapade quote is pursued.
 
+## M6 BUILD STARTED (Eli's GO, 2026-07-07)
+- **Phase order**: (1) retargeting math ✅ → (2) onboarding body-scan capture (guided 360 + LiDAR) →
+  (3) body mesh render+drive (placeholder body first, sim-screenshot verified, then real MHR) →
+  (4) cloud SAM 3D pipeline.
+- ✅ **PoseRetargeter** built + 25 tests green: Apple 17 joint POSITIONS → bone ROTATIONS (quaternions) to
+  drive a rigged mesh; handles parallel/antiparallel edge cases (naive cross-product NaNs there). Foundational,
+  not throwaway; calibrates to MHR bind pose when the mesh lands. Fully headless-verified.
+- **Discipline note**: did NOT build the body-render blind (SceneKit isn't headless-verifiable without a
+  sim-screenshot harness). Next: build the mannequin render + a sim harness to screenshot-verify it, THEN the
+  scan-capture flow (needs device camera+LiDAR). Verify-what-I-build holds even at the frontier.
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
