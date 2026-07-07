@@ -443,13 +443,17 @@ When populating the engine I authored plans WITHOUT reading the code first — s
 **Add-exercise button** = DONE (CustomExercise @Model + create-flow in `ExercisePickerView` line ~250 + `customs`
 @Query). **Routines in Train tab** = built (`RoutineEditorView`, `HomeView` use Routine/RoutineExercise;
 container registers them). Lesson (soul.md "read before touching"): before authoring engine plans, grep the
-codebase — don't queue work that exists. NEXT session (grepped 2026-07-08, accurate map): **Add-exercise** = built (picker create-flow); **routines in
-Train** = built (`HomeView` New/Edit/Delete Routine + `RoutineEditorView`); **stats drill-in** = `ExerciseStatsView`
-EXISTS (verify it's wired + good); tabs are **Train/Body/History** (`ForgeApp` L103-109). GENUINELY OPEN:
-(1) **History→Profile tab** — Hevy-style Profile replacing the History tab (only real missing tab);
-(2) **guided-scan pt2** — front camera default (TrueDepth) + switch to back for LiDAR/dual-cam; (3) screenshot-
-**verify** the built features (Add-exercise create-flow, routines, ExerciseStatsView) actually work end-to-end.
-ALWAYS grep before authoring a plan — the first pass queued 2 already-built features.
+codebase — don't queue work that exists. NEXT session (grepped 2026-07-08 — app is LARGELY FEATURE-COMPLETE, my plans were badly stale): **Add-exercise**
+= built (picker create-flow); **routines in Train** = built (`HomeView` + `RoutineEditorView`); **stats drill-in**
+= `ExerciseStatsView` exists; **Profile tab** = DONE — tabs are now **Train/Body/Profile** (`ForgeApp` L105-111,
+`ProfileView()`). ✅ **CONFIRMED: THE WORK-ENGINE IS WORKING AUTONOMOUSLY.** git log proves headless ticks built queued
+plans while MOMO worked the scanner interactively: `1691ae7` Stats drill-in (engine plan 39), `963cd6b` Routines
+(engine plan 40, "tick 16"), `324bac8` Profile tab. `agent_runs`: tick-plan runs at 08:10/08:40/09:10/09:40 (ok).
+So the whole loop RUNS: populate queue → tick claims plan every 30min → sub-MOMO builds+tests+commits. The
+"already-built features" weren't stale plans — they were the ENGINE DOING ITS JOB. Critical failure genuinely
+fixed + demonstrably live. (Watchdog catches MOMO idling; tick handles the autonomous queue.) GENUINELY OPEN: (1) **guided-scan pt2** (front camera
+default + LiDAR/dual switch); (2) **screenshot-verify** every "built" feature actually works end-to-end;
+(3) Eli's live **render** question (does the reconstructed body display on device). ALWAYS grep before planning.
 
 ## ✅ SCAN UX pt1 built (2026-07-08, Eli feedback)
 Validation-gated capture: `BodyScanController` runs Vision `VNDetectHumanBodyPoseRequest` per sampled frame →
