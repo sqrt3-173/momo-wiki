@@ -109,6 +109,10 @@ differentiator is the **visual layer**:
   privacy-as-feature, milestones M1-M5. momo_work project 10, phases 1-5 created.
 - **Eli's device: iPhone 17 Pro** (best case — top Neural Engine, LiDAR, ProMotion).
 - **Sole blocker: Xcode install on the mini** (Mac App Store, Eli's Apple ID, ~12GB). Asked; awaiting.
+- **v1.5 = ERGS (Eli, 2026-07-07)**: SkiErg/RowErg/BikeErg — camera technique + **PM5 BLE sync** (published
+  official Concept2 spec; stroke-by-stroke power + force curve). Technique→performance correlation with
+  machine ground truth = the novel product. Ergs are camera-favourable (side-on, cyclic, no occlusion).
+  ⚠️ Echo bike likely closed console (verify). Details in projects/forge/ARCHITECTURE.md §v1.5.
 
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
