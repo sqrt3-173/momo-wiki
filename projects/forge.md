@@ -101,6 +101,14 @@ differentiator is the **visual layer**:
 - Table stakes for any entrant: fast set/rep/weight logging + plate math + rest timers, program templates w/
   progressive overload, Apple Watch companion, 1RM/volume/PR analytics.
 
+## Architecture + repo (2026-07-07)
+- **Repo: `/Users/momo/momo/projects/forge/`** (git init'd, local-only — GitHub push needs Eli's OK).
+  **`ARCHITECTURE.md`** = the v1 system design: SwiftUI/SwiftData, iOS 17+ min, ForgeLog (logbook) +
+  ForgeVision (Vision 3D pose + YOLO bar tracker + rep engine, all on-device) + ForgeReplay (skeleton/bar-path
+  overlay replay — replay-first, NOT real-time coaching), 5 validated launch lifts (bench via bar-path),
+  privacy-as-feature, milestones M1-M5. momo_work project 10, phases 1-5 created.
+- **Eli's device: iPhone 17 Pro** (best case — top Neural Engine, LiDAR, ProMotion).
+- **Sole blocker: Xcode install on the mini** (Mac App Store, Eli's Apple ID, ~12GB). Asked; awaiting.
+
 ## Notes
 - NV Health remains the operational priority for open threads (GTM conversion publish-state check + secure PDF).
-- FORGE is greenfield — nothing committed yet; no repo created yet.
