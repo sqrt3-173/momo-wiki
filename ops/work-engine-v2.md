@@ -1,5 +1,17 @@
 # Work-engine v2 — the reliability/enforcement rebuild (2026-07-08)
 
+## ▶ RESUME HERE (post-restart, 2026-07-08 ~10:50)
+GSD Core v1.6.1 **installed globally** (`npx @opengsd/gsd-core@latest --claude --global`, Eli ran it) →
+`~/.claude/` has the real commands/agents/workflows/hooks. **MOMO's guard VERIFIED still alive** after install
+(launchctl still blocks — installer "preserved 1 user baseline file", no clobber). Restarted MOMO to load the
+`/gsd-*` commands (momo-loop.sh relaunches claude on exit; MOMO can't self-kill — Eli ran `pkill -f "claude
+--channels"`). **IMMEDIATE NEXT:** (1) re-verify guard still blocks (safety); (2) confirm `/gsd-*` commands
+registered (`ls ~/.claude/commands/gsd/` — 72 files) + that GSD's added hooks didn't break MOMO's guard/reply
+hooks; (3) then kick off real GSD — `/gsd-onboard` on FORGE (brownfield, it exists) or `/gsd-new-project`, first
+dogfood target = FORGE or work-engine itself. Delete the dead partial `worksystem/gsd-source/` (interpreted GSD).
+Eli was frustrated by MOMO degrading late-session (overcaution) — be crisp + decisive, verify don't assert.
+
+
 **Trigger:** Eli, after 5 days: the work engine hasn't run smoothly; it must become the scalable backbone. Deep
 research launched (workflow `wf_997fd4fb`, 4 researchers → synthesis → adversarial critique).
 
