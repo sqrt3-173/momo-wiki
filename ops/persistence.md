@@ -18,7 +18,10 @@ exit 0" in `launchctl list`, run their `RunAtLoad` at most once, and **their
 timer provably ticks. So: new periodic job ⇒ add a self-throttling single-pass rider to
 `momo-guardian.sh` (current riders: nightly `momo_work` backup, work-engine tick throttle,
 `momo-idle-watchdog.sh`, `dashboard-guardian.sh` — see [[dashboard-persistence]]), never a
-new plist. If a standalone agent is ever truly needed, `launchctl bootstrap gui/$(id -u) <plist>`
+new plist. The watchdog is END-TO-END PROVEN (2026-07-08 14:2x: idle detected → nudge typed
+→ submitted → session acted on it). Its one send-keys trap, fixed same day: an Enter in the
+same burst as the text gets swallowed by the TUI — always send text, `sleep 1`, then Enter
+as a separate send-keys. If a standalone agent is ever truly needed, `launchctl bootstrap gui/$(id -u) <plist>`
 is the modern load path to try first — and verify a tick actually logs before trusting it.
 
 ## Why the guardian has a duplicate-bridge guard
