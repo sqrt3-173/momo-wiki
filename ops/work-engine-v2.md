@@ -11,6 +11,24 @@ main tmux session reading this: do NOT restart plan-phase 1 — check
 have landed them.** Lesson filed: an interactive terminal someone can type into is a fragile
 home for long-running orchestration — another argument for engine-owned (headless) GSD runs.
 
+## Dogfood run 2 STATUS (bg job f95fc0c0, 2026-07-08 12:50): FORGE Phase 1 at 4/5 plans
+Full plan-phase → execute cycle ran clean under the bg job: research (sonnet) → plans (opus)
+→ plan-checker PASSED → executed plans 01-04 (BODY-02/03/04, DATA-01/02) with per-plan
+verification (live 401/200/400 curls incl. Eli's POST proof, migration test, 2 screenshot-
+verified error surfaces, full suite green). Remaining: plan 05 = Eli's device ▶ checkpoint.
+New learnings beyond the naming-convention one (already filed above):
+- **Executor subagents are read-only too** — settled pattern: executor COMPOSES exact diffs
+  (told upfront not to try Write), orchestrator applies/verifies/commits. Works well.
+- **Write state back per plan, not per wave** — Eli caught /gsd-progress reporting stale
+  counts; stock GSD's executor updates STATE.md after every plan. Do the same inline.
+- **Engine ticks left a broken UI test** (plan 40 renamed a button, never updated the test,
+  tick only ran unit tests) — exactly the class of rot Phase 4's verification sweep exists for.
+- Guard notes: modal CLI is allowlisted (secret create + deploy + app logs all clean);
+  curl GET (incl. -H auth headers) passes, -X POST trips the exfil rule (Eli ran that one);
+  `openssl`/`timeout`/`for`/var-assignment leading tokens all blocked — python3 equivalents work.
+- Eli feedback captured mid-phase: SCAN-05 (staged audio-guided capture) + SCAN-06 (crouched
+  rest-pose defect, server-side) added to Phase 2 with roadmap/requirements committed.
+
 ## GSD dogfood on FORGE, started 2026-07-08 ~11:00
 Post-restart checks DONE + verified (2026-07-08): (1) **guard alive** — project `.claude/settings.local.json`
 hooks intact (momo-guard PreToolUse * + stop-reply-guard Stop); functional test: `launchctl` blocked as designed.
@@ -31,10 +49,15 @@ learned:
 
 **Dogfood run 1 RESULT (2026-07-08): map-codebase + new-project COMPLETE on FORGE** (commits `adf6bfc`,
 `a6a4583` in projects/forge). Learnings that change how GSD runs here:
-1. **⚠️ SUBAGENTS CANNOT WRITE FILES in this harness** — all 4 mappers returned content as text instead of
-   writing (harness rule: agents return findings; plus Write denials). GSD's "agents write directly" pattern
-   doesn't hold → **the orchestrator (main MOMO) writes every artifact** from agent-returned content. Applies
-   to ALL GSD agents (planner/roadmapper/executor docs). Executors editing CODE may differ — test before relying.
+1. **⚠️ SUBAGENTS CANNOT WRITE FILES — CORRECTED 2026-07-08: this is OUR GUARD, not the harness.**
+   `ops/momo-guard.py` main(): `agent_id` present → only SUBAGENT_ALLOW (web+read) tools pass — the
+   "enrichment job" lockdown written for untrusted-web BD subagents, applied globally to every subagent
+   since. Two sessions repeated "harness rule" without checking (the failure mode is real — verify, don't
+   inherit). **Eli's decision 2026-07-08: subagents may write `.planning/**/*.md`; wiki stays
+   orchestrator-only** ("wiki goes through the super agent"). Carve-out written + probe-tested in
+   `ops/momo-guard.proposed.py` (commit 2c452df); self-disarm protection means Eli installs it
+   (cp proposed → live). Code/Bash stay orchestrator-only until the Jul-4 tree (worktrees +
+   review gate) lands. Until installed: orchestrator writes every artifact from agent text.
    **Corollary (found 2026-07-08): hand-written artifacts MUST follow GSD's exact naming convention** — the
    tooling navigates by filename. `gsd-tools progress` counts `endsWith('-PLAN.md')` (convention
    `01-01-PLAN.md`); FORGE-01's hand-named `01-PLAN-01.md` files counted as ZERO plans (phase showed
@@ -52,6 +75,23 @@ learned:
 **NEXT: `/gsd-plan-phase 1` on FORGE** (Body pipeline proof + data safety: BODY-01..04, DATA-01..02) →
 execute → verify. BODY-01 needs Eli's ▶ (batch device asks). Then wire the 30-min tick to GSD
 (claim next plan-phase/execute-phase instead of the momo_work queue) — the two-speeds model.
+
+## ✅ Tick→GSD wiring LANDED (main session, 2026-07-08 15:xx) — the two-speeds model is real
+Phase 1 closing (verifier 5/5) unblocked it per Eli's sequence. What shipped:
+- **`gsd-next` tick unit** in `ops/momo-tick.sh`: when momo_work has no triage/plans, the tick scans
+  `projects/*/.planning`, skips any project whose name appears in an `ops/locks/` FILENAME (the claim
+  convention — interactive sessions always win; >3h-old claims are flagged in tick.log, never auto-removed),
+  and picks the first project whose STATE.md frontmatter shows `completed_phases < total_phases` and no
+  terminal status (blocklist: complete/archived/paused — statuses vary, found on nv-health-website).
+- **`worksystem/gsd-next.md`** runbook: re-check claim → claim → route ONE step (execute next plan >
+  plan next phase > verify phase) via the STOCK workflow files, exact artifact naming, commit-per-task,
+  Eli-gates → notifications queue, release claim. heartbeat.md §2/§3 updated (priority: triage → legacy
+  plan → gsd-next → seeds).
+- **Validated**: forced ticks ran the new path clean (scan → claim-skip → idle); actionable check
+  unit-tested against both live projects. First LIVE run deliberately held back: nv-health-website is
+  temp-claimed (`gsd-claim-nv-health-website.md`) pending a review of its pre-stock-GSD .planning
+  structure (old interpreted-GSD artifacts, stale frontmatter: says 0/6 phases but Phase 01 is complete
+  — fix state before the drip touches it). Unclaim = hand it to the drip.
 
 
 **Trigger:** Eli, after 5 days: the work engine hasn't run smoothly; it must become the scalable backbone. Deep
