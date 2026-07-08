@@ -76,6 +76,15 @@ learned:
 execute → verify. BODY-01 needs Eli's ▶ (batch device asks). Then wire the 30-min tick to GSD
 (claim next plan-phase/execute-phase instead of the momo_work queue) — the two-speeds model.
 
+## ✅✅ FIRST LIVE RUN PROVEN (run 20, 2026-07-08 15:34–15:52, $4.30) — the loop is closed
+The 15:34 natural tick picked nv-health-website, and the headless session executed the FULL protocol
+unsupervised: claim → route → **safe_resume_gate judgment** (plan 02-01's code pre-existed from
+interactive sessions → verified against the plan, 14/14 tests, close-out SUMMARY instead of redo) →
+fixed a stale test asserting the superseded default-denied consent seed → commit b5736ee → STATE.md
+synced (5/8, 63%) → claim released → **contradiction flagged, not executed** (plans 02-03/02-04 want a
+consent banner; Eli's standing decision d6d3303 is opt-out — queued him a numbered decision instead) →
+notification delivered + marked. This is v2's whole thesis demonstrated: enforcement + feeding + judgment.
+
 ## ✅ Tick→GSD wiring LANDED (main session, 2026-07-08 15:xx) — the two-speeds model is real
 Phase 1 closing (verifier 5/5) unblocked it per Eli's sequence. What shipped:
 - **`gsd-next` tick unit** in `ops/momo-tick.sh`: when momo_work has no triage/plans, the tick scans
