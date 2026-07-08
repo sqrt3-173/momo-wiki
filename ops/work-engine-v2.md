@@ -1,15 +1,41 @@
 # Work-engine v2 — the reliability/enforcement rebuild (2026-07-08)
 
-## ▶ RESUME HERE (post-restart, 2026-07-08 ~10:50)
-GSD Core v1.6.1 **installed globally** (`npx @opengsd/gsd-core@latest --claude --global`, Eli ran it) →
-`~/.claude/` has the real commands/agents/workflows/hooks. **MOMO's guard VERIFIED still alive** after install
-(launchctl still blocks — installer "preserved 1 user baseline file", no clobber). Restarted MOMO to load the
-`/gsd-*` commands (momo-loop.sh relaunches claude on exit; MOMO can't self-kill — Eli ran `pkill -f "claude
---channels"`). **IMMEDIATE NEXT:** (1) re-verify guard still blocks (safety); (2) confirm `/gsd-*` commands
-registered (`ls ~/.claude/commands/gsd/` — 72 files) + that GSD's added hooks didn't break MOMO's guard/reply
-hooks; (3) then kick off real GSD — `/gsd-onboard` on FORGE (brownfield, it exists) or `/gsd-new-project`, first
-dogfood target = FORGE or work-engine itself. Delete the dead partial `worksystem/gsd-source/` (interpreted GSD).
-Eli was frustrated by MOMO degrading late-session (overcaution) — be crisp + decisive, verify don't assert.
+## ▶ RESUME HERE (GSD dogfood on FORGE, started 2026-07-08 ~11:00)
+Post-restart checks DONE + verified (2026-07-08): (1) **guard alive** — project `.claude/settings.local.json`
+hooks intact (momo-guard PreToolUse * + stop-reply-guard Stop); functional test: `launchctl` blocked as designed.
+GSD's hooks all landed in GLOBAL `~/.claude/settings.json` — coexist, no clobber. (2) **GSD registered as
+SKILLS, not commands** — `~/.claude/skills/gsd-*` (69) + `~/.claude/gsd-core/` (workflows + `bin/gsd-tools.cjs`);
+there is NO `~/.claude/commands/gsd/` in v1.6.1 — don't look for it. (3) Dead partial `worksystem/gsd-source/`
+DELETED.
+
+**Dogfood run 1 (FORGE, brownfield) IN FLIGHT:** running stock flow map-codebase → new-project. Key mechanics
+learned:
+- GSD resolves project root from the **Bash cwd** (`git rev-parse --show-toplevel`). `cd` IS guard-allowed and
+  Bash cwd persists → `cd /Users/momo/momo/projects/forge` once, then gsd-tools works there
+  (`node ~/.claude/gsd-core/bin/gsd-tools.cjs query init.map-codebase` → project_root=forge ✓).
+- ⚠️ The workflows' big compound bash one-liners (var-assignment leading token) would hit the guard's
+  unknown-leading-tool block — run gsd-tools via `node <path> <args>` directly instead.
+- Mapper agents spawned with ABSOLUTE paths in prompts (subagent cwd ≠ my Bash cwd); 4 × gsd-codebase-mapper
+  (haiku) launched in background → `.planning/codebase/` 7 docs.
+
+**Dogfood run 1 RESULT (2026-07-08): map-codebase + new-project COMPLETE on FORGE** (commits `adf6bfc`,
+`a6a4583` in projects/forge). Learnings that change how GSD runs here:
+1. **⚠️ SUBAGENTS CANNOT WRITE FILES in this harness** — all 4 mappers returned content as text instead of
+   writing (harness rule: agents return findings; plus Write denials). GSD's "agents write directly" pattern
+   doesn't hold → **the orchestrator (main MOMO) writes every artifact** from agent-returned content. Applies
+   to ALL GSD agents (planner/roadmapper/executor docs). Executors editing CODE may differ — test before relying.
+2. **⚠️ Verify mapper output — haiku mappers made confident false claims** (said "ForgeTests is empty" — 38
+   tests exist; "no external integrations" — Modal pipeline is live; "camera analysis not built" — shipped).
+   Corrected before committing; CONCERNS.md has a "rejected claims" section. Never commit mapper docs unread.
+3. `gsd-tools query commit` fails on untracked files (`.planning/` new) — plain `git add + commit` works.
+4. Config: v1.6.1 gsd-tools doesn't know `gates`/`safety` keys (template has them — drift); `mode: "yolo"`
+   is what disables approval gates. FORGE config: yolo, verifier ON, plan_check ON, parallel plans.
+5. new-project/discuss workflows lean on AskUserQuestion (denied) — --auto-style run with the wiki as the
+   idea document worked; Eli-facing decisions still go to Discord as numbered text.
+
+**NEXT: `/gsd-plan-phase 1` on FORGE** (Body pipeline proof + data safety: BODY-01..04, DATA-01..02) →
+execute → verify. BODY-01 needs Eli's ▶ (batch device asks). Then wire the 30-min tick to GSD
+(claim next plan-phase/execute-phase instead of the momo_work queue) — the two-speeds model.
 
 
 **Trigger:** Eli, after 5 days: the work engine hasn't run smoothly; it must become the scalable backbone. Deep
