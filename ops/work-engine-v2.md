@@ -1,6 +1,18 @@
 # Work-engine v2 — the reliability/enforcement rebuild (2026-07-08)
 
-## ▶ RESUME HERE — baton moved to bg job "gsd-dogfood-run-phase1-planning" (2026-07-08 11:20)
+## ▶ RESUME HERE — baton back with the MAIN session (2026-07-08 18:45)
+The bg job (f95fc0c0) died ~16:40–17:40 with Forge at 9/10: every code plan done+green+deployed,
+but it never sent Eli the 02-05 device-checkpoint ask and never released its claim — Forge sat
+one Eli-action from phase-complete for an hour until Eli asked "what is the hold up?". Main
+session now owns Forge: Eli has the checkpoint instructions (scan → confirm standing/likeness/
+height); on his reply, write 02-05-SUMMARY with his evidence, then phase verify. Claim removed
+(owner process verified dead). **GAPS this exposed:** (1) bg/daemon sessions have NO watchdog —
+only tmux 'momo' is monitored; (2) a session holding an un-sent Eli-gate + a claim needs a
+dead-man handoff (claim files should carry a PID for liveness checks); (3) both sessions answered
+Eli's API-cost question — thread-boundary claims don't survive their owner's death. Fix candidates
+next session; don't rebuild tonight.
+
+## (superseded) baton moved to bg job "gsd-dogfood-run-phase1-planning" (2026-07-08 11:20)
 Eli accidentally arrow-keyed in the tmux terminal at 11:20 → the main session's Phase-1
 **researcher was interrupted** (`[Request interrupted by user]` in its transcript at 11:20:01,
 ~7 min in). The harness spawned bg job `f95fc0c0` ("gsd-dogfood-run-phase1-planning"), which
