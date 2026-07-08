@@ -15,3 +15,5 @@ outcome-level progress (commits, his pending asks) every time I'm active for oth
 the owning session goes quiet >30 min while holding an un-sent Eli-gate, verify it's alive and
 take the baton if not. Report to Eli in proportion to HIS priorities, not in proportion to where
 my own effort went. Related: [[../ops/work-engine-v2]] (dead-man handoff gap), [[report-usage-not-dollars]].
+
+**Instance 2 (2026-07-09 overnight):** my periodic checks verified engine HEALTH (runs green, breaker closed) but not DIRECTION — 19 clean runs, zero of them on Forge phases 3/4 (Eli's priority, fully autonomous, dependency-met) because of a routing bug + a leaked lock. Green statuses are not progress. Overnight checks must compare COMMITS PER PROJECT against what Eli expects to move, not just run outcomes.
