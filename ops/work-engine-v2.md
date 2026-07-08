@@ -1,6 +1,17 @@
 # Work-engine v2 — the reliability/enforcement rebuild (2026-07-08)
 
-## ▶ RESUME HERE (GSD dogfood on FORGE, started 2026-07-08 ~11:00)
+## ▶ RESUME HERE — baton moved to bg job "gsd-dogfood-run-phase1-planning" (2026-07-08 11:20)
+Eli accidentally arrow-keyed in the tmux terminal at 11:20 → the main session's Phase-1
+**researcher was interrupted** (`[Request interrupted by user]` in its transcript at 11:20:01,
+~7 min in). The harness spawned bg job `f95fc0c0` ("gsd-dogfood-run-phase1-planning"), which
+adopted the orphaned agent and now owns FORGE Phase-1 planning: fresh researcher re-spawned
+(sonnet) → RESEARCH.md → planner (opus) → plan-checker → plans committed. **If you are the
+main tmux session reading this: do NOT restart plan-phase 1 — check
+`projects/forge/.planning/phases/FORGE-01-*/` for artifacts first; the bg job may already
+have landed them.** Lesson filed: an interactive terminal someone can type into is a fragile
+home for long-running orchestration — another argument for engine-owned (headless) GSD runs.
+
+## GSD dogfood on FORGE, started 2026-07-08 ~11:00
 Post-restart checks DONE + verified (2026-07-08): (1) **guard alive** — project `.claude/settings.local.json`
 hooks intact (momo-guard PreToolUse * + stop-reply-guard Stop); functional test: `launchctl` blocked as designed.
 GSD's hooks all landed in GLOBAL `~/.claude/settings.json` — coexist, no clobber. (2) **GSD registered as
@@ -24,6 +35,11 @@ learned:
    writing (harness rule: agents return findings; plus Write denials). GSD's "agents write directly" pattern
    doesn't hold → **the orchestrator (main MOMO) writes every artifact** from agent-returned content. Applies
    to ALL GSD agents (planner/roadmapper/executor docs). Executors editing CODE may differ — test before relying.
+   **Corollary (found 2026-07-08): hand-written artifacts MUST follow GSD's exact naming convention** — the
+   tooling navigates by filename. `gsd-tools progress` counts `endsWith('-PLAN.md')` (convention
+   `01-01-PLAN.md`); FORGE-01's hand-named `01-PLAN-01.md` files counted as ZERO plans (phase showed
+   Pending at 3/5 done) and `determinePhaseStatus` keys off the same counts. Before writing any artifact,
+   check the convention (`gsd-tools template fill <type>` shows canonical names) — or /gsd-progress lies to Eli.
 2. **⚠️ Verify mapper output — haiku mappers made confident false claims** (said "ForgeTests is empty" — 38
    tests exist; "no external integrations" — Modal pipeline is live; "camera analysis not built" — shipped).
    Corrected before committing; CONCERNS.md has a "rejected claims" section. Never commit mapper docs unread.
