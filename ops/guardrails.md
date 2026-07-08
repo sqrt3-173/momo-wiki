@@ -52,9 +52,15 @@ deploy → ASK-ELI; Discord comms + reads → allow. Web fetch/search → allow 
 - **Subagent lockdown:** subagent tool calls carry an `agent_id` field (main-loop calls don't —
   verified by instrumenting the hook). The guard uses it to restrict subagents to
   `SUBAGENT_ALLOW` (WebSearch/WebFetch/ToolSearch + read tools) — they CANNOT run Bash, install,
-  write, publish, delete, or anything else. Verified live: a real subagent's `echo` was blocked
+  publish, delete, or anything else. Verified live: a real subagent's `echo` was blocked
   with `SUBAGENT-BLOCKED`. This is the key exfil mitigation: the components that read untrusted
   practice websites have NO execution capability.
+- **One write carve-out (Eli 2026-07-08, for GSD):** subagents MAY Write/Edit `*.md` files
+  under any `.planning/` dir inside the work dir (no `..`; `.md` suffix excludes every
+  protected file by construction). Wiki + code + config stay main-session-only. Verified live
+  both ways the day it shipped: `.planning` write allowed, wiki write blocked. Known accepted
+  gap for the next revision: the path check doesn't `realpath()` symlinks. Guard file itself is
+  root-owned + `chmod 444` + `chflags uchg` — updates go through Eli's sudo block only.
 
 ## Backup + reproducibility (before any unattended write run)
 DB is recoverable two ways: (1) `pg_dump bd_crm > backups/bd_crm_<ts>.sql` (restore: `psql bd_crm
