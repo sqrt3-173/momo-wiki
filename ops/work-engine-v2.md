@@ -30,6 +30,28 @@ install steps, so it operates by default (`/gsd-new-project`, `/gsd-discuss`, `/
    whole wave) — using the engine at full speed removes the reason MOMO bypassed it.
 6. **Anti-bypass discipline**: interactive session ORCHESTRATES + decides gates; does NOT hand-execute plan work.
 
+## Installing REAL GSD (subagent a0cf70880, verbatim from repo)
+- Repo `open-gsd/gsd-core`, default branch **`next`**, npm `@opengsd/gsd-core`. **72 commands** in `commands/gsd/`
+  (new-project, discuss-phase, plan-phase, execute-phase, verify-work, ship, onboard, new-milestone,
+  complete-milestone, +63). 34 agents (`gsd-planner/executor/verifier/plan-checker/…`). Real logic in
+  `gsd-core/workflows/` (~90 files).
+- **⚠️ DO NOT hand-copy command files — they're STUBS** that `@`-reference `~/.claude/gsd-core/…` paths only the
+  INSTALLER creates. Hand-copy = missing-command/schema errors + dead includes. Repo says so explicitly. (This is
+  why our `worksystem/gsd-source/` agents+templates copy ran a broken/interpreted GSD.)
+- **Faithful install = the official installer:** `npx @opengsd/gsd-core@latest --claude --global` (or `--local`
+  → project `.claude/`, takes precedence). Needs Node 18+; ships `gsd-tools` CLI (workflows shell out to it);
+  restart Claude Code after. Commands become `/gsd-*` (npm) or `/gsd-core:*` (plugin path).
+- **⚠️ SAFETY (MOMO-specific): the installer registers its OWN Claude Code hooks** (SessionStart/PreToolUse/
+  PostToolUse/Stop/PreCompact) into `~/.claude/`. MOMO's safety-critical hooks (momo-guard.py, stop-reply-guard)
+  live there too. A `--global` install could clash with / clobber the guard. **REQUIRED sequence: install `--local`
+  into ONE project (FORGE) first, verify it runs clean + doesn't touch the guard, THEN consider global.** MOMO
+  can't run the installer itself (guard blocks installing software + global ~/.claude writes) — Eli runs it or
+  explicitly approves.
+- **The 5-step loop (stock GSD):** new-project/onboard → discuss-phase → plan-phase (research→plan→verify) →
+  execute-phase (wave-based parallel subagents, fresh 200k ctx each) → verify-work (conversational UAT → fix plans)
+  → ship (PR). Grouped by milestones. State in `.planning/` (PROJECT/REQUIREMENTS/ROADMAP/STATE.md + per-phase
+  CONTEXT/PLAN/UAT). Note: stock GSD's verify-work IS the enforced verify gate our substrate was missing.
+
 Full synthesis + adversarial critique: workflow output `tasks/w8th82dlf.output`. Ties to [[gsd-methodology]],
 [[gsd-workengine-design]]. Evidence GSD engine already works: ticks autonomously built stats/routines/Profile/
 scan-pt2 plans today (git log) — it's the ENFORCEMENT (verify) + FEEDING that v2 adds.
