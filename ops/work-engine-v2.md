@@ -76,6 +76,13 @@ learned:
 execute → verify. BODY-01 needs Eli's ▶ (batch device asks). Then wire the 30-min tick to GSD
 (claim next plan-phase/execute-phase instead of the momo_work queue) — the two-speeds model.
 
+**Live-run ledger, day 1:** run 20 ✓ (02-01 close-out + judgment) · run 21 ✓ (02-02 close-out, silent
+success) · run 22 ✓* (re-scoped HELD plans — safe outcome, exposed the HOLD-wording ambiguity → HOLD
+convention) · run 23 ✗ (budget kill mid-phase-3-planning, research lost uncommitted → runbook now
+mandates commit-as-produced + STATE resume points; claim leak cleaned by interactive session as
+designed; zero repo damage). Each failure hardened a rule the same hour. All figures are
+subscription-usage equivalents, not billed money — see [[../feedback/report-usage-not-dollars]].
+
 ## ✅✅ FIRST LIVE RUN PROVEN (run 20, 2026-07-08 15:34–15:52, $4.30) — the loop is closed
 The 15:34 natural tick picked nv-health-website, and the headless session executed the FULL protocol
 unsupervised: claim → route → **safe_resume_gate judgment** (plan 02-01's code pre-existed from
