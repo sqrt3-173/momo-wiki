@@ -136,6 +136,22 @@ have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th, 6th, this o
 needs Eli or an interactive session to run one of the two restart commands above. Nothing new
 to add to the diagnosis.
 
+### 8th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge)
+`psql -d momo_work -t -A -c "SELECT 1;"` still fails on the same socket, same error. Did not
+retry `pg_ctl`/`brew` — both remain established ASK-ELI blocks. Ran the fingerprint check
+(`claude -v`) as required — guard correctly ASK-ELI'd it, noted and moved on. Checked disk
+state directly: forge's `git log -1` is still `fde010e` (unchanged since the 6th/7th
+confirmations), `gsd-tools progress` still reports 79/79 plans with summaries (100%), and
+`ROADMAP.md` shows no phase with an unsatisfied-dependency gap — every phase 1-13 either has
+plans+summaries landed or is marked complete. STATE.md's `stopped_at` is unchanged: Phase 12
+Wave B held on notification #37, Phase 13-06 Task 2 is a non-blocking device checkpoint. No
+step 1-4 route match exists independent of the DB outage. Did not add a no-op commit to
+forge's own STATE.md (nothing changed there; forge is a real client repo, this wiki doc is
+the receipt). No notification could be queued (same root cause as every prior entry). **8
+ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th, 6th, 7th, this
+one) — still needs Eli or an interactive session to run one of the two restart commands
+above. Nothing new to add to the diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
