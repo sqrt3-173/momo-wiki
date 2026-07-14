@@ -103,6 +103,23 @@ the identical result. Landed a resume-point note in forge's STATE.md as the rece
 **5 ticks have now hit this identical wall (21:24, 21:54, 22:25, 22:57, this one)** —
 Eli still needs to do the manual restart below; nothing new to add to the diagnosis.
 
+### 6th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge)
+`psql -d momo_work -t -A -c "SELECT 1;"` still fails on the same socket. Did not retry
+`pg_ctl`/`brew` directly — both are established ASK-ELI blocks; confirmed the guard still
+treats `brew` that way this tick (`brew services list` → ASK-ELI, same denial as before).
+Checked disk state independently rather than trusting this doc's own prior entries: forge's
+`git log -1` is still `fde010e` (the 5th confirmation's own commit, unchanged), and
+`gsd-tools progress` reports 79/79 plans have summaries (100%) — consistent with STATE.md's
+account that every phase is executed/verified and all that remains are HOLD device-checkpoints
+and Eli-decision gates (notifications #12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59). No
+actionable, non-held step exists for forge independent of the DB outage. Did not add a new
+no-op commit to forge's own STATE.md this time (nothing changed there since the 5th
+confirmation and forge is a real client repo — this wiki incident doc is the right place for
+DB-outage receipts, not forge's git history). **6 ticks have now hit this identical wall.**
+No notification could be queued (same root cause as every prior entry) and no code/plan
+changes were made. Nothing new to add to the diagnosis or the manual-restart instructions
+above — still needs Eli or an interactive session to run one of the two restart commands.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
