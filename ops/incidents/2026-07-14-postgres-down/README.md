@@ -170,6 +170,46 @@ DB-backed claim path is unavailable. **9 ticks have now hit this identical wall*
 interactive session to run one of the two restart commands above. Nothing new to add to the
 diagnosis; this is now purely a "wake Eli" problem, not a diagnostic one.
 
+### 10th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge)
+`psql -d momo_work -t -A -c "SELECT 1;"` still fails on the same socket, same error; also
+re-checked via TCP (`psql -h 127.0.0.1 -p 5432`) → connection refused, confirming the server
+process itself is still not running, not just a socket-path issue. Did not retry `pg_ctl`/
+`brew` — both remain established ASK-ELI blocks; ran the fingerprint check (`claude -v`) as
+required — guard ASK-ELI'd it (not on dev allowlist), noted and moved on. Checked disk state
+directly rather than trusting this doc's own history: forge's `git log -1` is still `fde010e`
+(unchanged since the 5th–9th confirmations), `gsd-tools progress` still reports 79/79 plans
+with summaries (100%), and STATE.md's `stopped_at` is unchanged — Phase 12 Wave B still HOLD
+on notification #37, Phase 13-06 Task 2 still a non-blocking device checkpoint, every other
+open item still gated on notifications #12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59. No
+step 1-4 route match exists independent of the DB outage. Did not add a no-op commit to
+forge's own STATE.md (nothing changed there; forge is a real client repo, this wiki doc is
+the receipt). No `ops/locks/gsd-claim-forge.md` existed to release (the 9th confirmation's
+claim was already written and released). No notification could be queued (same root cause as
+every prior entry). **10 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57,
+5th, 6th, 7th, 8th, 9th, this one — spanning ~4.5+ hours) — still needs Eli or an interactive
+session to run one of the two restart commands above. Nothing new to add to the diagnosis;
+this remains purely a "wake Eli" problem.
+
+### 11th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge)
+`psql -d momo_work -t -A -c "SELECT now();"` still fails on the same socket, same error
+(server not running, confirmed prior via TCP too — not re-tested this tick to avoid a
+redundant call). Did not retry `pg_ctl`/`brew` — both remain established ASK-ELI blocks. Ran
+the fingerprint check (`claude -v`) as required — guard ASK-ELI'd it (not on dev allowlist),
+noted and moved on. Checked disk state directly rather than trusting this doc's own history:
+forge's `git log -1` is still `fde010e` (unchanged since the 5th–10th confirmations),
+`gsd-tools progress` still reports 79/79 plans with summaries (100%), and STATE.md's tail is
+unchanged — Phase 12 Wave B still HOLD on notification #37, FORGE-07 05 Task 2 still HOLD on
+notification #36, FORGE-09's device-checkpoint notification #55 still open, every other open
+item still gated on notifications #12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59. No step 1-4
+route match exists independent of the DB outage. Did not add a no-op commit to forge's own
+STATE.md (nothing changed there; forge is a real client repo, this wiki doc is the receipt).
+Wrote then released the file-based project claim (`ops/locks/gsd-claim-forge.md`) per
+`gsd-next.md` step 0/4 since the DB-backed claim path is unavailable. No notification could be
+queued (same root cause as every prior entry). **11 ticks have now hit this identical wall**
+(21:24, 21:54, 22:25, 22:57, 5th–10th, this one — spanning ~4.5+ hours) — still needs Eli or
+an interactive session to run one of the two restart commands above. Nothing new to add to
+the diagnosis; this remains purely a "wake Eli" problem, not a diagnostic one.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
