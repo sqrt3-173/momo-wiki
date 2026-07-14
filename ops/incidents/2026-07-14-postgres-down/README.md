@@ -91,6 +91,18 @@ notifications #12/#16/#17/#36/#37) — the wrapper will keep spending a tick on 
 cycle until either Eli answers one of those, or an interactive session reprioritizes the
 wrapper's project scan. Worth deciding whether to keep burning ticks on a fully-HELD project.
 
+### 5th confirmation (headless gsd-next tick, blank RUN_ID)
+`psql -d momo_work -t -A -c "SELECT 1;"` still fails on the same socket
+(`/tmp/.s.PGSQL.5432`, "No such file or directory"). Did not retry `pg_ctl`/`brew` — both
+remain established ASK-ELI blocks per the guard, retrying burns budget for a known answer.
+Followed the shortcut this incident doc's 4th entry established: checked `git log` in
+`projects/forge` first — HEAD is still `b35cdb3` (the 4th confirmation's own commit), so
+nothing on disk moved and a full progress/VERIFICATION.md re-derivation would reproduce
+the identical result. Landed a resume-point note in forge's STATE.md as the receipt
+(same fallback this incident doc itself uses) rather than repeating the expensive read.
+**5 ticks have now hit this identical wall (21:24, 21:54, 22:25, 22:57, this one)** —
+Eli still needs to do the manual restart below; nothing new to add to the diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
