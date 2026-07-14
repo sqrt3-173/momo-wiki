@@ -483,6 +483,32 @@ queued (same root cause as every prior entry). **24 ticks have now hit this iden
 interactive session to run one of the two restart commands above. Nothing new to add to the
 diagnosis; this remains purely a "wake Eli" problem, not a diagnostic one.
 
+### 25th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, 09:32 AEST)
+`psql -d momo_work -c "SELECT 1;"` still fails on the same socket, same error (server not
+running); re-checked via TCP (`psql -h 127.0.0.1 -p 5432`) → connection refused, and
+`ps aux | grep postgres` shows no process — server still not running. Did not retry
+`pg_ctl`/`brew` — both remain established ASK-ELI blocks. Ran the fingerprint check
+(`claude -v`) as required — guard ASK-ELI'd it (not on dev allowlist), noted and moved on.
+Checked disk state directly rather than trusting this doc's own history: forge's `git log -1`
+is still `fde010e` (unchanged since the 5th–24th confirmations), `gsd-tools progress` still
+reports 79/79 plans with summaries (100%), and STATE.md's HOLD lines are unchanged — FORGE-07's
+07-05 Task 2 still HOLD on notification #36, FORGE-09's device checkpoint still open on
+notification #55, every other open item still gated on notifications
+#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59. No step 1-4 route match exists independent of
+the DB outage. Did not add a no-op commit to forge's own STATE.md (nothing changed there;
+forge is a real client repo, this wiki doc is the receipt). The 24th confirmation's own text
+was already committed at both the nested `wiki/` repo (`263f3ec`) and the outer `momo` repo
+(`0b5a931`) — no stranded-commit cleanup needed this time (the wiki repo does carry other
+uncommitted work from other sessions — `Home.md`/`ops/guardrails.md`/`ops/session-recovery.md`/
+`ops/work-engine-v2.md` modified, plus several untracked files/dirs — left untouched as
+out-of-scope for this unit). Wrote then cleared the file-based project claim
+(`ops/locks/gsd-claim-forge.md`) per `gsd-next.md` step 0/4 since the DB-backed claim path is
+unavailable (no such file existed before this tick). No notification could be queued (same root
+cause as every prior entry). **25 ticks have now hit this identical wall** (21:24, 21:54, 22:25,
+22:57, 5th–24th, this one — spanning ~12.5 hours) — still needs Eli or an interactive session to
+run one of the two restart commands above. Nothing new to add to the diagnosis; this remains
+purely a "wake Eli" problem, not a diagnostic one.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
