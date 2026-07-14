@@ -73,6 +73,24 @@ same way (see `tick.log`), burning guardian stamps for nothing. **3 ticks have n
 identical wall (21:24, 21:54, 22:25) at ~$0.6-1.4 equivalent usage each** — cheap individually
 but this won't self-resolve; it needs one manual restart.
 
+### 4th confirmation (22:57 tick, run blank)
+Same failure, no change (`psql` still fails on the socket). Did NOT retry `pg_ctl`/`brew` —
+both are already-established ASK-ELI blocks and retrying them burns budget for a result we
+already have. Instead did the actual `gsd-next forge` unit disk-side (that work is git/file
+based, not DB based — only the receipt/notification layer needs Postgres): checked `git log`
+first and found HEAD unchanged since the 21:30 tick's commit, so nothing on disk could have
+moved; skipped re-running the full progress/VERIFICATION.md re-derivation since it would just
+reproduce an identical result. Landed the resume-point update to forge's STATE.md as the
+receipt (commit `b35cdb3`), same fallback pattern this incident doc itself uses.
+
+**Worth flagging when Eli's next reachable:** this is the 4th tick in a row to hit the same
+wall (21:24, 21:54, 22:25, 22:57) — roughly 1.5 hours with zero notification/control_commands
+visibility. Separately, `forge`'s gsd-next has now returned "no actionable step" for a long
+run of ticks even before the DB went down (all open work is HOLD on Eli's replies to
+notifications #12/#16/#17/#36/#37) — the wrapper will keep spending a tick on `forge` every
+cycle until either Eli answers one of those, or an interactive session reprioritizes the
+wrapper's project scan. Worth deciding whether to keep burning ticks on a fully-HELD project.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
