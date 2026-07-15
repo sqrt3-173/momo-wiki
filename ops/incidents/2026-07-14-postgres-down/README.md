@@ -716,6 +716,23 @@ queued (same root cause as every prior entry). Still needs Eli's manual restart 
 ticks** have now hit this identical wall, spanning ~19.8 hours. Nothing new to add to the
 diagnosis; this remains purely a "wake Eli" problem.
 
+### 41st confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~20.2h mark)
+No change: psql (socket + TCP) still refused (`Connection refused` on TCP, socket file
+missing), no postgres process. forge `git log -1` still `fde010e`, `gsd-tools progress`
+still 79/79 (100%) — commit hash unchanged from every prior confirmation, so STATE.md's
+HOLD lines are unchanged by construction (re-spot-checked #12/#17/#36/#37 directly, all
+present verbatim). Fingerprint check back to normal ASK-ELI denial (`claude` isn't on the
+dev allowlist). Also probed whether the guard would allow a read-only `brew services list`
+to check the postgres service state without restarting anything — denied (`brew` isn't on
+the dev allowlist), same class of block as every prior attempt, confirming this really is
+guard-enforced and not a gap earlier confirmations missed. No forge claim lock existed;
+wrote then will clear `ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo`
+repo and the nested `wiki` repo were clean before this entry — no stranded commits from the
+40th confirmation to recover this time. No notification could be queued (same root cause as
+every prior entry). Still needs Eli's manual restart — **41 ticks** have now hit this
+identical wall, spanning ~20.2 hours. Nothing new to add to the diagnosis; this remains
+purely a "wake Eli" problem.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
