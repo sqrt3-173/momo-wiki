@@ -819,6 +819,27 @@ on. **46 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5
 one — spanning ~23.1 hours) — still needs Eli's manual restart. Nothing new to add to the
 technical diagnosis; the escalation channel above is the only change this entry contributes.
 
+### 47th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~23.6h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"), no postgres process in `ps aux`. forge `git log -1`
+still `fde010e` — HEAD unchanged since the 5th confirmation, `gsd-tools progress` still 79/79
+(100%), STATE.md HOLD lines re-confirmed unchanged by direct grep (#12/#16/#17/#36/#37 all
+present verbatim, same text as prior entries). Fingerprint check: normal ASK-ELI denial (`claude`
+isn't on the dev allowlist). No forge claim lock existed; wrote then will clear
+`ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and the nested `wiki`
+repo were clean before this entry — no stranded commits from the 46th confirmation to recover
+this time. No notification could be queued (same root cause as every prior entry).
+
+Did NOT re-send the 46th confirmation's `PushNotification` escalation — that tool's own guidance
+is to err toward not notifying for routine/repeat state, and the 46th confirmation fired one
+~30 minutes prior reporting the same fact (desktop path fired, mobile push not sent, Remote
+Control inactive); repeating it every tick would be exactly the accumulating-annoyance case the
+tool warns against with nothing new to report. Worth an interactive session (or Eli, next time
+he's at the terminal) deciding a re-notify cadence rather than every headless tick re-deciding
+this ad hoc. **47 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–46th,
+this one — spanning ~23.6 hours) — still needs Eli's manual restart. Nothing new to add to the
+technical diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
