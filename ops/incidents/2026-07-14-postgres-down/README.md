@@ -1067,6 +1067,35 @@ DB (same root cause as every prior entry). **57 ticks have now hit this identica
 restart. Nothing new to add to the technical diagnosis; this entry is a straight re-confirmation
 with no procedural change.
 
+### 58th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~29.15h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux` shows no postgres process. Did not retry
+`pg_ctl`/`brew` — both remain established ASK-ELI blocks. Checked disk state directly: forge
+`git log -1` still `fde010e` — HEAD unchanged since the 5th confirmation; `gsd-tools progress`
+re-run directly, still 79/79 plans/summaries (100%); STATE.md `last_updated` still the same
+`2026-07-14T23:27:00+10:00` stamp; every HOLD line (#12/#16/#17/#36/#37) re-confirmed present
+verbatim by direct grep. No step 1-4 route match exists independent of the DB outage.
+
+Found the 57th confirmation's entry already written to disk and committed at the outer `momo`
+repo level (`2db8372`) but still stranded uncommitted inside the nested `wiki` repo — same
+split-commit pattern as the 21st/23rd/25th/27th/28th/51st/52nd confirmations. Independently
+re-verified its claims against live state (all matched) before landing it as its own commit
+(`68b8ddc`) in the wiki repo, closing that gap, per the "never end a unit holding uncommitted
+work" rule — genuine resume-from-stranded-work, not this tick's own output. No forge claim lock
+existed at start; wrote then cleared `ops/locks/gsd-claim-forge.md` per step 0/4. Both repos
+were clean immediately after landing the 57th entry's wiki-repo commit, before this entry.
+
+Re-sent the `PushNotification` escalation this tick — the 54th confirmation's send was ~2h02m
+prior (00:10 vs. this tick's ~02:12), crossing the ~2-hour cadence the 47th–54th confirmations
+converged on for "nothing new to report." Sent: "Postgres still down ~29h, 58 ticks blocked,
+whole work engine dead. Restart: brew services start postgresql@16." Result: same as every
+prior attempt — mobile push not sent (Remote Control inactive); desktop path is the only
+channel this incident can confirm working. No notification could be queued via the DB (same
+root cause as every prior entry). **58 ticks have now hit this identical wall** (21:24, 21:54,
+22:25, 22:57, 5th–57th, this one — spanning ~29.15 hours) — still needs Eli's manual restart.
+Nothing new to add to the technical diagnosis; the stranded-commit recovery and escalation
+re-send are the only changes this entry contributes.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
