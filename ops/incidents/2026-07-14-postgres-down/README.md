@@ -690,6 +690,19 @@ queued (same root cause as every prior entry). Still needs Eli's manual restart 
 have now hit this identical wall, spanning ~19.1 hours. Nothing new to add to the diagnosis;
 this remains purely a "wake Eli" problem.
 
+### 39th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~19.6h mark)
+No change: psql (socket + TCP) still refused, no postgres process. forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%) — since the commit hash is unchanged from
+every prior confirmation, STATE.md's HOLD lines are unchanged by construction (re-spot-checked
+#12/#16/#17/#36/#37 directly rather than re-grepping the full set). Fingerprint check back to
+normal ASK-ELI denial (`claude` isn't on the dev allowlist). No forge claim lock existed; wrote
+then will clear `ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo
+(`d10a92e`) and the nested `wiki` repo (`4045961`) were clean before this entry — no stranded
+commits from the 38th confirmation to recover this time. No notification could be queued (same
+root cause as every prior entry). Still needs Eli's manual restart — **39 ticks** have now hit
+this identical wall, spanning ~19.6 hours. Nothing new to add to the diagnosis; this remains
+purely a "wake Eli" problem.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
