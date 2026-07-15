@@ -10,6 +10,7 @@ Mac mini (MOMO) and Eli's MacBook (Obsidian). Read at session start; kept curren
 > If you're reading this on the MacBook and it appeared after a **Git: Pull**, the two-way sync works. 🎉
 
 ## Map
+- **[[architecture/momo-orchestration]]** — master→sub-MOMO + cockpit architecture (DRAFT, Eli vision 2026-07-09); current-state inventory of the engine/dashboard/DB + recommended target + phased build plan.
 - **goals/** — the living goals layer MOMO's triage reasons from: [[goals/nv-health]] · [[goals/skip-bin]] · [[goals/momo-engine]]. **Eli: edit these directly** — they're the machine's sense of what matters; saying "goal: ..." once on Discord also updates them.
 - **[[seeds/SEEDBED]]** — every parked idea with its review date and provenance back to your original dump; weekly review reports land under seeds/reviews/.
 - **[[projects/bariatric-intelligence]]** — the bariatric BD market intelligence (surgeons, clinics, allied health, fees, politics map).

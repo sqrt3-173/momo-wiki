@@ -29,6 +29,17 @@ into a "what happened?" situation.
 - Compound bash with `cd`/subshells parses as unknown leading tool `''` → blocked. Use
   `git -C <dir>` and single-tool commands.
 
+## Interactive startup dialogs can hang a headless restart
+Any first-run approval dialog (e.g. "New MCP server found in this project") blocks Claude Code
+at launch — the Discord bridge isn't up yet, so messages sent while it's stuck are never seen,
+and the session looks dead until someone attaches to tmux and answers it (happened 2026-07-09
+after `shadcn` was added to `.mcp.json`; Eli's option-2 click also failed to persist in
+`~/.claude.json`). Fix in place: `ops/momo-loop.sh` launches with
+`--settings '{"enableAllProjectMcpServers": true}'`, pre-approving project `.mcp.json` servers
+per Eli's standing choice. Rule of thumb: whenever adding anything that triggers a first-run
+prompt (MCP server, plugin, trust dialog), clear the prompt in the live session immediately —
+never leave it for the next unattended restart.
+
 ## Standing checks (things a fresh session / heartbeat should look at)
 - **Regulatory watch:** `ops/regulatory-watch-au-health.md` is appended monthly by the cloud routine
   `au-health-privacy-watch`. If the latest entry is prefixed `MOMO-RELAY:`, relay it to Eli on Discord

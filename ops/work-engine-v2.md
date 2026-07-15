@@ -1,6 +1,62 @@
 # Work-engine v2 — the reliability/enforcement rebuild (2026-07-08)
 
-## ▶ RESUME HERE — baton back with the MAIN session (2026-07-08 18:45)
+## ▶ RESUME HERE — BD pipeline spun up on Eli revenue directive (2026-07-10 23:55)
+**Eli (23:43): make me $1M/month** — answered honestly + counter-offered the BD pipeline at
+machine scale (Discord 1525120632218587270). STEP 2 DONE (00:35): 9 audits committed, bd-pipeline repo 01a4aee — pitch-ready; next = draft rebuilds after Eli eyeballs. STEP 1 DONE: 137 SEQ GP practices sourced/
+verified/fingerprinted -> wiki/bd/seq-gp-targets.md (e203cd2). NEXT (fresh session/engine):
+audit fleet on top 30 (APP-5/privacy, perf, design teardown; hottest = broken-SSL Noosa Heads
+Medical + Robina Medical Centre, 2010-content solo Booval, placeholder Harmony Health), then
+draft rebuilds top 10. Await Eli vertical confirmation (GPs = default). Forge board complete
+(prev header below still accurate: pending Eli = device sitting, sudo patches, backend call).
+
+## (superseded) BOARD COMPLETE (2026-07-10 16:40)
+**ALL 13 FORGE phases done to their human line** (13-VERIFICATION passed 0 gaps, 44d8510;
+12 Wave A complete incl. Social tab, Wave B = Eli backend call notif #37; completion report
+Discord 1525028478410293289). Nothing autonomous remains on forge. PENDING ELI: device
+sitting (scan first), 2 sudo guard patches (#29), backend call (#37), iPhone install
+trust issue (helped 15:54). Known noise: false hold-parked notification per new forge run
+(watcher HOLD attribution bug, seeded in cockpit backlog) — drain on sight. Cockpit Phase 3
+executes after Eli guard applied. Engine idles to drip + Eli-event-driven from here.
+
+## (superseded) morning after the 13-phase night (2026-07-10 ~09:15)
+**Night OUTCOME:** FORGE phases 8/6/4/9/10 built+verified, 11 code-complete (290 tests ×2),
+7 built to its human gate (scan + ~$0.20 benchmark approval), 12/13 planning runs queued/live
+(money calls land as artifacts: 12-SDK-DECISION.md, 13-PIPELINE-DECISION.md — Eli decides).
+Cockpit Supervise BUILT AND RAN THE NIGHT (26 supervised runs); Phase 3 (Control) planned,
+executes after Eli's "guard applied". Five infra bugs found+fixed live (note-wiring caac5e8,
+prompt-file race 69e41d0, claim clobber 8c76949, false-reap heartbeat da1191c, stdin prompt
+corruption e43ddf0 — root causes in cockpit 02-supervise/evidence/). Morning report sent
+(Discord 1524916556029493368, ~$285 usage / 58 runs).
+**Eli's punch-list (asked, batched):** device sitting (scan → calibration → minimise.mov →
+barcode → orbit benchmark w/ privacy+spend call) + sudo sitting (two guard patches, notif #29).
+**Standing rules live:** process delegation (wiki/feedback/process-gates-delegated.md);
+HOLD-lifts MUST be written into the project's STATE.md by the interactive session BEFORE
+re-queuing (run 118 lesson); spawn notes are retry-semantics, .planning is authority.
+**Mechanics:** control_commands outbox is THE spawn channel (INSERT as -U dashboard_control
++ #MOMO_OK); one-ahead queue discipline; watcher = scratchpad/watch-engine.py (offset-based).
+**Late-morning additions (2026-07-10 ~11:15):** Phase 12 planned (Wave A executing run 142;
+Wave B = Eli backend call, notif #37, Azure-vs-Supabase flag raised); Phase 13 planned + its
+execution queued (on-device pipeline default, notif #38 FYI); supervise-watch progress signal
+fixed 079f058 (heartbeat became OS-liveness after da1191c so stuck-detection couldn't fire —
+now commits OR worker-transcript mtime via .pid->lsof). Sixth live infra fix of the cycle.
+
+## (superseded) FORGE full-board night (2026-07-09 ~21:45, interactive session)
+**Standing delegation (Eli, 2026-07-09 21:32–21:41, wiki/feedback/process-gates-delegated.md):**
+process gates are MOMO's; his device/eyeball checks + sudo + money stay his, parked not blocking.
+**Directive: work through ALL 13 FORGE phases tonight** ("foregoing some of the blockers") —
+order 8→6→7-spike→4→9→10→11→12→13; internal quality gates (plan-checker, tests-green,
+per-plan verify) stay ON; money decisions default to no-spend; VALD Performance is Phase 6's
+scope benchmark (on-phone specs).
+**Mechanics:** spawner requests one-ahead only (alphabetical pickup!); `note` field now reaches
+workers (momo-spawn.sh fix caac5e8 — runs 85/86 wasted slots proving it); run 86's Phase-5-gate
+decline is overridden in forge-plan-phase-6b.json's note. Cockpit: Phase 1 verified passed
+(self-verified addendum); 013 migration = Eli-approved via delegation, apply after the brake
+window (~21:53) then queue momo-cockpit resume to fill spawn gaps; migration also re-enables
+drip ticks during spawn runs. Watchers: watch-engine.py (scratchpad) baseline=86. FORGE-02/03/05
+HOLDs = Eli device items, untouchable. Injection guard patch authored, awaits Eli sudo (batch
+with 02-06's).
+
+## (superseded) baton back with the MAIN session (2026-07-08 18:45)
 The bg job (f95fc0c0) died ~16:40–17:40 with Forge at 9/10: every code plan done+green+deployed,
 but it never sent Eli the 02-05 device-checkpoint ask and never released its claim — Forge sat
 one Eli-action from phase-complete for an hour until Eli asked "what is the hold up?". Main
@@ -177,3 +233,7 @@ install steps, so it operates by default (`/gsd-new-project`, `/gsd-discuss`, `/
 Full synthesis + adversarial critique: workflow output `tasks/w8th82dlf.output`. Ties to [[gsd-methodology]],
 [[gsd-workengine-design]]. Evidence GSD engine already works: ticks autonomously built stats/routines/Profile/
 scan-pt2 plans today (git log) — it's the ENFORCEMENT (verify) + FEEDING that v2 adds.
+
+## Industrial Capacity (NEW, 2026-07-13)
+Eli's strategic goal: own a significant portion of Australia's industrial capacity (future-scarce asset).
+Seed + first-session plan: projects/industrial-capacity/BRIEF.md — SCOPE WITH ELI FIRST, then research fleet.

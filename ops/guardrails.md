@@ -37,7 +37,16 @@ and `ops/guard_test.py` (29-case regression). **Loads mid-session — no restart
   psql INSERT/UPDATE auto-approved ONLY when ALL hold — the target db is provably `momo_work`
   (`-d`/positional parse, fail-closed if undeterminable), SQL is inline `-c` (verifiable),
   and NO destructive/DDL verb appears anywhere in the command — including inside string
-  literals ("drop this idea" trips it; rephrase, per heartbeat.md defensive rule). DELETE/
+  literals ("drop this idea" trips it; rephrase, per heartbeat.md defensive rule — and the
+  set includes COPY/REPLACE/MERGE, so plain-English "copy" in a notification body trips it
+  too; hit live 2026-07-09, reword to "instance"/"duplicate"). **The match is WHOLE-WORD
+  (`\b(drop|…|create|grant|…)\b`) — NOT a prefix match**, so "created"/"granted" are safe but
+  the bare words "create"/"grant"/"update"/"insert" are not (2026-07-12: a tick composing
+  device-checkpoint notification bodies burned tokens narrowing this by trial-and-error and
+  misdiagnosed it as prefix-matching — it isn't). **Rule for headless ticks composing INSERT
+  bodies: keep the body free of the bare verbs — say "make a habit" not "create a habit",
+  "give access" not "grant access". Compose the body FIRST, scan it for those whole words,
+  reword, THEN build the INSERT.** DELETE/
   DROP/TRUNCATE/ALTER/CREATE/GRANT and `psql -f` still ask; every other database still asks
   for ANY mutation. This is what makes unattended engine writes (and the heartbeat) viable.
   Paired control: nightly `pg_dump` of momo_work (guardian, 14-day retention, ops/backups/).
