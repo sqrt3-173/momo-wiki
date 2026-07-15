@@ -840,6 +840,26 @@ this ad hoc. **47 ticks have now hit this identical wall** (21:24, 21:54, 22:25,
 this one — spanning ~23.6 hours) — still needs Eli's manual restart. Nothing new to add to the
 technical diagnosis.
 
+### 48th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~23.7h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"), no postgres process in `ps aux`. forge `git log -1`
+still `fde010e` — HEAD unchanged since the 5th confirmation, `gsd-tools progress` still 79/79
+(100%), STATE.md HOLD lines re-confirmed unchanged by direct grep across all HOLD-referencing
+lines (#12/#16/#17/#36/#37 all present verbatim, matching every prior confirmation). Fingerprint
+check: normal ASK-ELI denial (`claude` isn't on the dev allowlist). No forge claim lock existed;
+wrote then will clear `ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and
+the nested `wiki` repo were clean before this entry — no stranded commits from the 47th
+confirmation to recover this time. No notification could be queued (same root cause as every
+prior entry).
+
+Did NOT re-send the 46th confirmation's `PushNotification` escalation, for the same reason the
+47th confirmation gave: nothing new to report since that push (desktop fired, mobile not sent,
+Remote Control inactive) and repeating it every tick is exactly the accumulating-annoyance case
+the tool warns against. That decision — a re-notify cadence — is still better made by an
+interactive session than re-litigated ad hoc by every headless tick. **48 ticks have now hit
+this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–47th, this one — spanning ~23.7 hours) —
+still needs Eli's manual restart. Nothing new to add to the technical diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
