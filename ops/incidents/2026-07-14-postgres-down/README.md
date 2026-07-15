@@ -614,6 +614,15 @@ Switching to terse entries from here — confirmations 5–29 already exhaust th
 repeating the full paragraph each tick only bloats this file. Nothing actionable for a
 headless session; still needs Eli's manual restart.
 
+### 31st confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~15h mark)
+No change: psql (socket + TCP) still refused, no postgres process. forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged
+(#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59). **Fingerprint check deviation:** `claude -v`
+ran clean this time (exit 0, printed `2.1.206`) instead of the guard ASK-ELI denial every prior
+confirmation logged — did not retry or investigate further (out of scope for this unit; worth
+an interactive session checking whether `DEV_ALLOW` changed or CLI version 2.1.199→2.1.206
+altered `-v` behavior). Still needs Eli's manual restart.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
