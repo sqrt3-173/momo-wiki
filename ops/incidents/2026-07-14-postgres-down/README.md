@@ -623,6 +623,14 @@ confirmation logged — did not retry or investigate further (out of scope for t
 an interactive session checking whether `DEV_ALLOW` changed or CLI version 2.1.199→2.1.206
 altered `-v` behavior). Still needs Eli's manual restart.
 
+### 32nd confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~15.2h mark)
+No change: psql (socket + TCP) still refused, no postgres process. forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged
+(#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59). Fingerprint check reverted to the normal
+ASK-ELI denial (31st's clean pass was a one-off, not a lasting `DEV_ALLOW`/CLI change). No
+forge claim lock existed; wrote then will clear `ops/locks/gsd-claim-forge.md` per step 0/4.
+Still needs Eli's manual restart — **32 ticks** have now hit this identical wall.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
