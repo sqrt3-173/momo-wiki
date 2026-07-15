@@ -606,6 +606,14 @@ cause as every prior entry). **29 ticks have now hit this identical wall** (21:2
 run one of the two restart commands above. Nothing new to add to the diagnosis; this remains
 purely a "wake Eli" problem, not a diagnostic one.
 
+### 30th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~14.5h mark)
+No change: psql (socket + TCP) still refused, no postgres process, guard still ASK-ELI's
+`pg_ctl`/`brew`/`claude -v` (fingerprint check run, denied as expected). forge `git log -1`
+still `fde010e`, STATE.md HOLD lines unchanged (#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59).
+Switching to terse entries from here — confirmations 5–29 already exhaust the diagnosis;
+repeating the full paragraph each tick only bloats this file. Nothing actionable for a
+headless session; still needs Eli's manual restart.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
