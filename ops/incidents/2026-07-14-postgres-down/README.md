@@ -1252,6 +1252,31 @@ DB (same root cause as every prior entry). **65 ticks have now hit this identica
 restart. Nothing new to add to the technical diagnosis; this entry is a straight
 re-confirmation with no procedural change.
 
+### 66th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~32.75h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process. Ran
+the fingerprint check (`claude -v`) as required — guard ASK-ELI'd it (not on the dev
+allowlist), noted and moved on. Checked disk state directly: forge `git log -1` still
+`fde010e2a112ca97295d6e8cc8108719689fb190` (2026-07-14 23:27:41 +1000) — HEAD unchanged since
+the 5th confirmation; `gsd-tools progress` re-run directly, still 79/79 plans/summaries
+(100%), every phase status matching the prior confirmation exactly; STATE.md `last_updated`
+still the same `2026-07-14T23:27:00+10:00` stamp; every HOLD line (#12/#16/#17/#36/#37)
+re-confirmed present verbatim by direct grep across the file. No step 1-4 route match exists
+independent of the DB outage. No forge claim lock existed at start; wrote then cleared
+`ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and the nested `wiki`
+repo were clean before this entry.
+
+Re-sent the `PushNotification` escalation this tick — the last send (62nd confirmation) was
+~1h59m prior (~04:16 vs. this tick's ~06:15), at the ~2-hour cadence the 47th–65th
+confirmations converged on for "nothing new to report." Sent: "Postgres still down ~32.75h, 66
+ticks blocked, whole work engine dead. Restart: brew services start postgresql@16." Result: same
+as every prior attempt — mobile push not sent (Remote Control inactive); desktop path is the
+only channel this incident can confirm working. No notification could be queued via the DB (same
+root cause as every prior entry). **66 ticks have now hit this identical wall** (21:24, 21:54,
+22:25, 22:57, 5th–65th, this one — spanning ~32.75 hours) — still needs Eli's manual restart.
+Nothing new to add to the technical diagnosis; the escalation re-send is the only change this
+entry contributes.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
