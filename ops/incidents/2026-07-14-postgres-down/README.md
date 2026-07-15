@@ -645,6 +645,16 @@ No change: psql (socket + TCP) still refused, no postgres process. forge `git lo
 denial. No forge claim lock existed; wrote then cleared `ops/locks/gsd-claim-forge.md` per
 step 0/4. Still needs Eli's manual restart — **34 ticks** have now hit this identical wall.
 
+### 35th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~17.2h mark)
+No change: psql (socket + TCP) still refused, no postgres process. forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged
+(#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59). Fingerprint check back to normal ASK-ELI
+denial (`claude` isn't on the dev allowlist). Found the 34th confirmation's text had landed in
+the outer `momo` repo (`7f1a790`) but was never committed inside the nested `wiki/` repo
+(stranded working-tree change) — committed it there now (`c7c0f4a`) before adding this entry.
+No forge claim lock existed; wrote then will clear `ops/locks/gsd-claim-forge.md` per step 0/4.
+Still needs Eli's manual restart — **35 ticks** have now hit this identical wall.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
