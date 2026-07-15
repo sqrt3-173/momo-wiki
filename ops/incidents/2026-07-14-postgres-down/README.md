@@ -797,6 +797,28 @@ unattempted. Still needs Eli's manual restart — **45 ticks** have now hit this
 spanning ~22.6 hours. Nothing new to add to the diagnosis beyond the allowlist confirmation
 above; this remains purely a "wake Eli" problem.
 
+### 46th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~23.1h mark)
+No change: psql refused on both socket and TCP (127.0.0.1:5432, "Connection refused"), no
+postgres process in `ps aux`. forge `git log -1` still `fde010e` — HEAD unchanged since the
+5th confirmation, `gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged by
+construction. Fingerprint check: normal ASK-ELI denial (`claude` isn't on the dev allowlist).
+Wrote then will clear `ops/locks/gsd-claim-forge.md` per step 0/4 (no such file existed before
+this tick). Both the outer `momo` repo and the nested `wiki` repo were clean before this entry.
+
+**New this run:** the harness exposes a `PushNotification` tool separate from the Discord
+notification path this incident has been unable to use for 46 ticks — it is NOT gated by the
+tick prompt's "no Discord tools" restriction (that only covers the reply/fetch_messages MCP
+pair). Sent one: "Postgres down 22.6h, 45 ticks blocked — whole work engine dead. Fix: brew
+services start postgresql@16. See wiki incident doc." Result: desktop notification path fired;
+mobile push reported not sent (Remote Control inactive on this machine right now) — so this
+may still not reach Eli if he's away from the terminal, but it's a genuinely new escalation
+channel independent of Postgres, worth an interactive session confirming Remote Control status
+next time it's active. Did not action the dead-man's-switch idea below — still Eli's call, and
+the file-based claim mechanism already gives ticks a working DB-independent primitive to build
+on. **46 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–45th, this
+one — spanning ~23.1 hours) — still needs Eli's manual restart. Nothing new to add to the
+technical diagnosis; the escalation channel above is the only change this entry contributes.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
