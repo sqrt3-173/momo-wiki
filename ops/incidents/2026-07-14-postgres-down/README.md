@@ -860,6 +860,27 @@ interactive session than re-litigated ad hoc by every headless tick. **48 ticks 
 this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–47th, this one — spanning ~23.7 hours) —
 still needs Eli's manual restart. Nothing new to add to the technical diagnosis.
 
+### 49th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~24.25h mark)
+No change: psql refused on both TCP (`127.0.0.1:5432`, "Connection refused") and socket
+(`/tmp/.s.PGSQL.5432`, "No such file or directory"); `ps aux` shows no postgres process.
+forge `git log -1` still `fde010e` — HEAD unchanged since the 5th confirmation, `gsd-tools
+progress` re-run directly and still 79/79 plans/summaries (100%), STATE.md `last_updated`
+still the same `2026-07-14T23:27:00+10:00` stamp as every prior confirmation — disk state
+provably untouched, not just assumed. Fingerprint check: normal ASK-ELI denial (`claude`
+isn't on the dev allowlist). No forge claim lock existed; wrote then will clear
+`ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and the nested
+`wiki` repo were clean before this entry. No notification could be queued (same root cause
+as every prior entry).
+
+Did NOT re-send the 46th confirmation's `PushNotification` escalation — same reasoning the
+47th/48th confirmations gave: nothing new since that push, and an interactive session (not
+a headless tick) should own the re-notify cadence decision. This entry crosses the 24-hour
+mark, which is a round number but not new information — the fix required (a manual `brew
+services start postgresql@16` or equivalent) hasn't changed since the first confirmation.
+**49 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–48th, this
+one — spanning ~24.25 hours) — still needs Eli's manual restart. Nothing new to add to the
+technical diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
