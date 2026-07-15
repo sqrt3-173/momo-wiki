@@ -904,6 +904,44 @@ only channel this incident can confirm working. **50 ticks have now hit this ide
 manual restart. Nothing new to add to the technical diagnosis; the escalation re-send is the
 only change this entry contributes.
 
+### 51st confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~25h mark)
+No change: psql refused on both socket and TCP, no postgres process. forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged
+(#12/#16/#17/#36/#37 spot-checked directly). Fingerprint check: normal ASK-ELI denial. Did not
+re-send the PushNotification escalation — the 50th confirmation's send was only ~28 minutes
+ago (this tick's own tick.log shows a 22:38 open following a 22:08–22:10 run) with nothing new
+to report; re-pushing that soon would be noise, not signal. Found the 50th confirmation's own
+text already committed cleanly in the nested `wiki` repo (`3114db8`) but stranded at the outer
+`momo` repo level (same split-commit pattern as the 21st/23rd/25th/27th/28th confirmations) —
+committing it together with this entry at the outer-repo level. Wrote then cleared the
+file-based project claim (`ops/locks/gsd-claim-forge.md`) per protocol. **51 ticks have now
+hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–50th, this one — spanning ~25
+hours) — still needs Eli's manual restart. Nothing new to add to the technical diagnosis.
+
+### 52nd confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~25.75h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux` shows no postgres process. forge `git
+log -1` still `fde010e` — HEAD unchanged since the 5th confirmation; `gsd-tools progress`
+re-run directly, still 79/79 plans/summaries (100%); STATE.md `last_updated` still the same
+`2026-07-14T23:27:00+10:00` stamp; every HOLD line (#12/#16/#17/#36/#37) re-confirmed present
+verbatim by direct grep. Fingerprint check: normal ASK-ELI denial (`claude` isn't on the dev
+allowlist). No forge claim lock existed; wrote then will clear `ops/locks/gsd-claim-forge.md`
+per step 0/4.
+
+Found the 51st confirmation's text already committed at the outer `momo` repo level (`067943e`)
+but still stranded uncommitted inside the nested `wiki` repo — same split-commit pattern as the
+21st/23rd/25th/27th/28th/51st confirmations. Committing it together with this entry at both the
+wiki-repo and outer-repo levels this time, to close that gap. Did not re-send the
+`PushNotification` escalation — the 50th confirmation's send was roughly an hour ago and nothing
+new has changed since (same reasoning the 47th/48th/49th/51st confirmations gave); the
+established cadence has been ~2 hours between re-sends when there's no new information, and an
+interactive session (not a headless tick) should own that cadence decision rather than each tick
+re-litigating it. No notification could be queued via the DB (same root cause as every prior
+entry). Both the outer `momo` repo and the nested `wiki` repo were otherwise clean before this
+entry. **52 ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–51st, this
+one — spanning ~25.75 hours) — still needs Eli's manual restart. Nothing new to add to the
+technical diagnosis.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
