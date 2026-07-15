@@ -773,6 +773,30 @@ cause as every prior entry). Still needs Eli's manual restart — **44 ticks** h
 this identical wall, spanning ~21.4 hours. Nothing new to add to the diagnosis; this
 remains purely a "wake Eli" problem.
 
+### 45th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~22.6h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory")
+and TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux` shows no postgres process. forge
+`git log -1` still `fde010e` — HEAD unchanged since the 5th confirmation's commit, so no new
+disk-side work exists to land. Fingerprint check: normal ASK-ELI denial (`claude` isn't on
+the dev allowlist). No forge claim lock existed; wrote then will clear
+`ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and the nested `wiki`
+repo were clean before this entry. No notification could be queued (same root cause as every
+prior entry).
+
+One new check this run, done cheaply by reading source instead of trial-invoking: read
+`ops/momo-guard.py`'s `DEV_ALLOW` set directly rather than re-provoking ASK-ELI denials for
+`pg_ctl`/`brew`. Confirms definitively (not just empirically, as prior confirmations found by
+trial) that no restart path exists for a headless session — `DEV_ALLOW` contains no `brew`,
+`pg_ctl`, `postgres`, or `launchctl` entry, and no other allowlisted tool can start a stopped
+Postgres server. `open` IS allowlisted (macOS `open -a <App>`), but there's no Postgres.app on
+this machine — homebrew's `postgresql@16` service is the only install (data dir
+`/opt/homebrew/var/postgresql@16`), which only starts via `brew services` or `pg_ctl`, both
+blocked. This closes off the one avenue not explicitly re-tested since the original diagnosis:
+confirms restart is impossible for any headless tick under the current allowlist, not just
+unattempted. Still needs Eli's manual restart — **45 ticks** have now hit this identical wall,
+spanning ~22.6 hours. Nothing new to add to the diagnosis beyond the allowlist confirmation
+above; this remains purely a "wake Eli" problem.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
