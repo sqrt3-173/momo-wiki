@@ -1331,6 +1331,24 @@ identical wall** (21:24, 21:54, 22:25, 22:57, 5th–67th, this one — spanning 
 still needs Eli's manual restart. Nothing new to add to the technical diagnosis; this entry is
 a straight re-confirmation with no procedural change.
 
+### 69th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~35.2h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process. Ran
+the fingerprint check (`claude -v`) as required — guard ASK-ELI'd it (not on the dev
+allowlist), noted and moved on. Checked disk state directly: forge `git log -1` still
+`fde010e2a112ca97295d6e8cc8108719689fb190` (2026-07-14 23:27:41 +1000) — HEAD unchanged since
+the 5th confirmation. No step 1-4 route match exists independent of the DB outage. Found the
+68th confirmation's own text already written to this file but **uncommitted at the outer
+`momo` repo level** (already committed inside the nested `wiki/` repo as `87b20c6`, but that
+commit never made it into `/Users/momo/momo`'s own history) — committing it together with this
+entry at the outer-repo level rather than leaving it stranded, same pattern as the 21st/24th/
+27th confirmations. No forge claim lock existed at start; wrote then will clear
+`ops/locks/gsd-claim-forge.md` per step 0/4. No notification could be queued via the DB (same
+root cause as every prior entry). **69 ticks have now hit this identical wall** (21:24, 21:54,
+22:25, 22:57, 5th–68th, this one — spanning ~35.2 hours) — still needs Eli's manual restart.
+Nothing new to add to the technical diagnosis; this entry is a straight re-confirmation with a
+stranded-commit cleanup, no procedural change.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
