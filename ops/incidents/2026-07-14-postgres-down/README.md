@@ -1948,6 +1948,15 @@ spanning ~48.4 hours) — still needs Eli's manual restart (`brew services start
 or equivalent). Nothing new to add to the technical diagnosis; straight re-confirmation, no
 procedural change.
 
+### 97th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~49.0h mark)
+No change: psql refused on both socket and TCP; no postgres process. Forge disk state
+re-checked (HEAD `fde010e`, 79/79 plans, STATE.md `last_updated` and all 5 HOLD lines
+identical to the 96th confirmation) — no drift, no route exists independent of the DB
+outage. Both repos clean at start, both at 96th confirmation. Claim lock written/cleared
+normally. Did not resend `PushNotification` — last send (94th confirmation, ~20:51) is
+~89 min prior, still short of the ~2h cadence. **97 ticks, ~49.0 hours** — still needs
+Eli's manual restart (`brew services start postgresql@16`). No new information.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
