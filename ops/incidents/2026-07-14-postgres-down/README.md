@@ -2055,6 +2055,37 @@ have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–101st, thi
 equivalent). Nothing new to add to the technical diagnosis; straight re-confirmation, no
 procedural change.
 
+### 103rd confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~52.3h mark, 01:20 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted and
+moved on — standalone command, not chained. Forge disk state re-checked directly: HEAD still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md's `last_updated` still the same
+`2026-07-14T23:27:00+10:00` stamp and every HOLD line (#12/#16/#17/#36/#37) re-confirmed
+present verbatim by direct grep. No step 1-4 route match exists independent of the DB outage.
+No forge claim lock existed at start; wrote then will clear `ops/locks/gsd-claim-forge.md` per
+step 0/4, each a standalone command. Both the outer `momo` repo and the nested `wiki` repo were
+clean at start (`git log -1` checked in both, plus `git ls-files -s wiki` confirmed the outer
+repo tracks wiki as plain files, not a submodule, so no pointer to drift) — both at `102nd
+confirmation`, no drift.
+
+**Correction to the escalation cadence tracking:** the 101st and 102nd confirmations both cited
+"last send (100th confirmation, ~23:50)" as the reference point for the ~2-hour cadence check —
+but the 100th confirmation's own entry states it did NOT send (only re-confirmed "last send
+(98th confirmation, ~22:50) was only ~1h prior"). The true last actual `PushNotification` send
+remains the 98th confirmation (~22:50/22:51, "Postgres still down ~49.5h, 98 ticks blocked").
+That mislabeling propagated through 101st→102nd unnoticed and caused the 102nd confirmation to
+skip a send that was actually due (98th→102nd span was ~2h00m at write time). Re-sent the
+`PushNotification` escalation this tick — ~2h29m since the true last send (98th, ~22:50),
+past due. Sent: "Postgres still down ~52.3h, 103 ticks blocked, whole work engine dead. Fix:
+brew services start postgresql@16". Result: same as every prior send — mobile push not sent
+(Remote Control inactive); desktop path is the only channel this incident can confirm working.
+No notification could be queued via the DB (same root cause as every prior entry). **103 ticks
+have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–102nd, this one — spanning
+~52.3 hours) — still needs Eli's manual restart (`brew services start postgresql@16` or
+equivalent). The cadence-tracking correction above is the only new information; the technical
+diagnosis is unchanged.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
