@@ -2350,6 +2350,27 @@ out of scope). **Escalation cadence: not due** (last `PushNotification` send was
 ~59.8 hours.** Still needs Eli's manual restart (`brew services start postgresql@16` or
 equivalent). No procedural change; diagnosis exhausted since confirmation 5.
 
+### 118th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~60.3h mark, 09:22 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process at all.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted, not
+retried — standalone command. Forge disk state re-checked directly (not trusted from STATE.md
+prose): HEAD still `fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md's HOLD lines
+(#12/#16/#17/#36/#37) re-confirmed present verbatim by direct grep. No step 1-4 route match
+exists independent of the DB outage — forge has zero actionable work anyway (100%
+plans/summaries, every remaining item is a HOLD gate). No forge claim lock existed at this
+tick's start; nothing needed writing/clearing since disk-side there is no step to route to.
+Both the outer `momo` repo and the nested `wiki` repo were clean at start (outer carries the
+same untracked `.claude/worktrees/` dir seen in recent confirmations, not mine, left untouched
+— out of scope).
+
+**Escalation cadence: not due.** Last actual `PushNotification` send remains the 115th
+confirmation (~07:51 AEST), ~1h31m before this tick — inside the ~2h cadence, so no re-send
+this tick. Technical diagnosis unchanged: **118 ticks have now hit this identical wall**
+(21:24, 21:54, 22:25, 22:57, 5th–117th, this one — spanning ~60.3 hours) — still needs Eli's
+manual restart (`brew services start postgresql@16` or equivalent). No procedural change;
+diagnosis exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
