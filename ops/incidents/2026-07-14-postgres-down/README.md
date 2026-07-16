@@ -1652,6 +1652,32 @@ identical wall** (21:24, 21:54, 22:25, 22:57, 5th–82nd, this one — spanning 
 still needs Eli's manual restart. Nothing new to add to the technical diagnosis; this entry is
 a straight re-confirmation with no procedural change.
 
+### 84th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~42.4h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted and
+moved on. Forge disk state re-checked directly: HEAD still `fde010e2`, `gsd-tools progress`
+still 79/79 (100%), every phase status matching the prior confirmation exactly; STATE.md
+`last_updated` still `2026-07-14T23:27:00+10:00`; all HOLD lines (#12/#16/#17/#36/#37)
+re-confirmed present verbatim by direct grep across STATE.md. No step 1-4 route match exists
+independent of the DB outage. No forge claim lock existed at start; wrote then cleared
+`ops/locks/gsd-claim-forge.md` per step 0/4 — note the lock write must be its own Bash call,
+not chained after the guarded `claude -v` fingerprint check: chaining the two in one command
+this tick caused the guard's ASK-ELI on `claude -v` to block the WHOLE chain, silently
+dropping the lock-file write too (caught by verifying the file existed afterward — it didn't;
+re-issued as a standalone command). Worth folding into this doc's guidance since it's a subtle
+trap the "chained one-liners trip the guard" rule doesn't spell out explicitly enough. Both
+the outer `momo` repo and the nested `wiki` repo were clean before this entry (forge's own
+`.claude/worktrees/` untracked dir is the same pre-existing leftover, unchanged).
+
+Did not re-send the `PushNotification` escalation — the last send (82nd confirmation, ~14:48)
+was ~1h prior (~14:48 vs. this tick's ~15:48), still short of the ~2-hour cadence the
+47th–83rd confirmations converged on for "nothing new to report." No notification could be
+queued via the DB (same root cause as every prior entry). **84 ticks have now hit this
+identical wall** (21:24, 21:54, 22:25, 22:57, 5th–83rd, this one — spanning ~42.4 hours) —
+still needs Eli's manual restart. Nothing new to add to the technical diagnosis; this entry's
+only substantive addition is the chained-command/lock-write gotcha above.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
