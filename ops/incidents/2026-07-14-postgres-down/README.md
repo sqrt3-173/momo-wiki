@@ -2187,6 +2187,25 @@ this tick. Technical diagnosis unchanged: **108 ticks have now hit this identica
 21:54, 22:25, 22:57, 5th–107th, this one — spanning ~54.8 hours) — still needs Eli's manual
 restart (`brew services start postgresql@16` or equivalent). No procedural change.
 
+### 109th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~55.0h mark, 04:22 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process at all.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted, not
+retried — standalone command. Forge disk state re-checked directly (not trusted from STATE.md
+prose): HEAD still `fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md's `last_updated`
+still the same `2026-07-14T23:27:00+10:00` stamp, and every HOLD line (#12/#16/#17/#36/#37)
+re-confirmed present verbatim by direct grep. No step 1-4 route match exists independent of the
+DB outage. No forge claim lock existed at this tick's start; wrote then cleared
+`ops/locks/gsd-claim-forge.md` per step 0/4, standalone commands only. Both the outer `momo`
+repo and the nested `wiki` repo were clean at start (`git status --short` empty in both) — no
+stranded commit to fix this time.
+
+**Escalation cadence: not due.** Last actual `PushNotification` send remains the 107th
+confirmation (~03:20 AEST), ~1h02m before this tick — inside the ~2h cadence, so no re-send
+this tick. Technical diagnosis unchanged: **109 ticks have now hit this identical wall** (21:24,
+21:54, 22:25, 22:57, 5th–108th, this one — spanning ~55.0 hours) — still needs Eli's manual
+restart (`brew services start postgresql@16` or equivalent). No procedural change.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
