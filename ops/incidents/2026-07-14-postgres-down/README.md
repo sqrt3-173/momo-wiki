@@ -1778,6 +1778,25 @@ DB (same root cause as every prior entry). **88 ticks have now hit this identica
 restart. Nothing new to add to the technical diagnosis; this entry is a straight
 re-confirmation with no procedural change.
 
+### 89th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~44.9h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted and
+moved on — standalone command, not chained. Forge disk state re-checked: HEAD still `fde010e2`,
+`gsd-tools progress` still 79/79 (100%); STATE.md's HOLD lines (#12/#16/#17/#34-closed/#35/#36/
+#55) and FORGE-06/07/09 narrative blocks all match the prior confirmation exactly. No step 1-4
+route match exists independent of the DB outage. No forge claim lock existed at start; wrote
+then cleared `ops/locks/gsd-claim-forge.md` per step 0/4, each a standalone command. Both the
+outer `momo` repo and the nested `wiki` repo were clean at start (`git log -1` checked in both,
+per the 87th entry's drift-detection lesson) — both at `88th confirmation`, no drift.
+
+Did not re-send the `PushNotification` escalation — the last send (86th confirmation, ~16:48)
+was ~1h30m prior (~16:48 vs. this tick's ~18:18), still short of the ~2-hour cadence. No
+notification could be queued via the DB (same root cause as every prior entry). **89 ticks have
+now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–88th, this one — spanning ~44.9
+hours) — still needs Eli's manual restart (`brew services start postgresql@16` or equivalent).
+Nothing new to add to the technical diagnosis; straight re-confirmation, no procedural change.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
