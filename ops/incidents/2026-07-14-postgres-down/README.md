@@ -2002,6 +2002,19 @@ cause as every prior entry). **99 ticks have now hit this identical wall** (21:2
 manual restart (`brew services start postgresql@16` or equivalent). Nothing new to add
 to the technical diagnosis; straight re-confirmation, no procedural change.
 
+### 100th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~50.8h mark, 23:50 AEST)
+No change: psql refused on both socket and TCP; no postgres process. Forge disk state
+re-checked directly: HEAD still `fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md's
+HOLD lines (#12/#16/#17/#36/#37) grepped and re-confirmed present verbatim, unchanged wording.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected, standalone command, noted and moved on.
+No forge claim lock existed at start; wrote then will clear `ops/locks/gsd-claim-forge.md` per
+step 0/4. Did not re-send the `PushNotification` escalation — last send (98th confirmation,
+~22:50) was only ~1h prior, short of the ~2-hour cadence the 47th–98th confirmations converged
+on. No notification could be queued via the DB (same root cause as every prior entry). **100
+ticks have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–99th, this one —
+spanning ~50.8 hours) — still needs Eli's manual restart (`brew services start postgresql@16`
+or equivalent). Nothing new to add to the technical diagnosis; straight re-confirmation.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
