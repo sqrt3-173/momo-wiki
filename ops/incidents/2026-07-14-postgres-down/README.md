@@ -2340,6 +2340,16 @@ re-send this tick. Technical diagnosis unchanged: **116 ticks have now hit this 
 (21:24, 21:54, 22:25, 22:57, 5th–115th, this one — spanning ~59.3 hours) — still needs Eli's
 manual restart (`brew services start postgresql@16` or equivalent). No procedural change.
 
+### 117th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~59.8h mark, 08:52 AEST)
+No change: psql (socket + TCP) still refused, no postgres process. forge HEAD still `fde010e`,
+`gsd-tools progress` still 79/79 (100%), STATE.md HOLD lines unchanged (#12/#16/#17/#36/#37). No
+forge claim lock existed; nothing to write/clear. Both outer `momo` and `wiki` repos clean at
+start (forge itself carries an untracked `.claude/worktrees/` dir, not mine, left untouched —
+out of scope). **Escalation cadence: not due** (last `PushNotification` send was 07:51 AEST,
+~1h01m ago, inside the ~2h cadence). **117 ticks have now hit this identical wall — spanning
+~59.8 hours.** Still needs Eli's manual restart (`brew services start postgresql@16` or
+equivalent). No procedural change; diagnosis exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
