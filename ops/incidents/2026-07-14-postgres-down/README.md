@@ -1726,6 +1726,35 @@ spanning ~43.4 hours) — still needs Eli's manual restart. Nothing new to add t
 diagnosis; the escalation re-send and landing the 85th entry's backlog are the only changes
 this entry contributes.
 
+### 87th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~44.3h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted and
+moved on — run as its own standalone command, not chained with the lock-file write. Forge disk
+state re-checked directly: HEAD still `fde010e2`, `gsd-tools progress` still 79/79 (100%), every
+phase status matching the prior confirmation exactly; STATE.md `last_updated` still
+`2026-07-14T23:27:00+10:00`; all HOLD lines (#12/#16/#17/#36/#37) re-confirmed present verbatim
+by direct grep across STATE.md. No step 1-4 route match exists independent of the DB outage. No
+forge claim lock existed at start; wrote then cleared `ops/locks/gsd-claim-forge.md` per step
+0/4, each a standalone command.
+
+Found (and fixed) a real gap this tick: the nested `wiki` repo (this repo, separate from the
+outer `momo` repo's tracking of the same files) was NOT clean at start — it was still sitting on
+the 85th confirmation's commit with the 86th confirmation's text uncommitted, even though the
+outer `momo` repo had already landed both in commit `7aa0e18`. The two repos had silently
+drifted: prior ticks were committing to the outer repo (or believed they were committing to
+both) but the nested wiki repo's own commit only missed the 86th. Landed it here as its own
+commit before adding this entry, so the nested repo's history matches the outer repo's content.
+Worth flagging as a standing gotcha for future ticks: verify `git log -1` in BOTH `/Users/momo/momo`
+and `/Users/momo/momo/wiki` match expectations, not just `git status` cleanliness in one.
+
+Did not re-send the `PushNotification` escalation — the last send (86th confirmation, this
+tick's own predecessor) was well under an hour prior, short of the ~2-hour cadence the 47th–86th
+confirmations converged on for "nothing new to report." No notification could be queued via the
+DB (same root cause as every prior entry). **87 ticks have now hit this identical wall** (21:24,
+21:54, 22:25, 22:57, 5th–86th, this one — spanning ~44.3 hours) — still needs Eli's manual
+restart. Nothing new to add to the technical diagnosis beyond the wiki-repo drift fix above.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
