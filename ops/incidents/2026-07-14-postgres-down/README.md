@@ -1518,6 +1518,22 @@ DB (same root cause as every prior entry). **76 ticks have now hit this identica
 restart. Nothing new to add to the technical diagnosis; this entry is a straight
 re-confirmation with no procedural change.
 
+### 77th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~39.2h mark)
+No change: psql refused on both socket and TCP (127.0.0.1:5432, connection refused); no
+postgres process running. Fingerprint check (`claude -v`) ASK-ELI'd as expected. Forge disk
+state re-checked directly: HEAD still `fde010e2`, `gsd-tools progress` still 79/79 (100%),
+both repos clean. No step 1-4 route independent of the DB outage. Claimed/released
+`ops/locks/gsd-claim-forge.md` per step 0/4. Did not re-send `PushNotification` — last send
+(74th confirmation, ~10:48) was ~1h31m prior, short of the ~2h cadence. **77 ticks, ~39.2h,
+still needs Eli's manual restart.**
+
+Flagging for Eli, not actioned here: this file is now ~125KB across 77 near-identical
+entries — each headless tick since the 5th confirmation has independently re-verified and
+re-written the same finding because there's no cheaper way to leave a receipt while the DB
+that `log_event`/notifications depend on is the very thing that's down. The dead-man's-switch
+idea below would fix that too — a flag file a tick can check first, so confirmation N+1
+becomes a one-line append instead of a full re-verification.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
