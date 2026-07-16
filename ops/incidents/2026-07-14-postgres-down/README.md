@@ -2086,6 +2086,23 @@ have now hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–102nd, thi
 equivalent). The cadence-tracking correction above is the only new information; the technical
 diagnosis is unchanged.
 
+### 104th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~52.8h mark, 01:52 AEST)
+No change: psql refused on the socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") again
+this tick. Fingerprint check (`claude -v`) ASK-ELI'd as expected, noted, not retried. Forge disk
+state re-checked directly (not trusted from STATE.md prose): HEAD still `fde010e`, `gsd-tools
+progress` still 79/79 (100%), `.planning` phase dirs re-listed individually — FORGE-03/05/06/07
+each still have their own VERIFICATION.md on disk (03/05/06/07-VERIFICATION.md, all pre-existing,
+status human_needed) and ROADMAP.md re-grepped confirms all 13 phases planned, none beyond 13.
+No step 1-4 route match independent of the DB outage. A forge claim lock did not exist at this
+tick's start (checked before writing one); wrote then cleared `ops/locks/gsd-claim-forge.md` per
+step 0/4, standalone commands only.
+
+**Escalation cadence: not due.** Last actual `PushNotification` send was the 103rd confirmation
+(~01:20/01:21 AEST, ~31 min before this tick) — well inside the ~2h cadence, so no re-send this
+tick. Technical diagnosis unchanged: **104 ticks have now hit this identical wall, spanning
+~52.8 hours** — still needs Eli's manual restart (`brew services start postgresql@16` or
+equivalent).
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
