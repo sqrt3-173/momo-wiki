@@ -1587,6 +1587,26 @@ identical wall** (21:24, 21:54, 22:25, 22:57, 5th–79th, this one — spanning 
 still needs Eli's manual restart. Nothing new to add to the diagnosis; this entry is a straight
 re-confirmation with no procedural change.
 
+### 81st confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~41.2h mark)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted and
+moved on. Forge disk state re-checked directly: HEAD still `fde010e2`, `gsd-tools progress`
+still 79/79 (100%), every phase status matching the prior confirmation exactly; all HOLD lines
+(#12/#16/#17/#36/#37) re-confirmed present verbatim by direct grep across STATE.md. No step
+1-4 route match exists independent of the DB outage. No forge claim lock existed at start;
+wrote then cleared `ops/locks/gsd-claim-forge.md` per step 0/4. Both the outer `momo` repo and
+the nested `wiki` repo were clean before this entry (forge's own `.claude/worktrees/` untracked
+dir is the same pre-existing leftover, unchanged).
+
+Did not re-send the `PushNotification` escalation — the last send (78th confirmation, ~12:49)
+was ~1h29m prior (~12:49 vs. this tick's ~14:17), short of the ~2-hour cadence the 47th–80th
+confirmations converged on for "nothing new to report." No notification could be queued via
+the DB (same root cause as every prior entry). **81 ticks have now hit this identical wall**
+(21:24, 21:54, 22:25, 22:57, 5th–80th, this one — spanning ~41.2 hours) — still needs Eli's
+manual restart. Nothing new to add to the diagnosis; this entry is a straight re-confirmation
+with no procedural change.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
