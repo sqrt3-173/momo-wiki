@@ -2250,6 +2250,18 @@ diagnosis unchanged: **111 ticks have now hit this identical wall** (21:24, 21:5
 5th–110th, this one — spanning ~56.5 hours) — still needs Eli's manual restart (`brew services
 start postgresql@16` or equivalent). No procedural change beyond the due escalation send above.
 
+### 112th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~57h mark, 06:22 AEST)
+No change: psql refused on socket and TCP, no postgres process, forge `git log -1` still
+`fde010e`, `gsd-tools progress` still 79/79 (100%), STATE.md `last_updated` and HOLD lines
+(#12/#16/#17/#36/#37) unchanged by direct grep. Fingerprint check ASK-ELI'd as expected. No forge
+claim lock existed; wrote then cleared it per step 0/4. Found the 111th confirmation's own text
+already committed in the nested `wiki` repo (`8ba5e26`) but stranded (uncommitted) in the outer
+`momo` repo — committing both together at the outer level this tick. Did not re-send
+`PushNotification` — the 111th confirmation's send (~05:51) was ~31 minutes before this tick,
+well inside the ~2h cadence. **112 ticks have now hit this identical wall** (21:24, 21:54, 22:25,
+22:57, 5th–111th, this one — spanning ~57 hours) — still needs Eli's manual restart. No
+procedural change.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
