@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **152 ticks have now hit
-this identical wall, spanning ~78 hours (2026-07-14 21:24 → present).**
+self-heal by design (guard correctly blocks the tools needed). **153 ticks have now hit
+this identical wall, spanning ~79.5 hours (2026-07-14 21:24 → present).**
 
 ## What happened
 Between the 20:56–20:58 tick (run 358, closed ok) and the 21:24 guardian stamp, the local
@@ -376,6 +376,32 @@ Still needs Eli on two independent tracks: (1) DB restart, `brew services start
 postgresql@16`; (2) momo-cockpit notification #29 — apply
 `ops/patches/2026-07-09-subagent-control-files.patch` then
 `ops/patches/02-guard-dashboard-control.patch` in that order to `ops/momo-guard.py`.
+
+### 153rd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~79.5h mark, 2026-07-18 04:31-04:38)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection
+refused"), `ps aux | grep postgres` empty. Fingerprint check `claude -v` ran per protocol,
+ASK-ELI'd as expected (not on `DEV_ALLOW`), not retried. No stranded commit — outer momo
+HEAD `7bbfd56` matched the prior entry's own commit, nested wiki HEAD `28dc140` in sync, both
+working trees clean at start.
+
+Routing landed on `momo-cockpit` again for the same reason as last tick: `forge`'s
+`ops/locks/gsd-claim-forge.md` (from the 03:30 error tick) is still present and only ~68min
+old, not yet the 3h stale threshold — left alone per `gsd-next.md` step 4, not mine to clear.
+`bd-pipeline` has a `.planning/` dir but no `STATE.md`, so it's structurally never actionable.
+
+momo-cockpit re-verified independently rather than trusted from the prior entry: HEAD still
+`1ee8dba`, `gsd-tools progress` still 56% (Phase 1 4/4 Complete, Phase 2 6/6 Executed,
+Phase 3 0/8 summaries). STATE.md HOLD unchanged (awaiting Eli — notification #29, 02-06 Task
+2 still outstanding) — re-confirmed by direct grep, guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` empty). ROADMAP.md Phase 3 section still
+reads `Depends on: Phase 2 (Supervise)` — a hard dependency, not the "independent,
+parallelizable" wording that would let step 4 route around the HOLD. No step 1-5 route match
+exists other than step 5 — true independent of the outage. PushNotification NOT retried this
+tick — last attempt (prior entry, ~04:01-04:05) is only ~30min prior, well inside the ~2h
+cadence. No momo-cockpit claim lock existed at start; wrote then cleared
+`ops/locks/gsd-claim-momo-cockpit.md` per `gsd-next.md` step 0/4. Still needs Eli on the same
+two tracks: (1) DB restart, `brew services start postgresql@16`; (2) momo-cockpit
+notification #29 — apply both guard patches in the documented order.
 
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
