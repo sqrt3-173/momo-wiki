@@ -119,6 +119,29 @@ inactive, same as every prior attempt (next due ~21:59 if the outage continues).
 direct commands, not trusted from prior entries. Still needs Eli's manual restart:
 `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
 
+### 140th confirmation (gsd-next headless tick, PROJECT=forge, ~72h mark, 2026-07-17 20:57-21:00)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection refused"),
+`ps aux | grep postgres` empty. Guard would ASK-ELI `pg_ctl`/`brew` as always (not retried, not
+needed — a prior tick already established this fact minutes earlier, see below). **Found a
+stranded-commit case exactly like the one this doc already warns about**: a tick landed forge
+commit `df9d0a4` at 20:29 ("3-day gap since last tick... full re-derivation confirms no
+actionable step") that hadn't yet been folded into this wiki doc (last wiki entry, the 139th,
+was written at 19:59 — 30 min earlier). That tick's own re-derivation (recorded in forge's
+STATE.md) is the most thorough one on record: it explicitly re-ran `gsd-tools progress` fresh
+rather than trusting the HEAD-unchanged shortcut (justified — HEAD hadn't moved since the
+2026-07-14 23:27 tick, a 3-day gap), and directly confirmed all 4 "Needs Review"-flagged
+phases (FORGE-03/05/06/07) already carry genuine human_needed VERIFICATION.md files (a parser
+label quirk, not missing work). This tick re-verified independently on top of that: forge HEAD
+`df9d0a4bf58d0d722591db835a4b44850fa0ea73`, `gsd-tools progress` 79/79 plans/summaries across
+all 13 phases (100%), STATE.md HOLD lines unchanged (#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/
+#55/#59), no phase 14+ in ROADMAP.md. No step 1-4 route match exists independent of the outage.
+No new forge commit needed — the 20:29 tick's re-derivation already captures this exact state;
+this entry exists to close the wiki-lag gap so the stranded commit isn't lost. PushNotification
+NOT retried this tick — last actual attempt (139th, 19:59) is under the ~2h cadence from now
+(~21:00), next due ~21:59 if the outage continues. No forge claim lock existed at start; wrote
+then cleared `ops/locks/gsd-claim-forge.md` per `gsd-next.md` step 0/4. Still needs Eli's manual
+restart: `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
