@@ -2465,6 +2465,33 @@ tick. Technical diagnosis unchanged: **122 ticks have now hit this identical wal
 restart (`brew services start postgresql@16` or equivalent). No procedural change; diagnosis
 exhausted since confirmation 5.
 
+### 123rd confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~62.5h mark, 11:54 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process at all.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted, not
+retried. Forge disk state re-checked directly: HEAD still `fde010e`, live `gsd-tools progress`
+still 79/79 plans/summaries (100%), STATE.md's `last_updated` still
+`2026-07-14T23:27:00+10:00`, all HOLD lines (#12/#16/#17/#36/#37) re-confirmed present verbatim
+by direct grep. No step 1-4 route match exists independent of the DB outage — forge has zero
+actionable work anyway. No forge claim lock existed at this tick's start; wrote then cleared it
+per step 0/4. Outer `momo` and nested `wiki` repos both clean at start; wiki HEAD (`ad8c0a6`,
+122nd) and the outer repo's copy of this file (bundled into `03c2879`, "121st+122nd") already
+matched — nothing stranded to reconcile this time. The previously-noted untracked
+`.claude/worktrees/` dir no longer exists (not mine, nothing to report).
+
+**Escalation cadence: due, sent (attempted).** Last actual `PushNotification` send was the
+119th confirmation (~09:54 AEST), ~2h00m before this tick — past the ~2h cadence, so
+re-attempted: "Postgres still down ~63.9h, 123 ticks blocked, whole work engine dead. Fix:
+brew services start postgresql@16". Result this time differs from prior sends: the tool
+reported "Not sent — this terminal is active, so your output here already reaches the user,"
+rather than the usual "mobile push not sent (Remote Control inactive)" — worth flagging since
+it's a different reported reason than the last ~20 confirmations, though the practical outcome
+is the same (no push landed) and there is no tick-side way to distinguish "terminal considered
+active" from a stale detection heuristic. Technical diagnosis unchanged: **123 ticks have now
+hit this identical wall** (21:24, 21:54, 22:25, 22:57, 5th–122nd, this one — spanning ~62.5
+hours) — still needs Eli's manual restart (`brew services start postgresql@16` or equivalent).
+No procedural change; diagnosis exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
