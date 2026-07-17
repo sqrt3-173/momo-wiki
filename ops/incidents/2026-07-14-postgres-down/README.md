@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **156 ticks have now hit
-this identical wall, spanning ~81 hours (2026-07-14 21:24 → present).**
+self-heal by design (guard correctly blocks the tools needed). **160 ticks have now hit
+this identical wall, spanning ~83 hours (2026-07-14 21:24 → present).**
 
 ## What happened
 Between the 20:56–20:58 tick (run 358, closed ok) and the 21:24 guardian stamp, the local
@@ -566,6 +566,54 @@ the ~2h cadence (next due ~08:01 if the outage continues). No momo-cockpit claim
 start (this tick wrote it fresh); cleared per `gsd-next.md` step 0/4. Still needs Eli on the same
 two tracks: (1) DB restart, `brew services start postgresql@16`; (2) momo-cockpit notification
 #29 — apply both guard patches in the documented order.
+
+### 160th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~83h mark, 2026-07-18 08:03)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection refused"),
+`ps aux | grep postgres` empty. Fingerprint check `claude -v` ran per protocol — guard message
+read `ASK-ELI: 'claude' isn't on the dev allowlist`, same denial effect as always, not retried.
+No stranded commit — outer momo HEAD `251fadd` matched the 159th confirmation's own commit,
+nested wiki HEAD `61a55c4` in sync, both working trees clean at start.
+
+Routing landed on `momo-cockpit` again for the same reason as the last seven ticks: `forge`'s
+`ops/locks/gsd-claim-forge.md` (from the 03:30 error tick) is now ~4h33m old — a fourth tick
+past the 3h stale threshold. Still left untouched per `gsd-next.md` step 4/heartbeat.md §6 —
+not mine to clear headless, the interactive session's call. `bd-pipeline` re-confirmed
+structurally never actionable (`.planning/` has no `STATE.md`).
+
+momo-cockpit re-verified independently rather than trusted from the prior entry: HEAD still
+`1ee8dba`, `gsd-tools progress` still 56% (Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3
+0/8 summaries). STATE.md `status: hold` unchanged (awaiting Eli — notification #29, 02-06 Task
+2 still outstanding) — guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` empty). `ROADMAP.md` Phase 3 section
+re-read directly: `Depends on: Phase 2 (Supervise)` — still a hard dependency, not the
+"independent, parallelizable" wording that would let step 4 route around the HOLD. No step 1-5
+route match exists other than step 5 — true independent of the outage. PushNotification
+retried this tick — last actual attempt (156th confirmation, 06:01) was past the ~2h cadence
+(06:01 → 08:03 ≈ 2h2m), so retried rather than skipped — not sent, Remote Control inactive,
+same as every prior attempt (next due ~10:03 if the outage continues). No momo-cockpit claim
+lock existed at start (this tick wrote it fresh); cleared per `gsd-next.md` step 0/4. Still
+needs Eli on the same two tracks: (1) DB restart, `brew services start postgresql@16`;
+(2) momo-cockpit notification #29 — apply both guard patches in the documented order.
+
+**New finding this tick, worth an interactive look:** while re-confirming `bd-pipeline`'s
+structural non-actionability, a wider check of `projects/*/.planning` (this tick's routing was
+handed `momo-cockpit` by the wrapper, so this is observational, not something this tick acted
+on) turned up `nv-health-website/.planning/STATE.md` with `status: milestone-active` — not
+`hold` — currently at Phase 3 of 6 (17% complete), no `ops/locks/` file for it, last commit
+`c8c5ea7` dated **2026-07-10**, ~8 days stale. Its own `stopped_at` names a concrete next step
+that reads as autonomous-executable, not Eli-gated: phase 4 (Booking Engine Backend) planning
+outline is committed (`04-PLAN-OUTLINE.md`, 5 plans/3 waves) and the note says "single-plan
+planner spawns next (start with 04-01...)" — stopped only because run 106's outline spawn alone
+burned ~$2.76 of a $5 budget, not on any human gate. heartbeat.md §3.3's own routing rule reads
+"first project whose STATE.md is milestone-active with phases remaining" — `momo-cockpit`'s
+STATE.md literally reads `status: hold`, not `milestone-active`, so on a literal string match
+`nv-health-website` should qualify ahead of (or instead of) a fully-HELD `momo-cockpit`, the
+same starvation shape as the 2026-07-09 forge finding that motivated gsd-next.md step 4 (a
+HELD project must not stop the search for other actionable work). Not actioned here — this
+tick's unit was `momo-cockpit` specifically, and switching projects mid-tick would violate the
+one-unit-per-tick rule; flagging for the interactive session/Eli to check whether the wrapper's
+selection logic actually implements the documented rule, and if not, why `nv-health-website` has
+sat unplanned for 8 days once the DB (and thus normal routing) is restored.
 
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
