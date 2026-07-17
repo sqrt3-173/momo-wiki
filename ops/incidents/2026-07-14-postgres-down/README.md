@@ -2411,6 +2411,40 @@ re-send this tick. Technical diagnosis unchanged: **120 ticks have now hit this 
 manual restart (`brew services start postgresql@16` or equivalent). No procedural change;
 diagnosis exhausted since confirmation 5.
 
+### 121st confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~61.8h mark, 10:55 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused" via `psql -h 127.0.0.1 -p 5432`); `ps aux | grep
+postgres` shows no process at all. Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on
+the dev allowlist), noted, not retried. Forge disk state re-checked directly (not trusted from
+STATE.md prose): HEAD still `fde010e`, live `gsd-tools progress` still 79/79 plans/summaries
+(100%), all HOLD lines (#12/#16/#17/#36/#37) re-confirmed present verbatim by direct grep. No
+forge claim lock existed at this tick's start; wrote then cleared it per step 0/4. Outer `momo`
+repo clean aside from the same untracked `.claude/worktrees/` dir seen in recent confirmations
+(not mine, left untouched); wiki repo clean.
+
+**Two things checked deeper than prior confirmations, both closed out, nothing actionable
+either way:** (1) STATE.md's Phase 13 progress line (47) still reads "4/6 executed... 13-05/13-06
+remain" — stale prose contradicting the live 79/79 count. Verified directly: `13-05-SUMMARY.md`
+and `13-06-SUMMARY.md` both exist on disk, `13-VERIFICATION.md` already exists and reads
+`status: passed, score: 21/21 must-haves` (2026-07-10) — Phase 13 (the last phase in
+ROADMAP.md, 13 of 13) is genuinely closed, the STATE.md line is just an unrefreshed leftover,
+not a hidden verify-step. (2) Whether a tick could ever self-heal this by running `brew services
+start postgresql@16` directly, rather than waiting on Eli: read `ops/momo-guard.py` — `brew` is
+not in `DEV_ALLOW`, and the package-install check only fires on `install`/`add` args, so
+`services start` falls through to the default `unknown → ASK-ELI` branch same as any
+unlisted command. Confirmed by source inspection, not by spending a call finding out; a tick
+cannot start postgres itself even if it tried. Both check out to the same place the last 120
+confirmations landed: no step 1-4 route exists independent of the DB outage, and no path exists
+for a headless tick to fix it directly.
+
+**Escalation cadence: not due.** Last actual `PushNotification` send remains the 119th
+confirmation (~09:54 AEST), ~1h01m before this tick — inside the ~2h cadence, no re-send this
+tick. Technical diagnosis unchanged: **121 ticks have now hit this identical wall** (21:24,
+21:54, 22:25, 22:57, 5th–120th, this one — spanning ~61.8 hours) — still needs Eli's manual
+restart (`brew services start postgresql@16` or equivalent, from a session with actual
+shell/system access — confirmed above that no tick-side workaround exists). No procedural
+change; diagnosis exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
