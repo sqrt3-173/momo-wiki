@@ -2393,6 +2393,24 @@ diagnosis unchanged: **119 ticks have now hit this identical wall** (21:24, 21:5
 5th–118th, this one — spanning ~60.8 hours) — still needs Eli's manual restart (`brew services
 start postgresql@16` or equivalent). No procedural change beyond the due escalation send above.
 
+### 120th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~61.3h mark, 10:23 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused"); `ps aux | grep postgres` shows no process at all.
+Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on the dev allowlist), noted, not
+retried. Forge disk state re-checked directly: HEAD still `fde010e`, STATE.md's `last_updated`
+still `2026-07-14T23:27:00+10:00`, all HOLD lines (#12/#16/#17/#36/#37) re-confirmed present
+verbatim by direct grep. No step 1-4 route match exists independent of the DB outage — forge
+has zero actionable work anyway. No forge claim lock existed at this tick's start; wrote then
+cleared it per step 0/4. Outer `momo` and `wiki` repos both clean aside from the same untracked
+`.claude/worktrees/` dir seen in recent confirmations (not mine, left untouched).
+
+**Escalation cadence: not due.** Last actual `PushNotification` send remains the 119th
+confirmation (~09:54 AEST), ~29 minutes before this tick — well inside the ~2h cadence, no
+re-send this tick. Technical diagnosis unchanged: **120 ticks have now hit this identical wall**
+(21:24, 21:54, 22:25, 22:57, 5th–119th, this one — spanning ~61.3 hours) — still needs Eli's
+manual restart (`brew services start postgresql@16` or equivalent). No procedural change;
+diagnosis exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
