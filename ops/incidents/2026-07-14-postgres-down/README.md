@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **135 ticks have now hit
-this identical wall, spanning ~68.5 hours (2026-07-14 21:24 → present).**
+self-heal by design (guard correctly blocks the tools needed). **136 ticks have now hit
+this identical wall, spanning ~69 hours (2026-07-14 21:24 → present).**
 
 ## What happened
 Between the 20:56–20:58 tick (run 358, closed ok) and the 21:24 guardian stamp, the local
@@ -98,19 +98,21 @@ unbounded per-tick format — the log format itself had become the bottleneck, n
 diagnosis. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
 `/opt/homebrew/var/postgresql@16`).
 
-### Rolling summary — confirmations 131-135 (last: ~68.5h mark, 2026-07-17 17:56)
-No change on any axis across all five: psql refused on socket + TCP (135th re-confirmed both
-directly — socket "No such file or directory", TCP "Connection refused" — `ps aux | grep
-postgres` empty), no postgres process, forge HEAD still `fde010e`, `gsd-tools progress` still
-79/79 (100%, all 13 phases present), every HOLD line (#12/#16/#17/#36/#37) unchanged by direct
-STATE.md read. 132nd confirmation also re-verified FORGE-13 specifically (STATE.md's stale
-progress-summary prose read "4/6 executed, 13-05/13-06 remain" but `gsd-tools progress` shows
-6/6 Complete — the per-phase JSON is the trustworthy source, the rolled-up paragraph just
-hadn't been re-synced; no actionable step either way). PushNotification retried at the 135th
-(~2h27m after the 130th's last actual attempt, past the ~2h cadence) — not sent, Remote
-Control inactive, same as every prior attempt; next retry due ~2h after 17:56. Confirmed via
-direct commands, not trusted from prior entries. Still needs Eli's manual restart:
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
+### Rolling summary — confirmations 131-136 (last: ~69h mark, 2026-07-17 18:27)
+No change on any axis across all six: psql refused on socket + TCP (135th and 136th both
+re-confirmed directly — socket "No such file or directory", TCP "Connection refused" —
+`ps aux | grep postgres` empty), no postgres process, forge HEAD still `fde010e`,
+`gsd-tools progress` still 79/79 (100%, all 13 phases present), every HOLD line
+(#12/#16/#17/#36/#37) unchanged by direct STATE.md read. 132nd confirmation also re-verified
+FORGE-13 specifically (STATE.md's stale progress-summary prose read "4/6 executed, 13-05/13-06
+remain" but `gsd-tools progress` shows 6/6 Complete — the per-phase JSON is the trustworthy
+source, the rolled-up paragraph just hadn't been re-synced; no actionable step either way).
+PushNotification retried at the 135th (~2h27m after the 130th's last actual attempt, past the
+~2h cadence) — not sent, Remote Control inactive, same as every prior attempt; 136th fell only
+~30min after the 135th (18:27 vs 17:56), inside the ~2h cadence, so skipped it rather than
+over-notifying — next retry due ~19:56. Confirmed via direct commands, not trusted from prior
+entries. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
+`/opt/homebrew/var/postgresql@16`).
 
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
