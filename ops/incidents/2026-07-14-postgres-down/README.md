@@ -98,6 +98,19 @@ unbounded per-tick format — the log format itself had become the bottleneck, n
 diagnosis. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
 `/opt/homebrew/var/postgresql@16`).
 
+### 131st confirmation (~30 min after the 130th) — adopting the rolling-summary going forward
+No change on any axis: psql refused on socket + TCP, no postgres process, `brew services list`
+still `none`, forge HEAD still `fde010e`, `gsd-tools progress` still 79/79, all HOLD lines
+unchanged. Skipped `PushNotification` this tick — the 130th's attempt was ~30 min ago and the
+established cadence is ~2h, so retrying now would just be noise. Answering the open follow-up
+question from the 130th confirmation: future identical "no change" confirmations will fold
+straight into this rolling paragraph (bumping the count and timestamp) rather than each getting
+a new dated section — a repeat of the same three facts (psql down, forge HEAD frozen, all HOLD)
+is exactly the pattern that made the file balloon to 2,651 lines the first time. A new section
+is only warranted when something actually changes (postgres comes back, a HOLD gets lifted, a
+new fact emerges). Confirmed via direct commands, not trusted from prior entries. Still needs
+Eli's manual restart: `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
