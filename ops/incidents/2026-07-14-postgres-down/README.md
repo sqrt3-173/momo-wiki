@@ -142,6 +142,21 @@ NOT retried this tick — last actual attempt (139th, 19:59) is under the ~2h ca
 then cleared `ops/locks/gsd-claim-forge.md` per `gsd-next.md` step 0/4. Still needs Eli's manual
 restart: `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
 
+### 141st confirmation (gsd-next headless tick, PROJECT=forge, ~73h mark, 2026-07-17 21:27)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection
+refused"), `ps aux | grep postgres` empty. Guard would ASK-ELI `pg_ctl`/`brew` as always
+(fingerprint check `claude -v` re-ran per protocol, ASK-ELI'd as expected, not retried). No
+stranded commit this time — outer momo/forge HEAD `df9d0a4` already matches the 140th
+confirmation's own entry, wiki HEAD was `3de3908` (the 140th's own commit) at start. Forge
+re-verified independently: `gsd-tools progress` 79/79 plans/summaries across all 13 phases
+(100%), STATE.md HOLD lines unchanged (#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59),
+ROADMAP.md still tops out at Phase 13 (no phase 14+). No step 1-4 route match exists
+independent of the outage. PushNotification NOT retried this tick — last actual attempt
+(139th, 19:59) is still inside the ~2h cadence at 21:27 (next due ~21:59). No forge claim
+lock existed at start; wrote then cleared `ops/locks/gsd-claim-forge.md` per `gsd-next.md`
+step 0/4. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
+`/opt/homebrew/var/postgresql@16`).
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
