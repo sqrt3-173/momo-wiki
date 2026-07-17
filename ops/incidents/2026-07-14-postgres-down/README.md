@@ -340,6 +340,43 @@ continues). No forge claim lock existed at start; wrote then cleared
 `ops/locks/gsd-claim-forge.md` per `gsd-next.md` step 0/4. Still needs Eli's manual restart:
 `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
 
+### First momo-cockpit confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~79h mark, 2026-07-18 04:01-04:05)
+Routing moved off `forge` for the first time this incident: the 03:30 forge tick (session
+exit 1, error — the first non-zero exit in this whole confirmation chain, tick.log shows
+`run  opened` 03:30:01 → `run  closed: error tokens=730928` 03:31:22) left a stranded
+`ops/locks/gsd-claim-forge.md` (not cleared per step 4, unlike every clean prior tick), so
+the wrapper's alphabetical scan skipped forge (name-matched lock present) and landed on
+`momo-cockpit` instead. Not yet 3h stale — left alone for the interactive session per
+`gsd-next.md` step 4's own guidance, not touched here (different project, not mine to clear).
+
+Same wall, independently re-hit: psql refused on socket ("No such file or directory") and TCP
+("Connection refused"), no postgres process. Fingerprint check `claude -v` ran per protocol,
+ASK-ELI'd as expected, not retried. No momo-cockpit claim lock existed at start; wrote then
+cleared `ops/locks/gsd-claim-momo-cockpit.md` per `gsd-next.md` step 0/4.
+
+Unlike forge, momo-cockpit's "no actionable step" verdict does NOT depend on the outage —
+independently verified on disk: `gsd-tools progress` shows Phase 1 complete (4/4), Phase 2
+Executed but unverified (6/6 plans, still `status: hold` in STATE.md), Phase 3 Planned with
+0/8 summaries. STATE.md confirms Phase 2 is HOLD (awaiting Eli — notification #29): 02-06
+Task 1 (guard patch staged) done, Task 2 (Eli must manually apply
+`ops/patches/02-guard-dashboard-control.patch` with sudo) still outstanding — re-verified
+directly via `grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` (still absent, patch not
+applied), not just trusted from STATE.md prose. HOLD is untouchable per `gsd-next.md`'s HOLD
+rule. Phase 3 is fully planned (8 plans, `gsd-plan-checker` PASSED per STATE.md) but
+`ROADMAP.md` records an explicit hard dependency (`Depends on: Phase 2 (Supervise)`, not the
+"independent, parallelizable" wording `gsd-next.md` step 4 requires to route around a human
+checkpoint) — confirmed by direct read of `.planning/ROADMAP.md`'s Phase 3 section, not
+inferred. Two commits landed since STATE.md's 2026-07-10 snapshot (`447b550` evidence doc,
+`1ee8dba` backlog seed) — neither touches 02-06 or resolves the HOLD. Working tree was clean
+at start, HEAD `1ee8dba`. No step 1-5 route match exists other than step 5 (no actionable
+step) — this would be true even with the DB up; the outage only blocks the `log_event`/
+notification receipt, which this wiki entry stands in for. PushNotification retried this tick
+(past the ~2h cadence from the 150th's ~02:00 attempt) — not sent, Remote Control inactive.
+Still needs Eli on two independent tracks: (1) DB restart, `brew services start
+postgresql@16`; (2) momo-cockpit notification #29 — apply
+`ops/patches/2026-07-09-subagent-control-files.patch` then
+`ops/patches/02-guard-dashboard-control.patch` in that order to `ops/momo-guard.py`.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
