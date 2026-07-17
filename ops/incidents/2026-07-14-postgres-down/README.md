@@ -2514,6 +2514,29 @@ re-send this tick. Technical diagnosis unchanged: **124 ticks have now hit this 
 manual restart (`brew services start postgresql@16` or equivalent). No procedural change;
 diagnosis exhausted since confirmation 5.
 
+### 125th confirmation (gsd-next headless tick, blank RUN_ID, PROJECT=forge, ~63.5h mark, 12:55 AEST)
+No change: psql refused on both socket (`/tmp/.s.PGSQL.5432`, "No such file or directory") and
+TCP (`127.0.0.1:5432`, "Connection refused" via `psql -h 127.0.0.1 -p 5432`); `ps aux | grep
+postgres` shows no process at all. Fingerprint check (`claude -v`) ASK-ELI'd as expected (not on
+the dev allowlist), noted, not retried. Forge disk state re-checked directly (not trusted from
+STATE.md prose): HEAD still `fde010e`, live `gsd-tools progress` still 79/79 plans/summaries
+(100%), STATE.md's `last_updated` still `2026-07-14T23:27:00+10:00`, all five HOLD lines
+(#12/#16/#17/#36/#37) re-confirmed present verbatim by direct grep against the actual notification
+numbers, not just a line count. No step 1-4 route match exists independent of the DB outage —
+forge has zero actionable work anyway (100% plans/summaries, every remaining item is a HOLD
+gate). No forge claim lock existed at this tick's start; wrote then cleared it per step 0/4.
+Outer `momo` repo HEAD matched the 124th confirmation's own commit (`eaa05a1`) exactly, and the
+nested `wiki` repo's copy of this file already matched too — nothing stranded to reconcile. Both
+repos clean at start. The untracked `.claude/worktrees/` dir (not mine) is still present under
+forge's working tree, same as several recent confirmations — left untouched.
+
+**Escalation cadence: not due.** Last actual `PushNotification` attempt remains the 123rd
+confirmation (~11:54 AEST), ~1h01m before this tick — inside the ~2h cadence, no re-send this
+tick. Technical diagnosis unchanged: **125 ticks have now hit this identical wall** (21:24,
+21:54, 22:25, 22:57, 5th–124th, this one — spanning ~63.5 hours) — still needs Eli's manual
+restart (`brew services start postgresql@16` or equivalent). No procedural change; diagnosis
+exhausted since confirmation 5.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
