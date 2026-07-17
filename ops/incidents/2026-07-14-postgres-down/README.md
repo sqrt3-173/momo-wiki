@@ -98,9 +98,9 @@ unbounded per-tick format — the log format itself had become the bottleneck, n
 diagnosis. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
 `/opt/homebrew/var/postgresql@16`).
 
-### Rolling summary — confirmations 131-136 (last: ~69h mark, 2026-07-17 18:27)
-No change on any axis across all six: psql refused on socket + TCP (135th and 136th both
-re-confirmed directly — socket "No such file or directory", TCP "Connection refused" —
+### Rolling summary — confirmations 131-137 (last: ~69.5h mark, 2026-07-17 18:56)
+No change on any axis across all seven: psql refused on socket + TCP (135th, 136th, and 137th
+all re-confirmed directly — socket "No such file or directory", TCP "Connection refused" —
 `ps aux | grep postgres` empty), no postgres process, forge HEAD still `fde010e`,
 `gsd-tools progress` still 79/79 (100%, all 13 phases present), every HOLD line
 (#12/#16/#17/#36/#37) unchanged by direct STATE.md read. 132nd confirmation also re-verified
@@ -110,7 +110,8 @@ source, the rolled-up paragraph just hadn't been re-synced; no actionable step e
 PushNotification retried at the 135th (~2h27m after the 130th's last actual attempt, past the
 ~2h cadence) — not sent, Remote Control inactive, same as every prior attempt; 136th fell only
 ~30min after the 135th (18:27 vs 17:56), inside the ~2h cadence, so skipped it rather than
-over-notifying — next retry due ~19:56. Confirmed via direct commands, not trusted from prior
+over-notifying; 137th fell ~1h at 18:56, still inside the ~2h cadence (next due ~19:56), so
+also skipped rather than over-notifying. Confirmed via direct commands, not trusted from prior
 entries. Still needs Eli's manual restart: `brew services start postgresql@16` (data dir
 `/opt/homebrew/var/postgresql@16`).
 
