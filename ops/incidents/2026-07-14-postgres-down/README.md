@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **151 ticks have now hit
-this identical wall, spanning ~77 hours (2026-07-14 21:24 → present).**
+self-heal by design (guard correctly blocks the tools needed). **152 ticks have now hit
+this identical wall, spanning ~78 hours (2026-07-14 21:24 → present).**
 
 ## What happened
 Between the 20:56–20:58 tick (run 358, closed ok) and the 21:24 guardian stamp, the local
@@ -322,6 +322,23 @@ the ~2h cadence (next due ~04:00 if the outage continues). No forge claim lock e
 start; wrote then cleared `ops/locks/gsd-claim-forge.md` per `gsd-next.md` step 0/4. Still
 needs Eli's manual restart: `brew services start postgresql@16` (data dir
 `/opt/homebrew/var/postgresql@16`).
+
+### 152nd confirmation (gsd-next headless tick, PROJECT=forge, ~78h mark, 2026-07-18 02:59-03:00)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection
+refused"), `ps aux | grep postgres` empty. Fingerprint check `claude -v` ran per protocol,
+ASK-ELI'd as expected (not on `DEV_ALLOW`), not retried. No stranded commit this time —
+outer momo HEAD `351a575` matched the 151st confirmation's own commit, nested wiki HEAD
+`861f7f4` in sync, both working trees clean at start. Forge re-verified independently
+rather than trusted from prior entries: HEAD still `df9d0a4`, `gsd-tools progress` still
+79/79 plans/summaries across all 13 phases (100%), STATE.md HOLD lines unchanged — all 12
+notification numbers (#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59) individually
+re-confirmed present by direct grep, not just carried over from prior entries — ROADMAP.md
+still tops out at Phase 13 (no phase 14+ added). No step 1-4 route match exists independent
+of the outage. PushNotification NOT retried this tick — last actual attempt (150th, ~02:00)
+is only ~1h prior at 02:59, still inside the ~2h cadence (next due ~04:00 if the outage
+continues). No forge claim lock existed at start; wrote then cleared
+`ops/locks/gsd-claim-forge.md` per `gsd-next.md` step 0/4. Still needs Eli's manual restart:
+`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`).
 
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
