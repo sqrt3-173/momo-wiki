@@ -1101,6 +1101,35 @@ only, not this tick's routed unit. Still needs Eli on the same two tracks: (1) D
 `brew services start postgresql@16`; (2) momo-cockpit notification #29 — apply both guard
 patches in the documented order.
 
+### 178th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~91.5h mark, 2026-07-18 17:06-17:10)
+No change: psql refused on socket ("No such file or directory") and TCP ("Connection refused"),
+`ps aux | grep postgres` empty. Fingerprint check `claude -v` ran per protocol — guard message
+read `ASK-ELI: 'claude' isn't on the dev allowlist`, same denial effect as always, not retried.
+No stranded commit — outer momo HEAD `0db8962` matched the 177th confirmation's own commit,
+nested wiki HEAD `28bed16` in sync, both working trees clean at start.
+
+Routing landed on `momo-cockpit` again for the same reason as the last twenty-five ticks: `forge`'s
+`ops/locks/gsd-claim-forge.md` (from the 03:30 error tick) is now ~13h36m old — a twenty-second
+tick past the 3h stale threshold. Still left untouched per `gsd-next.md` step 4/heartbeat.md
+§6 — not mine to clear headless, the interactive session's call. `bd-pipeline` re-confirmed
+structurally never actionable (`.planning/` has only `README.md`/`audits`, no `STATE.md`).
+
+momo-cockpit re-verified independently rather than trusted from the prior entry: HEAD still
+`1ee8dba`, `gsd-tools progress` still 56% (Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3
+0/8 summaries). STATE.md `status: hold` unchanged (awaiting Eli — notification #29, 02-06 Task
+2 still outstanding) — guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` empty). `ROADMAP.md` Phase 3 section
+re-read directly: `Depends on: Phase 2 (Supervise)` — still a hard dependency, no "independent,
+parallelizable" override language. No step 1-5 route match exists other than step 5 — true
+independent of the outage. PushNotification NOT retried this tick — last attempt (177th
+confirmation, 16:36-16:39) is only ~30min prior, well inside the ~2h cadence (next due ~18:36 if
+the outage continues). No momo-cockpit claim lock existed at start (this tick wrote it fresh);
+cleared per `gsd-next.md` step 0/4. `nv-health-website` re-checked, unchanged (still
+`milestone-active`, current_phase 3 "sydney landing page", last commit `c8c5ea7`, no lock file)
+— observational only, not this tick's routed unit. Still needs Eli on the same two tracks: (1)
+DB restart, `brew services start postgresql@16`; (2) momo-cockpit notification #29 — apply both
+guard patches in the documented order.
+
 ## Follow-up worth considering (Eli's call, not actioned here)
 A file-based dead-man's-switch notification (write a flag file under `ops/locks/` when psql
 is unreachable) would let a headless session surface "DB down" without depending on the DB
