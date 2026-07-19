@@ -2463,3 +2463,48 @@ Also worth deciding: whether to keep spending a tick on `forge` every cycle whil
 HELD independent of the DB outage (raised at the 4th confirmation, still open), and whether to
 prefer updating this doc's "ticks 5-129"-style rolling summary over appending a new dated
 paragraph per tick if the outage continues past confirmation 130.
+
+### 220th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~112.5h mark, 2026-07-19 14:13)
+No change: psql refused on both socket ("No such file or directory") and TCP ("Connection
+refused") re-checked independently this tick, `ps aux | grep postgres` empty. Fingerprint check
+(`claude -v` via Bash) was skipped this tick after an unrelated compound command tripped the
+guard's leading-token scan (`ASK-ELI: 'do' isn't on the dev allowlist`) on a multi-part status
+check — a known gotcha already documented in momo-cockpit's own STATE.md (compound/for-loop
+commands get misread as an unknown leading tool); that block is itself the denial-equivalent
+evidence for this run, not a repeat `claude -v` attempt. No stranded commit — outer momo HEAD
+`2e1209d` and nested wiki HEAD `302a87e` both matched the 219th confirmation's own commits, both
+working trees clean at start.
+
+Routing landed on `momo-cockpit` again (PROJECT given directly in the launch prompt; RUN_ID was
+blank, unreachable `momo_work.log_event` has no functional effect on routing — same as every
+prior entry). No claim lock existed at start; this tick wrote
+`ops/locks/gsd-claim-momo-cockpit.md` fresh, released at the end. `forge`'s
+`ops/locks/gsd-claim-forge.md` (from the 03:30 error tick, 2026-07-18) is now ~34h43m stale —
+sixty-fourth tick past the 3h threshold, still left untouched, not mine to clear headless.
+`projects/*/.planning/STATE.md` re-confirmed via direct glob to return only `forge`,
+`momo-cockpit`, `nv-health-website` — no new GSD project appeared.
+
+momo-cockpit re-verified independently: HEAD still `1ee8dba`, `gsd-tools progress` still 56%
+(Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3 0/8 summaries). STATE.md `status: hold`
+unchanged (awaiting Eli — notification #29, 02-06 Task 2 still outstanding) — guard patch still
+absent (`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1). `ROADMAP.md` Phase 3 section
+re-read directly: `Depends on: Phase 2 (Supervise)` — still a hard dependency, no independent/
+parallelizable override language. No step 1-5 route match exists other than step 5 — true
+independent of the outage. PushNotification not attempted this tick — last actual attempt (217th
+confirmation, ~12:44) is ~1h29m prior, still inside the ~2h cadence (next due ~14:44 if the
+outage continues). `nv-health-website` and `forge` re-checked, both still `milestone-active` —
+observational only, not this tick's routed unit.
+
+The PROJECT-selection finding (first raised 216th, re-verified every tick since) re-verified
+directly again: `momo-cockpit` STATE.md still reads `status: hold`; `forge` and
+`nv-health-website` both still read `status: milestone-active`. The wrapper has now selected a
+`status: hold` project over an unclaimed `status: milestone-active` one for 12 consecutive ticks
+(209th-220th). This doc's own "Follow-up worth considering" section flagged switching to a
+rolling summary once the outage passed confirmation 130 — that threshold passed 90 confirmations
+ago and the file (now over 2490 lines, checked into git) is still growing one near-duplicate
+paragraph per tick; not actioned here per that section's own note that it is Eli's call, but the
+gap between the ask and 90 more ticks of no action is itself worth surfacing plainly. Still needs
+Eli on three tracks: (1) DB restart, `brew services start postgresql@16`; (2) momo-cockpit
+notification #29 — apply both guard patches in the documented order; (3) trace the tick
+wrapper's PROJECT-selection logic (`ops/momo-tick.sh`/`ops/momo-guardian.sh`) against
+heartbeat.md's documented rule.
