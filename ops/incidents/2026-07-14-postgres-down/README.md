@@ -2913,3 +2913,53 @@ three tracks: (1) DB restart, `brew services start postgresql@16`; (2) momo-cock
 #29 — apply both guard patches in the documented order; (3) trace the tick wrapper's
 PROJECT-selection logic (`ops/momo-tick.sh`/`ops/momo-guardian.sh`) against heartbeat.md's
 documented rule.
+
+### 232nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~119h mark, 2026-07-19 20:17)
+No change on the outage itself: psql refused on both TCP and socket, `ps aux | grep postgres`
+empty. Fingerprint check ASK-ELI'd `claude` as always, not retried. No stranded commit — outer
+momo HEAD `2f183e1` and nested wiki HEAD matched the 231st confirmation's own commits, both
+trees clean at start. No momo-cockpit claim lock existed at start; wrote then (at the end of
+this tick) released `ops/locks/gsd-claim-momo-cockpit.md`. momo-cockpit itself unchanged: HEAD
+`1ee8dba`, `gsd-tools progress` 56%, STATE.md `status: hold` (notification #29), guard patch
+still absent, Phase 3 still hard-dependent on Phase 2 per ROADMAP.md. No step 1-5 route match.
+
+**The PROJECT-selection finding's third "needs Eli" track is now resolved — root cause traced
+directly by reading `ops/momo-tick.sh` (a read-only action, no privileged tool needed; the prior
+23 confirmations re-stated the open question without anyone actually opening the script). Two
+compounding bugs, not one:**
+1. **`forge`'s claim lock never self-cleans.** `momo-tick.sh`'s dead-run cleanup only deletes a
+   `gsd-claim-*.md` file if it contains a line matching `RUN_ID[:=] ?<this run's id>`. The stale
+   `ops/locks/gsd-claim-forge.md` (from the 2026-07-18 03:30 error tick, now 75 ticks / ~40h17m
+   past the 3h staleness flag) contains only `run-headless-tick` + a timestamp — **no `RUN_ID:`
+   line at all**, in a format the cleanup regex can never match. It is structurally permanent
+   until a human deletes it; per `gsd-next.md` §4 this is explicitly reserved for an interactive
+   session's judgment, not a headless tick's to remove.
+2. **The GSD-scan's "actionable" check treats `status: hold` as actionable.** The embedded
+   python in `momo-tick.sh` only excludes a project via `any(w in status for w in ("complete",
+   "archived", "paused"))` — `"hold"` is not in that blocklist, so `momo-cockpit` (`cp=1 < tp=3`,
+   `status: hold`) passes the same `actionable=1` check as a true `milestone-active` project.
+3. **Combined effect:** the scan globs `projects/*/.planning` in plain alphabetical order
+   (`bd-pipeline` → `forge` → `momo-cockpit` → `nv-health-website`) and takes the first
+   actionable + unclaimed hit. `bd-pipeline` has no STATE.md (skipped). `forge` IS
+   `milestone-active` and would win on merit, but is permanently claim-skipped by bug 1. The
+   loop falls through to `momo-cockpit`, which bug 2 lets slip past the stopped-check despite
+   being on `status: hold`, so it wins the `break` before `nv-health-website` (the actually-free
+   `milestone-active` project) is ever reached. Heartbeat.md's "milestone-active first" framing
+   in §3 point 3 is prose describing the *intent*; the implementation has no status-priority
+   ordering at all — it's first-match-alphabetical over a buggy actionability predicate.
+
+**Fix needed (for an interactive session or Eli, not a headless tick under `gsd-next.md`'s own
+claim-cleanup rule):** (a) delete the stale `ops/locks/gsd-claim-forge.md` by hand — it is inert
+data, not live work; (b) add `"hold"` to `momo-tick.sh`'s python `stopped` word list so a HOLD
+project is never selected by the GSD scan; (c) optionally also harden the dead-run cleanup to
+match a claim file's mtime/age as a fallback when no `RUN_ID:` line is found, so a malformed
+claim from a future error tick can't wedge a project again the same way. None of these three are
+guard-blocked or destructive — they're a plain-file delete and an edit to an ungoverned wrapper
+script — but they sit outside this unit's scope (`gsd-next` on `momo-cockpit`) and outside a
+headless tick's claim-cleanup authority, so left for judgment rather than self-applied.
+PushNotification retried this tick (~2h from the 229th confirmation's last actual attempt,
+~18:46 → ~20:17, past the ~2h cadence): not sent, Remote Control inactive, same as every prior
+attempt (next due ~22:17 if the outage continues). Still needs Eli on: (1) DB restart, `brew
+services start postgresql@16`; (2) momo-cockpit notification #29 — apply both guard patches in
+the documented order; (3) the three-part PROJECT-selection fix above (now fully specified, no
+further tracing needed).
