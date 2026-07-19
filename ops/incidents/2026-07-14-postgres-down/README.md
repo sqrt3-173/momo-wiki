@@ -733,3 +733,47 @@ Still needs Eli on the same three tracks as the 232nd-247th confirmations: (1) D
 momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
 three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
 or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
+
+### 249th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~127.5h mark, 2026-07-20 04:51)
+No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
+socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
+empty. `log_event` not attempted this tick (RUN_ID handed to this session was blank, same
+blank-RUN_ID signature the outage has produced since before the 240th). No stranded commit —
+outer momo HEAD `a0a1d7a` and nested wiki HEAD `f58e6cd` both matched the 248th confirmation's
+own commits, both trees clean (`git status --short` empty) at start.
+
+**Deviation worth flagging: the fingerprint check (`claude -v`) succeeded this tick** —
+`2.1.206 (Claude Code)`, not the ASK-ELI dev-allowlist denial seen every confirmation since the
+234th's one-off success. Per protocol this was noted, not retried. Two things changed together:
+the CLI version itself has moved from the pinned `2.1.199` (heartbeat.md's PROBE reference) to
+`2.1.206` — an actual upgrade, not a repeat of the 234th's unexplained blip. This is exactly the
+condition heartbeat.md §1 calls out ("Docs announce bare-by-default for `-p` in a future
+release... `ops/momo-probe-tick.sh` is the re-probe path after any CLI update") — an interactive
+session should re-run the probe against 2.1.206 and confirm the guard/settings discovery
+behavior (and the dev-allowlist denial specifically) still holds under non-bare `-p` before
+trusting the pin is current.
+
+No momo-cockpit claim lock existed at start; this tick wrote then released
+`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
+interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
+
+momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
+`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
+`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
+this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
+re-derived here. PushNotification retried this tick (~2h02m from the 245th confirmation's last
+actual attempt, ~02:49 → ~04:51, past the ~2h cadence): not sent, Remote Control inactive, same
+as every prior attempt (message also flagged the claude -v deviation for Eli; next due ~06:51 if
+the outage continues).
+
+Still needs Eli on the same three tracks as the 232nd-248th confirmations, plus a fourth: (1) DB
+restart, `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
+momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
+three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
+or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) NEW
+— re-probe the CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206`, since this tick's `claude -v`
+unexpectedly succeeded instead of getting denied.
