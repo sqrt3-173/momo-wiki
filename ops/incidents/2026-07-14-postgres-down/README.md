@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **256 ticks have now hit
-this identical wall, spanning ~131 hours (2026-07-14 21:24 → present).** A second,
+self-heal by design (guard correctly blocks the tools needed). **264 ticks have now hit
+this identical wall, spanning ~135 hours (2026-07-14 21:24 → present).** A second,
 independent issue was surfaced at the 216th confirmation (tick wrapper's PROJECT selection
 not honoring its own documented "milestone-active first" rule) and fully root-caused at the
 232nd confirmation — two compounding bugs in `ops/momo-tick.sh` with a three-part fix
@@ -306,768 +306,67 @@ momo-cockpit notification #29 — apply both guard patches in the documented ord
 three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
 or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
 
-### 235th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~120.5h mark, 2026-07-19 21:48)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` attempted per protocol, failed identically (socket error). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (denied for a different reason than the guard's usual BLOCK —
-`'claude' isn't on the dev allowlist` — still a denial, not the 234th's one-off success; not
-retried, per protocol). No stranded commit — outer momo HEAD `5b2aba9` and nested wiki HEAD
-`01d55d4` both matched the 234th confirmation's own commits, diffed byte-identical, both trees
-clean at start.
+### Rolling summary — confirmations 235-263 (2026-07-19 21:48 → 2026-07-20 11:56, ~120.5h → ~134.5h mark)
+Condensed on the 264th confirmation for the same reason the 130th and 234th confirmations
+condensed their predecessors: 29 individual entries had accumulated since the last condensation
+with zero new information per entry beyond timestamps, HEAD hashes, and PushNotification cadence
+math. Full blow-by-blow text for 235-263 remains in git history
+(`git log -p -- wiki/ops/incidents/2026-07-14-postgres-down/README.md`) if ever needed. By theme:
 
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
+**The outage itself never changed.** Every tick (235th-263rd, 29 confirmations) re-verified psql
+refused on both socket ("No such file or directory") and TCP (127.0.0.1:5432, "Connection
+refused"), `ps aux | grep postgres` empty, no `/tmp/.s.PGSQL.5432` socket file.
 
-momo-cockpit re-verified independently: HEAD still `1ee8dba`, `gsd-tools progress` still 56%
-(Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold`
-unchanged (notification #29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (232nd
-confirmation, ~20:17) is only ~1h31m prior, well inside the ~2h cadence (next due ~22:17 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-234th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 236th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~121h mark, 2026-07-19 22:18)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `a343308` and nested wiki HEAD `39a695b` both matched the 235th confirmation's
-own commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+**momo-cockpit never changed.** `gsd-tools progress` steady at 56% (Phase 1 4/4 Complete, Phase 2
+6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged throughout (notification
 #29, 02-06 Task 2 still outstanding), guard patch still absent
 (`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h from the 232nd confirmation's last
-actual attempt, ~20:17 → ~22:18, past the ~2h cadence): not sent, Remote Control inactive, same
-as every prior attempt (next due ~00:18 if the outage continues).
+`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5 on any tick. `forge`
+and `nv-health-website` re-checked every tick, both still `status: milestone-active`
+(observational, not the routed unit); the PROJECT-selection root cause (traced 232nd) unchanged,
+not re-derived on any of these ticks. `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) untouched throughout, still reserved for an
+interactive session. No momo-cockpit claim lock ever found pre-existing; every tick wrote then
+released its own.
 
-Still needs Eli on the same three tracks as the 232nd-235th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
+**Fingerprint check (`claude -v`) mostly ASK-ELI'd, with one more one-off success.** Denied
+(dev-allowlist) on 235th-248th and 250th-263rd. The 249th confirmation (~127.5h mark) got a clean
+`claude -v` success (`2.1.206`) — the CLI itself had moved past heartbeat.md's pinned `2.1.199` —
+raising a fourth "needs Eli" track (re-probe `ops/momo-probe-tick.sh` against `2.1.206`) that has
+carried forward, unresolved, through every subsequent entry.
 
-### 237th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~121.5h mark, 2026-07-19 22:48)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th/236th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `7aa4f84` and nested wiki HEAD `f1acb1d` both matched the 236th confirmation's own
-commits, both trees clean at start.
+**PushNotification retried on the ~2h cadence throughout**, every attempt reporting non-delivery
+("Remote Control inactive"), consistent with the entire incident — no delivery has ever succeeded.
 
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
+**`log_event` attempts were inconsistent** — some ticks attempted it and got the expected
+socket-error failure, others skipped it outright once the blank-RUN_ID signature was established
+(~240th on); both are the same underlying fact (no DB), just noted for completeness.
 
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (236th
-confirmation, ~22:18) is only ~30min prior, well inside the ~2h cadence (next due ~00:18 if the
-outage continues).
+No stranded commits occurred across this span — every tick found its predecessor's HEAD matching
+in both the outer momo repo and the nested wiki repo, trees clean at start.
 
-Still needs Eli on the same three tracks as the 232nd-236th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
+Still needs Eli on the same four tracks the whole span: (1) DB restart, `brew services start
+postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit notification #29 —
+apply both guard patches in the documented order; (3) the three-part PROJECT-selection fix (fully
+specified at the 232nd, awaiting an interactive session or Eli to apply — a plain-file delete +
+wrapper-script edit, outside this unit's scope); (4) re-probe the CLI pin
+(`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an interactive
+re-probe.
 
-### 238th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~122h mark, 2026-07-19 23:20)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` attempted per protocol, failed identically (socket error). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 235th-237th, not the
-234th's one-off success; not retried, per protocol). No stranded commit — outer momo HEAD
-`0d9b7f7` and nested wiki HEAD `2382993` both matched the 237th confirmation's own commits, both
-trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (236th
-confirmation, ~22:18) is only ~1h02m prior, well inside the ~2h cadence (next due ~00:18 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-237th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 239th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~122.5h mark, 2026-07-19 23:49)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-238th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `d18f04e` and nested wiki HEAD `00120fa` both matched the 238th confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (236th
-confirmation, ~22:18) is only ~1h31m prior, well inside the ~2h cadence (next due ~00:18 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-238th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 240th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~123h mark, 2026-07-20 00:20)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-239th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `de39ec0` and nested wiki HEAD `f7344d8` both matched the 239th confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h02m from the 236th confirmation's last
-actual attempt, ~22:18 → ~00:20, past the ~2h cadence): not sent, Remote Control inactive, same
-as every prior attempt (next due ~02:20 if the outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-239th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 241st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~123.5h mark, 2026-07-20 00:49)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-240th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `09ddb4a` and nested wiki HEAD `0e162ac` both matched the 240th confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (240th
-confirmation, ~00:20) is only ~29min prior, well inside the ~2h cadence (next due ~02:20 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-240th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 242nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~124h mark, 2026-07-20 01:20)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-241st, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `f9770ec` and nested wiki HEAD `c087e1e` both matched the 241st confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (240th
-confirmation, ~00:20) is only ~1h prior, well inside the ~2h cadence (next due ~02:20 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-241st confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 243rd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~124.5h mark, 2026-07-20 01:49)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-242nd, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `fc3d555` and nested wiki HEAD `bf83bb1` both matched the 242nd confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (240th
-confirmation, ~00:20) is only ~1h29m prior, well inside the ~2h cadence (next due ~02:20 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-242nd confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 244th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~125h mark, 2026-07-20 02:19)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` attempted per protocol, failed identically (socket error). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 235th-243rd, not the
-234th's one-off success; not retried, per protocol). No stranded commit — outer momo HEAD
-`f12e001` and nested wiki HEAD `8877862` both matched the 243rd confirmation's own commits, both
-trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (240th
-confirmation, ~00:20) is ~1h59m prior, still just inside the ~2h cadence (next due ~02:20 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-243rd confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 245th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~125.5h mark, 2026-07-20 02:49)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 235th-244th, not the 234th's one-off success; not retried, per protocol). No stranded commit —
-outer momo HEAD `cbcb79e` and nested wiki HEAD `b9a3f7b` both matched the 244th confirmation's own
-commits, both trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h29m from the 240th confirmation's last
-actual attempt, ~00:20 → ~02:49, past the ~2h cadence): not sent, Remote Control inactive, same
-as every prior attempt (next due ~04:49 if the outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-244th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 246th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~126h mark, 2026-07-20 03:20)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` attempted per protocol, failed identically (socket error). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 235th-245th, not the
-234th's one-off success; not retried, per protocol). No stranded commit — outer momo HEAD
-`7abc355` and nested wiki HEAD `d8794f9` both matched the 245th confirmation's own commits, both
-trees clean at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (245th
-confirmation, ~02:49) is only ~31min prior, well inside the ~2h cadence (next due ~04:49 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-245th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 247th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~126.5h mark, 2026-07-20 03:51)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` attempted per protocol, failed identically (socket error). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 235th-246th, not the
-234th's one-off success; not retried, per protocol). No stranded commit — outer momo HEAD
-`1dfb900` and nested wiki HEAD `8609bb4` both matched the 246th confirmation's own commits, both
-trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (245th
-confirmation, ~02:49) is only ~1h02m prior, well inside the ~2h cadence (next due ~04:49 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-246th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 248th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~127h mark, 2026-07-20 04:21)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` not attempted this tick (RUN_ID handed to this session was blank, same
-blank-RUN_ID signature the outage has produced since before the 240th). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 235th-247th, not the
-234th's one-off success; not retried, per protocol). No stranded commit — outer momo HEAD
-`918fc98` and nested wiki HEAD `0ae56e6` both matched the 247th confirmation's own commits, both
-trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (245th
-confirmation, ~02:49) is only ~1h32m prior, well inside the ~2h cadence (next due ~04:49 if the
-outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-247th confirmations: (1) DB restart,
-`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope).
-
-### 249th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~127.5h mark, 2026-07-20 04:51)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` not attempted this tick (RUN_ID handed to this session was blank, same
-blank-RUN_ID signature the outage has produced since before the 240th). No stranded commit —
-outer momo HEAD `a0a1d7a` and nested wiki HEAD `f58e6cd` both matched the 248th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-**Deviation worth flagging: the fingerprint check (`claude -v`) succeeded this tick** —
-`2.1.206 (Claude Code)`, not the ASK-ELI dev-allowlist denial seen every confirmation since the
-234th's one-off success. Per protocol this was noted, not retried. Two things changed together:
-the CLI version itself has moved from the pinned `2.1.199` (heartbeat.md's PROBE reference) to
-`2.1.206` — an actual upgrade, not a repeat of the 234th's unexplained blip. This is exactly the
-condition heartbeat.md §1 calls out ("Docs announce bare-by-default for `-p` in a future
-release... `ops/momo-probe-tick.sh` is the re-probe path after any CLI update") — an interactive
-session should re-run the probe against 2.1.206 and confirm the guard/settings discovery
-behavior (and the dev-allowlist denial specifically) still holds under non-bare `-p` before
-trusting the pin is current.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h02m from the 245th confirmation's last
-actual attempt, ~02:49 → ~04:51, past the ~2h cadence): not sent, Remote Control inactive, same
-as every prior attempt (message also flagged the claude -v deviation for Eli; next due ~06:51 if
-the outage continues).
-
-Still needs Eli on the same three tracks as the 232nd-248th confirmations, plus a fourth: (1) DB
-restart, `brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
-momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
-three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
-or Eli to apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) NEW
-— re-probe the CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206`, since this tick's `claude -v`
-unexpectedly succeeded instead of getting denied.
-
-### 250th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~128h mark, 2026-07-20 05:21)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` not attempted this tick (RUN_ID handed to this session was blank, same
-blank-RUN_ID signature the outage has produced since before the 240th). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, back to the shape seen 235th-247th —
-not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit — outer momo HEAD
-`98da259` and nested wiki HEAD `162bd2a` both matched the 249th confirmation's own commits, both
-trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (249th
-confirmation, ~04:51) is only ~30min prior, well inside the ~2h cadence (next due ~06:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th confirmation: (1) DB restart, `brew services
-start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit notification
-#29 — apply both guard patches in the documented order; (3) the three-part PROJECT-selection fix
-(fully specified at the 232nd, awaiting an interactive session or Eli to apply — a plain-file
-delete + wrapper-script edit, outside this unit's scope); (4) re-probe the CLI pin
-(`ops/momo-probe-tick.sh`) against `2.1.206` — the 249th's `claude -v` unexpectedly succeeded
-once; this tick's denial reverted to the normal shape, still unexplained and still worth an
-interactive re-probe rather than assuming it was a one-off.
-
-### 251st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~128.5h mark, 2026-07-20 05:51)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty. `log_event` not attempted this tick (RUN_ID handed to this session was blank, same
-blank-RUN_ID signature the outage has produced since before the 240th). Fingerprint check
-(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 250th and
-235th-247th — not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit —
-outer momo HEAD `52f7352` and nested wiki HEAD `3b3d97c` both matched the 250th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (249th
-confirmation, ~04:51) is only ~1h prior, well inside the ~2h cadence (next due ~06:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-250th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 252nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~129h mark, 2026-07-20 06:22)
+### 264th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~135h mark, 2026-07-20 12:29)
 No change on the outage: psql refused on both socket ("No such file or directory") and TCP
 (127.0.0.1:5432, "Connection refused") re-checked independently this tick, `ps aux | grep
-postgres` empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick
-(RUN_ID handed to this session was blank, same blank-RUN_ID signature the outage has produced
-since before the 240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist
-denial, same shape as the 250th-251st — not a repeat of the 249th's one-off CLI-upgrade
-success). No stranded commit — outer momo HEAD `287a255` and nested wiki HEAD `13f6f5d` both
-matched the 251st confirmation's own commits, both trees clean (`git status --short` empty)
-at start.
+postgres` empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted (RUN_ID handed to
+this session was blank, same blank-RUN_ID signature since before the 240th). Fingerprint check
+(`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as the 250th-263rd, not the
+249th's one-off CLI-upgrade success). No stranded commit — outer momo HEAD `4938718` and nested
+wiki HEAD `7f4e0b8` both matched the 263rd confirmation's own commits, both trees clean
+(`git status --short` empty) at start.
 
 No momo-cockpit claim lock existed at start; this tick wrote then released
 `ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (249th
-confirmation, ~04:51) is only ~1h31m prior, still inside the ~2h cadence (next due ~06:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-251st confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 253rd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~129.5h mark, 2026-07-20 06:51)
-No change on the outage: psql refused on both socket ("No such file or directory") and TCP
-(127.0.0.1:5432, "Connection refused") re-checked independently this tick, `ps aux | grep
-postgres` empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick
-(RUN_ID handed to this session was blank, same blank-RUN_ID signature the outage has produced
-since before the 240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist
-denial, same shape as the 250th-252nd — not a repeat of the 249th's one-off CLI-upgrade
-success). No stranded commit — outer momo HEAD `0c1532d` and nested wiki HEAD `09666de` both
-matched the 252nd confirmation's own commits, both trees clean (`git status --short` empty)
-at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h after the 249th confirmation's last
-actual attempt, ~04:51 → ~06:51, right at the ~2h cadence) — not sent, Remote Control inactive,
-same as every prior attempt.
-
-Still needs Eli on the same four tracks as the 249th-252nd confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 254th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~130h mark, 2026-07-20 07:21)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th — confirmed via `ops/locks/run-.pid`). Fingerprint check (`claude -v`) ASK-ELI'd this tick
-(dev-allowlist denial, same shape as the 250th-253rd — not a repeat of the 249th's one-off
-CLI-upgrade success). No stranded commit — outer momo HEAD `8d47d1e` and nested wiki HEAD
-`c7b5f2e` both matched the 253rd confirmation's own commits, both trees clean (`git status
---short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (253rd
-confirmation, ~06:51) is only ~30min prior, well inside the ~2h cadence (next due ~08:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-253rd confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 255th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~130.5h mark, 2026-07-20 07:51)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-254th — not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit —
-outer momo HEAD `51bd4b2` and nested wiki HEAD `ba338f7` both matched the 254th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (253rd
-confirmation, ~06:51) is only ~1h prior, still inside the ~2h cadence (next due ~08:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-254th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 256th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~131h mark, 2026-07-20 08:21)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-255th — not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit —
-outer momo HEAD `16dc1e2` and nested wiki HEAD `36061d6` both matched the 255th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification NOT retried this tick — last actual attempt (253rd
-confirmation, ~06:51) is ~1h30m prior, still inside the ~2h cadence (next due ~08:51 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-255th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 257th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~131.5h mark, 2026-07-20 08:52)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-256th — not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit —
-outer momo HEAD `cf69208` and nested wiki HEAD `37fef84` both matched the 256th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active` — observational only, not
-this tick's routed unit; the PROJECT-selection root cause (traced 232nd) is unchanged, not
-re-derived here. PushNotification retried this tick (~2h after the 253rd confirmation's last
-actual attempt, ~06:51 → ~08:52, right at the ~2h cadence) — not sent, Remote Control inactive,
-same as every prior attempt.
-
-Still needs Eli on the same four tracks as the 249th-256th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 258th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~132h mark, 2026-07-20 09:23)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-257th — not a repeat of the 249th's one-off CLI-upgrade success). No stranded commit —
-outer momo HEAD `3512987` and nested wiki HEAD `e289b1a` both matched the 257th confirmation's
-own commits, both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an interactive
+session (self-clean bug fully traced at the 232nd, no new tracing needed).
 
 momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
 Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
@@ -1077,147 +376,15 @@ Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged 
 `nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
 still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
 root cause (traced 232nd) is unchanged, not re-derived here. PushNotification NOT retried this
-tick — last actual attempt (257th confirmation, ~08:52) is only ~31min prior, well inside the
-~2h cadence (next due ~10:52 if the outage continues).
-
-Still needs Eli on the same four tracks as the 249th-257th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 259th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~132.5h mark, 2026-07-20 09:54)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` attempted per protocol (RUN_ID blank),
-failed identically (socket error). Fingerprint check (`claude -v`) ASK-ELI'd this tick
-(dev-allowlist denial, same shape as the 250th-258th, not the 249th's one-off CLI-upgrade
-success). No stranded commit — outer momo HEAD `eabfded` and nested wiki HEAD `dc0f3f6` both
-matched the 258th confirmation's own commits, both trees clean (`git status --short` empty) at
-start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
-still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
-root cause (traced 232nd) is unchanged, not re-derived here. PushNotification NOT retried this
-tick — last actual attempt (257th confirmation, ~08:52) is only ~1h02m prior, well inside the
-~2h cadence (next due ~10:52 if the outage continues).
-
-Still needs Eli on the same four tracks as the 249th-258th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 260th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~133h mark, 2026-07-20 10:24)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-259th, not the 249th's one-off CLI-upgrade success). No stranded commit — outer momo
-HEAD `3ab6901` and nested wiki HEAD `d54c097` both matched the 259th confirmation's own commits,
-both trees clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on` Phase 2 (Supervise). No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
-still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
-root cause (traced 232nd) is unchanged, not re-derived here. PushNotification NOT retried this
-tick — last actual attempt (257th confirmation, ~08:52) is only ~1h32m prior, well inside the
-~2h cadence (next due ~10:52 if the outage continues).
-
-Still needs Eli on the same four tracks as the 249th-259th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 261st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~133.5h mark, 2026-07-20 10:54)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-260th, not the 249th's one-off CLI-upgrade success). No stranded commit — outer momo
-HEAD `9a88ffc` and nested wiki HEAD matched the 260th confirmation's own commits, both trees
-clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
-still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
-root cause (traced 232nd) is unchanged, not re-derived here. PushNotification retried this tick
-(~2h02m from the 257th confirmation's last actual attempt, ~08:52 → ~10:54, past the ~2h
-cadence): not sent, Remote Control inactive, same as every prior attempt (next due ~12:54 if the
-outage continues).
-
-Still needs Eli on the same four tracks as the 249th-260th confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
-
-### 262nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~134h mark, 2026-07-20 11:26)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-261st, not the 249th's one-off CLI-upgrade success). No stranded commit — outer momo
-HEAD `31d4fdb` and nested wiki HEAD matched the 261st confirmation's own commits, both trees
-clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
-still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
-root cause (traced 232nd) is unchanged, not re-derived here. PushNotification NOT retried this
-tick — last actual attempt (261st confirmation, ~10:54) is only ~32min prior, well inside the
+tick — last actual attempt (261st confirmation, ~10:54) is only ~1h35m prior, still inside the
 ~2h cadence (next due ~12:54 if the outage continues).
 
-Still needs Eli on the same four tracks as the 249th-261st confirmations: (1) DB restart, `brew
+This tick also condensed confirmations 235-263 into a rolling summary (see above), the same
+maintenance the 130th and 234th confirmations did previously — 29 entries had accumulated with
+zero new information per entry beyond timestamps and repeated counters. Full text remains in git
+history.
+
+Still needs Eli on the same four tracks as the 249th-263rd confirmations: (1) DB restart, `brew
 services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
 notification #29 — apply both guard patches in the documented order; (3) the three-part
 PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
@@ -1225,36 +392,11 @@ apply — a plain-file delete + wrapper-script edit, outside this unit's scope);
 CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
 interactive re-probe.
 
-### 263rd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~134.5h mark, 2026-07-20 11:56)
-No change on the outage: psql refused on both TCP (127.0.0.1:5432, "Connection refused") and
-socket ("No such file or directory") re-checked independently this tick, `ps aux | grep postgres`
-empty, no `/tmp/.s.PGSQL.5432` socket file. `log_event` not attempted this tick (RUN_ID handed to
-this session was blank, same blank-RUN_ID signature the outage has produced since before the
-240th). Fingerprint check (`claude -v`) ASK-ELI'd this tick (dev-allowlist denial, same shape as
-the 250th-262nd, not the 249th's one-off CLI-upgrade success). No stranded commit — outer momo
-HEAD `31d4fdb` and nested wiki HEAD both matched the 262nd confirmation's own commits, both trees
-clean (`git status --short` empty) at start.
-
-No momo-cockpit claim lock existed at start; this tick wrote then released
-`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
-(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
-interactive session (self-clean bug fully traced at the 232nd, no new tracing needed).
-
-momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
-Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
-#29, 02-06 Task 2 still outstanding), guard patch still absent
-(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
-`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5. `forge` and
-`nv-health-website` re-checked, both still `status: milestone-active`; `bd-pipeline` re-checked,
-still no `STATE.md` — all observational only, not this tick's routed unit; the PROJECT-selection
-root cause (traced 232nd) is unchanged, not re-derived here. PushNotification NOT retried this
-tick — last actual attempt (261st confirmation, ~10:54) is only ~1h02m prior, well inside the
-~2h cadence (next due ~12:54 if the outage continues).
-
-Still needs Eli on the same four tracks as the 249th-262nd confirmations: (1) DB restart, `brew
-services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
-notification #29 — apply both guard patches in the documented order; (3) the three-part
-PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
-apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
-CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
-interactive re-probe.
+**135 hours, 264 ticks, zero Eli action landed.** Every escalation channel available to a
+headless tick has been exhausted repeatedly: PushNotification retried on cadence roughly every
+2 hours for days, never delivered; this wiki doc is git-committed every tick as the fallback
+receipt. The four items above are unchanged in kind since the 249th confirmation — only
+accumulating restatement since. Worth an interactive session's or Eli's judgment on whether
+continuing ~30-min re-confirmations is still the right cadence, or whether `TICK_INTERVAL` /
+`gsd-next`'s routing should change until this clears — outside a headless tick's authority to
+decide on its own.
