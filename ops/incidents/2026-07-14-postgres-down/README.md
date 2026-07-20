@@ -1951,3 +1951,52 @@ with no new information per cycle; an interactive session or Eli revisiting whet
 `TICK_INTERVAL` / `gsd-next`'s routing should pause on this project until the outage clears
 (rather than continuing ~30-min re-confirmations indefinitely) is overdue — outside a headless
 tick's authority to decide on its own, flagged again here for visibility.
+
+### 300th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~152.5h mark, 2026-07-21 06:37)
+Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") —
+re-checked independently this tick. `log_event` not attempted (RUN_ID handed to this session
+was blank, same signature since before the 240th). Fingerprint check (`claude -v`) ASK-ELI'd
+this tick (dev-allowlist denial, same shape as the 250th-299th). No stranded commit — outer
+momo HEAD `a4c2526` and nested wiki HEAD `b7baf30` both matched the 299th confirmation's own
+commits, both trees clean (`git status --short` empty) at start.
+
+No momo-cockpit claim lock existed at start; this tick wrote then released
+`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an interactive
+session (self-clean bug fully traced at the 232nd, no new tracing needed).
+
+momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still
+`**Depends on**: Phase 2 (Supervise)` (no "independent, parallelizable" override). No step 1-5
+route match other than step 5 — HOLD stays untouchable per gsd-next.md's hard rule, not
+re-scoped, not worked around. `forge` and `nv-health-website` re-checked individually, both
+still `status: milestone-active`; `bd-pipeline` re-checked, still no `STATE.md` (only README.md
++ audits/) — all observational only, not this tick's routed unit; the PROJECT-selection root
+cause (traced 232nd) is unchanged, not re-derived here. PushNotification skipped this tick
+(last actual attempt, 297th confirmation, ~05:06, ~1h31m prior, still inside the ~2h cadence —
+next due ~07:06 if the outage continues).
+
+Still needs Eli on the same four tracks as the 249th-299th confirmations: (1) DB restart, `brew
+services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
+notification #29 — apply both guard patches in the documented order; (3) the three-part
+PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
+apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
+CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
+interactive re-probe.
+
+**~152.5 hours, 300 ticks, zero Eli action landed.** Every escalation channel available to a
+headless tick has been exhausted repeatedly: PushNotification retried on cadence roughly every
+2 hours for days, never delivered; this wiki doc is git-committed every tick as the fallback
+receipt. The four items above are unchanged in kind since the 249th confirmation — only
+accumulating restatement since. This confirmation cadence has now run for six-plus days straight
+with no new information per cycle; an interactive session or Eli revisiting whether
+`TICK_INTERVAL` / `gsd-next`'s routing should pause on this project until the outage clears
+(rather than continuing ~30-min re-confirmations indefinitely) is overdue — outside a headless
+tick's authority to decide on its own, flagged again here for visibility. This is a round-number
+milestone (300 ticks) worth surfacing on its own: nothing about the diagnosis has changed since
+the 249th, only the counter — the remaining value in continuing unattended ~30-min
+re-confirmations at this point is a call for an interactive session or Eli, not this tick.
