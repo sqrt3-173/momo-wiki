@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **264 ticks have now hit
-this identical wall, spanning ~135 hours (2026-07-14 21:24 → present).** A second,
+self-heal by design (guard correctly blocks the tools needed). **274 ticks have now hit
+this identical wall, spanning ~140 hours (2026-07-14 21:24 → present).** A second,
 independent issue was surfaced at the 216th confirmation (tick wrapper's PROJECT selection
 not honoring its own documented "milestone-active first" rule) and fully root-caused at the
 232nd confirmation — two compounding bugs in `ops/momo-tick.sh` with a three-part fix
@@ -776,6 +776,52 @@ CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, stil
 interactive re-probe.
 
 **~139.5 hours, 273 ticks, zero Eli action landed.** Every escalation channel available to a
+headless tick has been exhausted repeatedly: PushNotification retried on cadence roughly every
+2 hours for days, never delivered; this wiki doc is git-committed every tick as the fallback
+receipt. The four items above are unchanged in kind since the 249th confirmation — only
+accumulating restatement since. Worth an interactive session's or Eli's judgment on whether
+continuing ~30-min re-confirmations is still the right cadence, or whether `TICK_INTERVAL` /
+`gsd-next`'s routing should change until this clears — outside a headless tick's authority to
+decide on its own.
+
+### 274th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~140h mark, 2026-07-20 17:30)
+No change on the outage: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") — re-checked
+independently this tick. `log_event` not attempted (RUN_ID handed to this session was blank,
+same as every confirmation since the DB went down). Fingerprint check (`claude -v`) ASK-ELI'd
+this tick (dev-allowlist denial, same shape as the 250th-273rd). No stranded commit — outer momo
+HEAD `1ce62ae` and nested wiki HEAD `09467f8` both matched the 273rd confirmation's own commits,
+both trees clean (`git status --short` empty) at start.
+
+No momo-cockpit claim lock existed at start; this tick wrote then released
+`ops/locks/gsd-claim-momo-cockpit.md`. `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an interactive
+session (self-clean bug fully traced at the 232nd, no new tracing needed).
+
+momo-cockpit re-verified independently: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent
+(`grep -q CONTROL_COMMANDS_TABLE ops/momo-guard.py` exit 1), `ROADMAP.md` Phase 3 still hard
+`Depends on: Phase 2 (Supervise)`. No step 1-5 route match other than step 5 — HOLD stays
+untouchable per gsd-next.md's hard rule, not re-scoped, not worked around. `forge` and
+`nv-health-website` re-checked individually (not via a shell loop — a bare `for`/`do` one-liner
+tripped the guard's leading-token scan this tick, per the known gotcha in momo-cockpit's own
+STATE.md; re-ran each project's check as a separate command instead), both still
+`status: milestone-active`; `bd-pipeline` re-checked, still no `STATE.md` — all observational
+only, not this tick's routed unit. PushNotification NOT retried this tick — last actual attempt
+(273rd confirmation, ~17:01) is only ~30min prior, well inside the ~2h cadence (next due ~19:01
+if the outage continues).
+
+Still needs Eli on the same four tracks as the 249th-273rd confirmations: (1) DB restart, `brew
+services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2) momo-cockpit
+notification #29 — apply both guard patches in the documented order; (3) the three-part
+PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session or Eli to
+apply — a plain-file delete + wrapper-script edit, outside this unit's scope); (4) re-probe the
+CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206` — still unexplained, still worth an
+interactive re-probe.
+
+**~140 hours, 274 ticks, zero Eli action landed.** Every escalation channel available to a
 headless tick has been exhausted repeatedly: PushNotification retried on cadence roughly every
 2 hours for days, never delivered; this wiki doc is git-committed every tick as the fallback
 receipt. The four items above are unchanged in kind since the 249th confirmation — only
