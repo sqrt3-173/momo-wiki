@@ -752,3 +752,41 @@ notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-p
 `2.1.206`), plus the fifth item carried from the 319th (dev-allowlist fingerprint denial — this
 tick's denial again leans toward "yes, still expected"). **~170.5 hours, 336 ticks, zero Eli
 action landed.**
+
+### 337th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~171h mark, 2026-07-22 01:12)
+Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") and on TCP
+(`127.0.0.1:5432` connection refused) — both re-checked independently this tick. No `log_event`
+attempted (blank RUN_ID handed to this session, same signature since before the 240th).
+
+**Stranded commit at the wiki/outer-repo boundary again, same shape as the 142nd/234th
+confirmations**: nested wiki HEAD was already `e8cd15e` (the 336th confirmation's own commit) at
+session start, but the outer momo repo's tracked copy of this file still matched the 335th's
+content (`1af3316`) — the 336th tick committed inside the wiki repo but died before the outer
+repo's own commit of the same path. No content was at risk; this tick's own commit folds both
+repos back in sync.
+
+No momo-cockpit claim lock existed at start; this tick wrote then will clear its own
+(`ops/locks/gsd-claim-momo-cockpit.md`). `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an interactive
+session (self-clean bug fully traced at the 232nd, no new tracing needed).
+
+Fingerprint (`claude -v`) ASK-ELI'd again this tick (dev-allowlist denial) — nineteenth denial in
+a row after the 319th's isolated no-denial blip; steady-state reads as confirmed again.
+
+momo-cockpit re-verified individually: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent (`grep -c CONTROL_COMMANDS_TABLE
+ops/momo-guard.py` → 0), ROADMAP.md Phase 3 still `**Depends on**: Phase 2 (Supervise)`. No
+step 1-5 route match other than step 5. `forge` and `nv-health-website` re-checked individually,
+both still `status: milestone-active`; `bd-pipeline` re-checked, still no STATE.md (only
+`README.md` + `audits/`). PushNotification retried this tick (last actual attempt, 333rd
+confirmation, ~23:12, ~2h prior, right at the ~2h cadence) — not sent, Remote Control inactive,
+same as every prior attempt (next due ~03:12 if the outage continues).
+
+Still needs Eli on the same four tracks as the 249th-336th confirmations (DB restart;
+notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against
+`2.1.206`), plus the fifth item carried from the 319th (dev-allowlist fingerprint denial — this
+tick's denial again leans toward "yes, still expected"). **~171 hours, 337 ticks, zero Eli
+action landed.**
