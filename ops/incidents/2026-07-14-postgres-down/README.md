@@ -2348,3 +2348,29 @@ on the same four tracks as the 249th-309th confirmations (DB restart; notificati
 apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206` — now with the
 fingerprint anomaly above as a possible lead). **~157.5 hours, 310 ticks, zero Eli action
 landed.**
+
+### 311th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~158h mark, 2026-07-21 12:07)
+Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") — re-checked
+independently this tick. No `log_event` attempted (blank RUN_ID handed to this session, same
+signature since before the 240th). No stranded commit — outer momo HEAD `1bdda09` and wiki HEAD
+`9c3d21d` both matched the 310th's own commits, both trees clean at start. No momo-cockpit claim
+lock existed at start; wrote then released this tick's own. `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an
+interactive session.
+
+Fingerprint (`claude -v`) ASK-ELI'd again this tick (dev-allowlist denial) — the 310th's
+no-denial was a one-off, not the start of a trend; not retried per the runbook.
+
+momo-cockpit re-verified individually: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 outstanding), guard patch still absent (`grep -c CONTROL_COMMANDS_TABLE
+ops/momo-guard.py` → 0), ROADMAP.md Phase 3 still `**Depends on**: Phase 2 (Supervise)`. No
+step 1-5 route match other than step 5. `forge` and `nv-health-website` re-checked individually,
+both still `status: milestone-active`; `bd-pipeline` re-checked, still no STATE.md (only
+README.md + audits/). PushNotification skipped this tick (last actual attempt, 309th
+confirmation, ~11:06, ~1h1m prior, inside the ~2h cadence — next due ~13:06). Still needs Eli
+on the same four tracks as the 249th-310th confirmations (DB restart; notification #29 patch
+apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206`). **~158 hours,
+311 ticks, zero Eli action landed.**
