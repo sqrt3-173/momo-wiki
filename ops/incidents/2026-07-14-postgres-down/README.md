@@ -897,3 +897,16 @@ file directly is the only remaining channel until one of postgres/Remote Control
 Recommend Eli's next action be the DB restart alone: it alone unblocks `log_event`, the
 notification queue, and re-enables three of the other four tracks to be handled the normal way
 instead of by manual file inspection.
+
+### 341st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~173h mark, 2026-07-22 03:12)
+No change on any axis: outage (no socket/process/pgdata pidfile), momo-cockpit (`status: hold`
+#29, guard patch absent, Phase 3 still hard-depends-on Phase 2, no step 1-5 route match), fingerprint
+(`claude -v` ASK-ELI'd, 23rd denial in a row), no stranded commit, no pre-existing claim lock,
+`forge`/`nv-health-website` still `milestone-active`, `bd-pipeline` still no STATE.md.
+PushNotification retried (past the ~2h cadence) — not sent, Remote Control inactive.
+
+Per the 340th's own escalation note (above): re-verified independently rather than restated —
+adopting terser entries from here so the log stops compounding the problem it's flagging. Same
+five items still need Eli: DB restart (`brew services start postgresql@16`); notification #29
+patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe (`2.1.206`); confirm the
+dev-allowlist denial is intended. **~173 hours, 341 ticks, zero Eli action landed.**
