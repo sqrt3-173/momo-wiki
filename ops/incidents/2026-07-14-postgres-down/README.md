@@ -2314,3 +2314,37 @@ inactive, same as every prior attempt (next due ~13:06 if the outage continues).
 Eli on the same four tracks as the 249th-308th confirmations (DB restart; notification #29
 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206`).
 **~157 hours, 309 ticks, zero Eli action landed.**
+
+### 310th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~157.5h mark, 2026-07-21 11:37)
+Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, direct `psql -d momo_work -c "SELECT 1;"`
+refused on socket ("No such file or directory") — re-checked independently this tick. No
+`log_event` attempted (blank RUN_ID handed to this session, same signature since before the
+240th). No stranded commit — outer momo HEAD `c14b5d7` and wiki HEAD `696f738` both matched the
+309th's own commits, both trees clean at start. No momo-cockpit claim lock existed at start;
+wrote then released this tick's own. `forge`'s stale claim lock untouched, still reserved for an
+interactive session.
+
+**One genuine change this tick: the fingerprint check did NOT get denied.** `claude -v` returned
+`2.1.206 (Claude Code)` directly instead of the expected ASK-ELI dev-allowlist block — first
+time in the confirmation chain this has happened (250th-309th all recorded a denial). The guard
+itself is confirmed still live and enforcing in this same session (`pg_isready` and a bare `for`
+loop both correctly ASK-ELI'd / blocked moments earlier), and `ops/momo-guard.py` has no commits
+since 2026-07-08 (`d687104`) and no `claude`-specific rule in it, so this isn't a guard patch or
+a settings.local.json change — cause genuinely unclear from this tick's vantage point. Surfacing
+this raw rather than guessing: it may bear on open item #4 (CLI-pin re-probe) but does not
+change the HOLD or unblock anything on its own — an interactive session is better placed to
+determine whether this is signal or a one-off. Per the runbook's own instruction ("note the
+denial and continue, never retry") this was not retried.
+
+momo-cockpit re-verified individually: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 outstanding), guard patch still absent (`grep -c CONTROL_COMMANDS_TABLE
+ops/momo-guard.py` → 0), ROADMAP.md Phase 3 still `**Depends on**: Phase 2 (Supervise)`. No
+step 1-5 route match other than step 5. `forge` and `nv-health-website` re-checked individually,
+both still `status: milestone-active`; `bd-pipeline` re-checked, still no STATE.md (only
+README.md + audits/). PushNotification skipped this tick (last actual attempt, 309th
+confirmation, ~11:06, ~31min prior, inside the ~2h cadence — next due ~13:06). Still needs Eli
+on the same four tracks as the 249th-309th confirmations (DB restart; notification #29 patch
+apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206` — now with the
+fingerprint anomaly above as a possible lead). **~157.5 hours, 310 ticks, zero Eli action
+landed.**
