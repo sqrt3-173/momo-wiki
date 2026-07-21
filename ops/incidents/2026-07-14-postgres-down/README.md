@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **329 ticks have now hit
-this identical wall, spanning ~167 hours (2026-07-14 21:24 → present).** A second,
+self-heal by design (guard correctly blocks the tools needed). **338 ticks have now hit
+this identical wall, spanning ~171.5 hours (2026-07-14 21:24 → present).** A second,
 independent issue was surfaced at the 216th confirmation (tick wrapper's PROJECT selection
 not honoring its own documented "milestone-active first" rule) and fully root-caused at the
 232nd confirmation — two compounding bugs in `ops/momo-tick.sh` with a three-part fix
@@ -789,4 +789,35 @@ Still needs Eli on the same four tracks as the 249th-336th confirmations (DB res
 notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against
 `2.1.206`), plus the fifth item carried from the 319th (dev-allowlist fingerprint denial — this
 tick's denial again leans toward "yes, still expected"). **~171 hours, 337 ticks, zero Eli
+action landed.**
+
+### 338th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~171.5h mark, 2026-07-22 01:42)
+Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") and on TCP
+(`127.0.0.1:5432` connection refused) — both re-checked independently this tick. No `log_event`
+attempted (blank RUN_ID handed to this session, same signature since before the 240th). No
+stranded commit — outer momo HEAD `59529a8` and wiki HEAD `3ee5a64` both matched the 337th's own
+commits, both trees clean at start. No momo-cockpit claim lock existed at start; wrote then will
+clear this tick's own (`ops/locks/gsd-claim-momo-cockpit.md`). `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, 2026-07-18 03:30) is untouched, still reserved for an interactive
+session (self-clean bug fully traced at the 232nd, no new tracing needed).
+
+Fingerprint (`claude -v`) ASK-ELI'd again this tick (dev-allowlist denial) — twentieth denial in
+a row after the 319th's isolated no-denial blip; steady-state reads as confirmed again.
+
+momo-cockpit re-verified individually: `gsd-tools progress` still 56% (Phase 1 4/4 Complete,
+Phase 2 6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent (`grep -c CONTROL_COMMANDS_TABLE
+ops/momo-guard.py` → 0), ROADMAP.md Phase 3 still `**Depends on**: Phase 2 (Supervise)`. No
+step 1-5 route match other than step 5. `forge` and `nv-health-website` re-checked individually,
+both still `status: milestone-active`; `bd-pipeline` re-checked, still no STATE.md (only
+`README.md` + `audits/`). PushNotification NOT retried this tick — last actual attempt (337th
+confirmation, ~01:12) is only ~30min prior, well inside the ~2h cadence (next due ~03:12 if the
+outage continues).
+
+Still needs Eli on the same four tracks as the 249th-337th confirmations (DB restart;
+notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against
+`2.1.206`), plus the fifth item carried from the 319th (dev-allowlist fingerprint denial — this
+tick's denial again leans toward "yes, still expected"). **~171.5 hours, 338 ticks, zero Eli
 action landed.**
