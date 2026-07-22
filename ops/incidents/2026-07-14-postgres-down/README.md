@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **360 ticks have now hit
-this identical wall, spanning ~183.5 hours (2026-07-14 21:24 → present).** A second,
+self-heal by design (guard correctly blocks the tools needed). **362 ticks have now hit
+this identical wall, spanning ~184.5 hours (2026-07-14 21:24 → present).** A second,
 independent issue was surfaced at the 216th confirmation (tick wrapper's PROJECT selection
 not honoring its own documented "milestone-active first" rule) and fully root-caused at the
 232nd confirmation — two compounding bugs in `ops/momo-tick.sh` with a three-part fix
@@ -655,4 +655,25 @@ as every prior attempt (next due ~15:17 if the outage continues).
 Same five items still need Eli: DB restart (`brew services start postgresql@16`); notification
 #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206`; confirm
 the dev-allowlist fingerprint denial is intended. **~184 hours, 361 ticks, zero Eli action
+landed.**
+
+### 362nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~184.5h mark, 2026-07-22 13:48)
+No change on any axis, all re-verified independently: outage (no `/tmp/.s.PGSQL.5432` socket, no
+`postmaster.pid`, `ps aux | grep postgres` empty, psql refused on both socket "No such file or
+directory" and TCP 127.0.0.1:5432 "Connection refused"); momo-cockpit (`gsd-tools progress` still
+56% — Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3 0/8 — STATE.md `status: hold` unchanged,
+notification #29, 02-06 Task 2 still outstanding, guard patch still absent —
+`grep -c CONTROL_COMMANDS_TABLE ops/momo-guard.py` → 0 — ROADMAP.md line 209 still reads
+`**Depends on**: Phase 2 (Supervise)`, no step 1-5 route match — HOLD respected, untouched);
+fingerprint (`claude -v` ASK-ELI'd — "'claude' isn't on the dev allowlist" — 43rd denial in a
+row); no stranded commit (both repos clean and matched the 361st's own commits at start — momo
+`36f5f72`, wiki `f2215fd`); no pre-existing momo-cockpit claim lock (wrote then released this
+tick's own); `forge`'s stale claim lock (2026-07-18 03:30) untouched, still reserved for an
+interactive session; `forge`/`nv-health-website` still `status: milestone-active`, `bd-pipeline`
+still no STATE.md. PushNotification NOT retried — last attempt (361st confirmation, ~13:17) is
+only ~31min prior, well inside the ~2h cadence (next due ~15:17).
+
+Same five items still need Eli: DB restart (`brew services start postgresql@16`); notification
+#29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-probe against `2.1.206`; confirm
+the dev-allowlist fingerprint denial is intended. **~184.5 hours, 362 ticks, zero Eli action
 landed.**
