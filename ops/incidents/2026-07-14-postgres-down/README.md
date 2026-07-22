@@ -1215,3 +1215,20 @@ yana-job-diligence still no STATE.md. PushNotification not retried (384th's atte
 
 Same five items still need Eli, unchanged since the 232nd/249th. **~196.5 hours, 386 ticks, zero
 Eli action landed.**
+
+### 387th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~197h mark, 2026-07-23 02:56) — terse
+No change on any axis, independently re-verified: outage still live (no socket, no postmaster.pid,
+no process, psql refused on both socket "No such file or directory" and TCP 127.0.0.1:5432
+"Connection refused"); momo-cockpit unchanged (`gsd-tools progress` still 56% — Phase 1 4/4
+Complete, Phase 2 6/6 Executed, Phase 3 0/8 — STATE.md `status: hold` on notification #29, guard
+patch still absent — `CONTROL_COMMANDS_TABLE` grep still 0 — ROADMAP.md line 209 still `Depends
+on: Phase 2 (Supervise)`, no step 1-5 route match); fingerprint denied (68th in a row —
+`ASK-ELI: 'claude' isn't on the dev allowlist`); both repos clean, matched the 386th's own commits
+at start (momo `f1e879a`, wiki `28f84cf`); no pre-existing claim lock (wrote/will clear this
+tick's own); forge's stale lock (2026-07-18 03:30) still untouched; forge/nv-health-website still
+`milestone-active`, bd-pipeline/bd-crm/industrial-capacity/yana-job-diligence still no STATE.md.
+PushNotification not retried (384th's attempt at 01:25 is ~1h31m old, still inside the 2h cadence
+— next due ~03:25). No `log_event` (RUN_ID blank, DB down).
+
+Same five items still need Eli, unchanged since the 232nd/249th. **~197 hours, 387 ticks, zero Eli
+action landed.**
