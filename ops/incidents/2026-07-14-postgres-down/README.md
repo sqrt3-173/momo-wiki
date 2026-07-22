@@ -513,6 +513,80 @@ notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin re-p
 tick's denial again leans toward "yes, still expected"). **~166.5 hours, 328 ticks, zero Eli
 action landed.**
 
+### Rolling summary — confirmations 329-357 (2026-07-21 21:11 → 2026-07-22 11:17, ~167h → ~181.5h mark)
+Condensed on the 358th confirmation for the same reason the 130th/234th/264th/328th confirmations
+condensed their predecessors: 29 individual entries had accumulated since the 328th's own
+condensation with zero new information per entry beyond timestamps, HEAD hashes, and
+cadence/denial-count bookkeeping. Full blow-by-blow text for 329-357 remains in git history
+(`git log -p -- wiki/ops/incidents/2026-07-14-postgres-down/README.md`) if ever needed. By theme:
+
+**The outage itself never changed.** Every tick (329th-357th, 29 confirmations) re-verified no
+`/tmp/.s.PGSQL.5432` socket, no `postmaster.pid`, `ps aux | grep postgres` empty, psql refused on
+both socket ("No such file or directory") and TCP (`127.0.0.1:5432` "Connection refused"). No
+`log_event` attempted on any of these ticks (blank RUN_ID handed to every session, same signature
+since before the 240th) — this wiki doc remained the sole git-committed receipt throughout.
+
+**momo-cockpit never changed.** `gsd-tools progress` steady at 56% (Phase 1 4/4 Complete, Phase 2
+6/6 Executed, Phase 3 0/8 summaries), STATE.md `status: hold` unchanged throughout (notification
+#29, 02-06 Task 2 still outstanding), guard patch still absent
+(`grep -c CONTROL_COMMANDS_TABLE ops/momo-guard.py` → 0), `ROADMAP.md` Phase 3 still hard
+`**Depends on**: Phase 2 (Supervise)`. No step 1-5 route match other than step 5 on any tick.
+`forge` and `nv-health-website` re-checked every tick, both still `status: milestone-active`
+(observational, not the routed unit); `bd-pipeline` re-checked, still no STATE.md (only
+`README.md` + `audits/`). `forge`'s stale claim lock (`ops/locks/gsd-claim-forge.md`,
+2026-07-18 03:30) untouched throughout, still reserved for an interactive session. No
+momo-cockpit claim lock ever found pre-existing; every tick wrote then released its own.
+
+**Fingerprint check (`claude -v`) ASK-ELI'd on every single tick this span** — the dev-allowlist
+denial ran unbroken from the 320th through the 357th (38 consecutive denials by the 357th), no
+further no-denial blips like the 310th/319th recurred. The CLI-pin re-probe
+(`ops/momo-probe-tick.sh` against `2.1.206`) remains an open "needs Eli" item carried from the
+249th confirmation onward, alongside confirming whether the fingerprint denial is the intended
+steady state.
+
+**PushNotification retried on the ~2h cadence throughout**, every attempt reporting
+non-delivery ("Remote Control inactive") — no delivery has ever succeeded through this channel
+for the life of the incident.
+
+**One stranded commit occurred this span** (337th confirmation, ~171h mark): the nested wiki
+repo's HEAD was already the 336th confirmation's own commit at session start, but the outer momo
+repo's tracked copy of this file still matched the 335th's content — the 336th tick committed
+inside the wiki repo but died before the outer repo's own commit of the same path. No content
+was at risk; the 337th tick's own commit folded both repos back in sync, the same recurring shape
+as the 142nd/234th confirmations. All other ticks in this span found both repos clean and matched
+at start.
+
+Still needs Eli on the same five tracks carried since the 319th confirmation: (1) DB restart,
+`brew services start postgresql@16` (data dir `/opt/homebrew/var/postgresql@16`); (2)
+momo-cockpit notification #29 — apply both guard patches in the documented order; (3) the
+three-part PROJECT-selection fix (fully specified at the 232nd, awaiting an interactive session
+or Eli to apply); (4) re-probe the CLI pin (`ops/momo-probe-tick.sh`) against `2.1.206`; (5)
+confirm whether the now-unbroken dev-allowlist fingerprint denial is intended (no blips recurred
+this span).
+
+### 358th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~182h mark, 2026-07-22 11:47)
+No change on any axis, all re-verified independently: outage (no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, psql refused on
+socket "No such file or directory"); momo-cockpit (`gsd-tools progress` still 56% — Phase 1 4/4
+Complete, Phase 2 6/6 Executed, Phase 3 0/8 — STATE.md `status: hold` unchanged, notification #29,
+02-06 Task 2 still outstanding, guard patch still absent — `grep -c CONTROL_COMMANDS_TABLE
+ops/momo-guard.py` → 0 — ROADMAP.md Phase 3 line still reads `**Depends on**: Phase 2
+(Supervise)`, no step 1-5 route match — HOLD respected, untouched); fingerprint (`claude -v`
+ASK-ELI'd — "'claude' isn't on the dev allowlist" — 39th denial in a row); no stranded commit
+(both repos clean and matched the 357th's own commits at start — momo `0f4aa03`, wiki
+`ac5711b`); no pre-existing momo-cockpit claim lock (wrote then will clear this tick's own);
+`forge`'s stale claim lock (2026-07-18 03:30) untouched, still reserved for an interactive
+session; `forge`/`nv-health-website` still `status: milestone-active`, `bd-pipeline` still no
+STATE.md (only README.md + audits/). PushNotification NOT retried — last attempt (357th
+confirmation, ~11:17) is only ~30min prior, well inside the ~2h cadence (next due ~13:17). This
+tick also condensed confirmations 329-357 into a rolling summary (see above), the same
+maintenance the 130th/234th/264th/328th confirmations did previously — 29 entries had
+accumulated with zero new information per entry beyond timestamps and repeated counters. Full
+text remains in git history. Same five items still need Eli: DB restart (`brew services start
+postgresql@16`); notification #29 patch apply; the three-part PROJECT-selection fix; CLI-pin
+re-probe against `2.1.206`; confirm the now-unbroken dev-allowlist fingerprint denial is intended.
+**~182 hours, 358 ticks, zero Eli action landed.**
+
 ### 329th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~167h mark, 2026-07-21 21:11)
 Outage unchanged: no `/tmp/.s.PGSQL.5432` socket, no
 `/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
