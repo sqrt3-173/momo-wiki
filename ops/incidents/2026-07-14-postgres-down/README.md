@@ -880,3 +880,30 @@ fingerprint denial is intended. **~188.5 hours, 370 ticks, zero Eli action lande
 escalation channel available to a headless tick (notification INSERT, PushNotification, this
 wiki doc) has been exhausted repeatedly; only a manual Postgres restart or guard-patch apply by
 Eli or an interactive session ends this loop.**
+
+### 371st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~189.5h mark, 2026-07-22 18:50)
+No change on any axis, all re-verified independently: outage (no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, psql refused on
+both socket "No such file or directory" and TCP 127.0.0.1:5432 "Connection refused"); momo-cockpit
+(`gsd-tools progress` still 56% — Phase 1 4/4 Complete, Phase 2 6/6 Executed, Phase 3 0/8 —
+STATE.md `status: hold` unchanged, notification #29, 02-06 Task 2 still outstanding, guard patch
+still absent — `grep -c CONTROL_COMMANDS_TABLE ops/momo-guard.py` → 0 — ROADMAP.md line 209 still
+reads `**Depends on**: Phase 2 (Supervise)`, no step 1-5 route match — HOLD respected, untouched);
+fingerprint (`claude -v` ASK-ELI'd — "'claude' isn't on the dev allowlist" — 52nd denial in a
+row); no stranded commit (both repos clean and matched the 370th's own commits at start — momo
+`59b4033`, wiki `13fea9d`); no pre-existing momo-cockpit claim lock (wrote then will clear this
+tick's own); `forge`'s stale claim lock (2026-07-18 03:30) untouched, still reserved for an
+interactive session; `forge`/`nv-health-website` still `status: milestone-active`, `bd-pipeline`
+still no STATE.md. PushNotification NOT retried — last actual attempt (369th confirmation, ~17:19)
+is ~1h31m prior, still inside the ~2h cadence (next due ~19:19). No `log_event` attempted (this
+run's RUN_ID was handed blank, the same signature carried since before the 240th confirmation —
+consistent with the DB still being down).
+
+Same five items still need Eli: DB restart (`brew services start postgresql@16`); notification
+#29 patch apply; the three-part PROJECT-selection fix (fully specified at the 232nd — a plain
+wrapper-script edit + a stale lock-file delete, not guard-blocked, but outside a headless tick's
+claim-cleanup authority); CLI-pin re-probe against `2.1.206`; confirm the dev-allowlist
+fingerprint denial is intended. **~189.5 hours, 371 ticks, zero Eli action landed — every
+escalation channel available to a headless tick (notification INSERT, PushNotification, this
+wiki doc) has been exhausted repeatedly; only a manual Postgres restart or guard-patch apply by
+Eli or an interactive session ends this loop.**
