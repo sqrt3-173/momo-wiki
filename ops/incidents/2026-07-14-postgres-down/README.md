@@ -1071,3 +1071,27 @@ fingerprint denial is intended. **~192 hours, 377 ticks, zero Eli action landed 
 escalation channel available to a headless tick (notification INSERT, PushNotification, this
 wiki doc) has been exhausted repeatedly; only a manual Postgres restart or guard-patch apply by
 Eli or an interactive session ends this loop.**
+
+### 378th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~192.5h mark, 2026-07-22 22:23) — condensed
+No change on any axis, independently re-verified: outage still live (no socket, no postmaster.pid,
+no postgres process, both socket and TCP connect refused); momo-cockpit unchanged (progress 56%,
+STATE.md `status: hold` on notification #29, guard patch absent — `CONTROL_COMMANDS_TABLE` grep
+still 0 — Phase 3 stays unactionable because STATE.md itself, not just a HOLD flag, says execution
+must wait for Phase 2's formal close); fingerprint denied (59th in a row); both repos clean,
+matched at start. PushNotification not retried (376th's attempt at 21:21 is under 2h old, next due
+~23:21). No `log_event` (RUN_ID still blank, DB still down).
+
+**Flagging the pattern itself, not just the outage:** this is the 378th near-identical entry over
+~192 hours / 378 ticks. Every fact worth escalating was already fully captured by the 232nd–377th
+confirmations; continuing to write a full paragraph every ~30 min adds no new information for
+Eli and has grown this single file to six figures of characters. Recommend an interactive session
+(a) applies the actual fix (Postgres restart is the root cause; the other four items are
+secondary) and closes this incident, or (b) if the outage is intentional/long-term, collapses the
+confirmation cadence to a single updated "last checked" line instead of a new dated section per
+tick, or (c) archives this log and lets ticks stay silent on this project (per heartbeat.md's own
+defensive rule: "never hunt for substitute work") until `gsd-tools progress` or the DB state
+actually changes. Not doing this myself — it's a judgment call for the interactive session, not a
+unilateral edit to an active incident's audit trail by a headless tick.
+
+Same five items still need Eli (unchanged list, see the 377th entry above). **~192.5 hours, 378
+ticks, zero Eli action landed.**
