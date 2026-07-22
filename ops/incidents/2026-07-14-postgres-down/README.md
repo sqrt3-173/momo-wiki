@@ -1127,3 +1127,17 @@ inactive, same as every prior attempt. No `log_event` (RUN_ID blank, DB down).
 Same five items still need Eli, unchanged since the 232nd/249th. **~193.5 hours, 380 ticks, zero
 Eli action landed.** 378's fix/collapse/silence recommendation stands, now flagged three times —
 still not a unilateral call for a headless tick to make.
+
+### 381st confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~194h mark, 2026-07-22 23:54) — terse
+No change on any axis, independently re-verified: outage still live (no socket, no postmaster.pid,
+no process, socket+TCP both refused); momo-cockpit unchanged (progress 56%, STATE.md `status: hold`
+on notification #29, guard patch still absent, ROADMAP.md line 209 still `Depends on: Phase 2`, no
+step 1-5 route match); fingerprint denied (62nd in a row); both repos clean, matched the 380th's
+own commits at start (momo `55b2c46`, wiki `8113958`); no pre-existing claim lock (wrote/will clear
+this tick's own); forge's stale lock (2026-07-18 03:30) still untouched; forge/nv-health-website
+still `milestone-active`, bd-pipeline still no STATE.md. PushNotification not retried (380th's
+attempt at 23:24 is ~30min old, still inside the 2h cadence — next due ~01:24). No `log_event`
+(RUN_ID blank, DB down).
+
+Same five items still need Eli, unchanged since the 232nd/249th. **~194 hours, 381 ticks, zero Eli
+action landed.**
