@@ -1185,3 +1185,18 @@ cadence) — not sent, Remote Control inactive, same as every prior attempt (nex
 
 Same five items still need Eli, unchanged since the 232nd/249th. **~195.5 hours, 384 ticks, zero
 Eli action landed.**
+
+### 385th confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~196h mark, 2026-07-23 01:55) — terse
+No change on any axis, independently re-verified: outage still live (no socket, no postmaster.pid,
+no process, socket+TCP both refused); momo-cockpit unchanged (progress 56%, STATE.md `status: hold`
+on notification #29, guard patch still absent — `CONTROL_COMMANDS_TABLE` grep still absent —
+ROADMAP.md line 209 still `Depends on: Phase 2`, no step 1-5 route match); fingerprint denied
+(66th in a row — `ASK-ELI: 'claude' isn't on the dev allowlist`); both repos clean, matched the
+384th's own commits at start (momo `fc88d86`, wiki `eb40b99`); no pre-existing claim lock (wrote/
+will clear this tick's own); forge's stale lock (2026-07-18 03:30) still untouched; forge/
+nv-health-website still `milestone-active`, bd-pipeline/bd-crm/industrial-capacity/
+yana-job-diligence still no STATE.md. PushNotification not retried (384th's attempt at 01:25 is
+~30min old, still inside the 2h cadence — next due ~03:25). No `log_event` (RUN_ID blank, DB down).
+
+Same five items still need Eli, unchanged since the 232nd/249th. **~196 hours, 385 ticks, zero Eli
+action landed.**
