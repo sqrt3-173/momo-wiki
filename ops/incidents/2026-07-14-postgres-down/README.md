@@ -1082,3 +1082,55 @@ No `log_event` (RUN_ID blank, DB down).
 
 Same five items still need Eli, unchanged since the 232nd/249th. **~227.5 hours, 446 ticks, zero
 Eli action landed.**
+
+### 447th confirmation (gsd-next headless tick, PROJECT=forge, ~228h mark, 2026-07-24 09:11)
+**Routing moved off momo-cockpit for the first time since the 153rd confirmation (~79h mark) —
+this tick landed on `forge`.** Cause, confirmed by reading the actual files rather than assumed:
+an interactive session has begun applying the three-part PROJECT-selection fix specified at the
+232nd confirmation, though only partially and not yet committed. (1) `forge`'s stale claim lock
+(`ops/locks/gsd-claim-forge.md`, dead since 2026-07-18 03:30) is gone — deleted by hand, per fix
+(a). (2) `ops/momo-tick.sh` carries an **uncommitted** working-tree edit (`git diff` confirmed)
+adding `"hold"` to the python `stopped` word blocklist, per fix (b) — this is mid-edit, not this
+tick's to commit (outside `gsd-next`'s scope on `forge`; belongs to whoever started it). Item (3),
+hardening dead-run cleanup to a claim file's mtime fallback, not yet observed either way. With
+momo-cockpit's `status: hold` now correctly excluded and forge's lock cleared, the wrapper's
+alphabetical scan (`bd-pipeline` → `bd-crm` → `forge` → ...) reached forge and it won on merit —
+exactly the fix's intended effect.
+
+**Forge itself re-verified independently and found fully non-actionable, same conclusion as the
+2026-07-17 10:27 tick that last touched it (~139h/~11 days of wall-clock ago in tick-count terms,
+though the DB outage means no ticks landed on it in between).** `gsd-tools progress`: 79/79 plans
+have summaries, 13/13 phases counted, 9 report `Complete` and 4 (`FORGE-03/05/06/07`) report
+`Needs Review` — confirmed by direct read that all 4 already carry a genuine `0X-VERIFICATION.md`
+with `status: human_needed` (checked this tick: 03/05/06/07 all `human_needed`), the same known
+`gsd-tools` exact-match-parser gap documented since the 2026-07-17 entry (the tool doesn't score
+`human_needed` as `Complete`) — not a new finding, not a route match. `ROADMAP.md` re-read in
+full: exactly 13 phases exist, all planned, all either `Complete`/`VERIFIED` or `HOLD` on an
+already-filed Eli notification (STATE.md's Blockers/Concerns section: #12, #16, #17, #24, #30,
+#36, #37, #38, #47, #48, #55, #59 — all re-confirmed present in STATE.md by direct read, none
+newly lifted — notifications/control_commands still unreadable, DB down, so "no new Eli reply"
+stays unconfirmed rather than disproven, same standing gap as every prior tick). No step 1-4 route
+match anywhere in the roadmap. No HOLD line touched, no plan file modified, no re-scoping.
+
+Outage itself unchanged: no `/tmp/.s.PGSQL.5432` socket, no
+`/opt/homebrew/var/postgresql@16/postmaster.pid`, `ps aux | grep postgres` empty, direct
+`psql -d momo_work -c "SELECT 1;"` refused on socket ("No such file or directory") — re-checked
+independently this tick. Fingerprint (`claude -v`) ASK-ELI'd again (dev-allowlist denial, 129th in
+a row). No stranded commit — outer momo HEAD `fb7a6cb` and wiki HEAD `a991624` both matched the
+446th confirmation's own commits, both trees clean apart from the two known pre-existing
+in-progress items (`ops/momo-tick.sh` modified — the fix described above, left untouched;
+`wiki/skills/website-audit/SKILL.md` modified + `wiki/bd/audit-learnings.md` untracked — another
+session's in-progress work, left as-is, same as the 445th/446th confirmations). No pre-existing
+`forge` claim lock at start; this tick wrote then will clear its own
+(`ops/locks/gsd-claim-forge.md`). No `log_event` attempted (RUN_ID blank, DB down, same signature
+since before the 240th). PushNotification NOT retried — last actual attempt (446th confirmation,
+~08:39) is only ~32min prior, well inside the ~2h cadence (next due ~10:39).
+
+Same four substantive items still need Eli (DB restart; momo-cockpit notification #29 patch
+apply; the remaining piece of the PROJECT-selection fix — items (b) commit + optional (c)
+mtime-fallback hardening; CLI-pin re-probe against `2.1.206`), plus forge's own dozen standing
+notification HOLDs (#12/#16/#17/#24/#30/#36/#37/#38/#47/#48/#55/#59) which are forge-specific, not
+new asks — this tick added no new notification, only re-confirmed all of them still open. **~228
+hours, 447 ticks, zero Eli action landed. First tick in ~149 confirmations (since the 153rd) to
+verify forge directly instead of momo-cockpit — worth noting the fix-in-progress is real, not
+just diagnosed.**
