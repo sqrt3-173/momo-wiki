@@ -2,8 +2,8 @@
 
 **Severity:** high (blocks the whole tick engine, not just one unit). **Outcome:** open —
 needs a manual restart only Eli or an interactive session can do; headless ticks cannot
-self-heal by design (guard correctly blocks the tools needed). **374 ticks have now hit
-this identical wall, spanning ~191 hours (2026-07-14 21:24 → present).** A second,
+self-heal by design (guard correctly blocks the tools needed). **402 ticks have now hit
+this identical wall, spanning ~205 hours (2026-07-14 21:24 → present).** A second,
 independent issue was surfaced at the 216th confirmation (tick wrapper's PROJECT selection
 not honoring its own documented "milestone-active first" rule) and fully root-caused at the
 232nd confirmation — two compounding bugs in `ops/momo-tick.sh` with a three-part fix
@@ -1474,3 +1474,20 @@ cadence — next due ~11:29). No `log_event` (RUN_ID blank, DB down).
 
 Same five items still need Eli, unchanged since the 232nd/249th. **~204.5 hours, 401 ticks, zero
 Eli action landed.**
+
+### 402nd confirmation (gsd-next headless tick, PROJECT=momo-cockpit, ~205h mark, 2026-07-23 10:27) — terse
+No change on any axis, independently re-verified: outage still live (no socket, no postmaster.pid,
+no process, psql refused on both socket "No such file or directory" and TCP 127.0.0.1:5432
+"Connection refused"); momo-cockpit unchanged (`gsd-tools progress` still 56% — Phase 1 4/4
+Complete, Phase 2 6/6 Executed, Phase 3 0/8 — STATE.md `status: hold` on notification #29, guard
+patch still absent — `grep -c CONTROL_COMMANDS_TABLE ops/momo-guard.py` still 0 — ROADMAP.md line
+209 still `Depends on: Phase 2 (Supervise)`, no step 1-5 route match); fingerprint denied (83rd in
+a row — `ASK-ELI: 'claude' isn't on the dev allowlist`); both repos clean, matched the 401st's own
+commits at start (momo `36db60d`, wiki `9835eeb`); no pre-existing claim lock (wrote/will clear
+this tick's own); forge's stale lock (2026-07-18 03:30) still untouched; forge/nv-health-website
+still have STATE.md, bd-pipeline/bd-crm/industrial-capacity/yana-job-diligence still no STATE.md.
+PushNotification not retried (400th's actual attempt at ~09:29 is ~58min old, still inside the 2h
+cadence — next due ~11:29). No `log_event` (RUN_ID blank, DB down).
+
+Same five items still need Eli, unchanged since the 232nd/249th. **~205 hours, 402 ticks, zero Eli
+action landed.**
